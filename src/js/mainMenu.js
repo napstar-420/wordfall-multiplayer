@@ -35,7 +35,7 @@ function createMainMenu(app) {
       fontSize: 36,
       fill: 0xffffff,
       align: "left",
-      fontFamily: "markerFelt",
+      fontFamily: "Pacifico",
       fontWeight: "500",
     });
     playNowText.y = 163;
@@ -72,7 +72,7 @@ function createMainMenu(app) {
       modeBtn.anchor.y = 0.5;
       modeBtn.y = modeObj.height;
       const modeBtnText = new PIXI.Text(modeObj.mode, {
-        fontFamily: "markerFelt",
+        fontFamily: "Pacifico",
         fontSize: 30,
         fontWeight: "500",
         fill: "0xffffff",
