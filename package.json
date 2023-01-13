@@ -16,8 +16,5 @@
   "bugs": {
     "url": "https://github.com/msh4izee/WordFall-Multiplayer/issues"
   },
-  "homepage": "https://github.com/msh4izee/WordFall-Multiplayer#readme",
-  "dependencies": {
-    "fontfaceobserver": "^2.3.0"
-  }
+  "homepage": "https://github.com/msh4izee/WordFall-Multiplayer#readme"
 }

@@ -7,16 +7,10 @@ canvas {
     display: block;
 }
 
-/* @font-face {
-    font-family: markerFelt;
-    font-weight: normal;
-    src: url('./assets/fonts/MarkerFelt.ttc') format('truetype');
+.font {
+    font-family: 'Chewy', cursive;
+    font-size: 0rem;
 }
-
-@font-face {
-    font-family: bobby-rough;
-    src: url('/src/assets/fonts/Bobby\ Rough\ Soft.ttf') format('ttf');
-} */
 
 .font-markerFelt {
     font-family: bobby-rough;

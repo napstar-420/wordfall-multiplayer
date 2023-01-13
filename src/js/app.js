@@ -1,8 +1,3 @@
-// const markerFeltFont = new FontFaceObserver('markerFelt', {});
-
-// markerFeltFont.load().then(() => {
-// })
-
 // PIXI APPLICATION
 const app = new PIXI.Application({
     width: window.innerWidth,
