@@ -1,0 +1,23 @@
+{
+  "name": "wordfall-project-freedom",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/msh4izee/WordFall-Multiplayer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/msh4izee/WordFall-Multiplayer/issues"
+  },
+  "homepage": "https://github.com/msh4izee/WordFall-Multiplayer#readme",
+  "dependencies": {
+    "fontfaceobserver": "^2.3.0"
+  }
+}
