@@ -1,9 +1,10 @@
 import createMainMenu from "./mainMenu.js";
 import createNormalModeUI from "./normalModeUI.js";
 import createBossModeUI from "./bossModeUI.js";
+import { startGame } from "./normalModeGameLogic.js";
 
 // PIXI APPLICATION
-const app = new PIXI.Application({
+export const app = new PIXI.Application({
   width: window.innerWidth,
   height: window.innerHeight,
 });
@@ -72,6 +73,9 @@ app.stage.addChild(MAIN_MENU);
 app.stage.addChild(NORMAL_MODE);
 app.stage.addChild(BOSS_MODE);
 
-NORMAL_MODE.visible = false;
+NORMAL_MODE.visible = true;
+
+startGame(app)
+
 BOSS_MODE.visible = false;
 

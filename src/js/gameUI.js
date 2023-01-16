@@ -44,13 +44,13 @@ export function getLivesContainer(textures) {
   livesContainer.width = 1000;
   livesContainer.height = 80;
   livesContainer.x = (window.innerWidth - 1000) / 2;
-  livesContainer.y = window.innerHeight - 80;
+  livesContainer.y = window.innerHeight - 120;
 
   for (let i = 0; i < 7; i++) {
     const lifeSprite = new PIXI.Sprite(
       textures[getRandomNumber(textures.length, 0)]
     );
-    lifeSprite.anchor.y = 1;
+    lifeSprite.anchor.y = 0.5;
     lifeSprite.anchor.x = 0;
     lifeSprite.y = 0;
     lifeSprite.x = i * 150;
@@ -63,3 +63,10 @@ export function getLivesContainer(textures) {
 export function getRandomNumber(max, min) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+export async function getWordBg() {
+  const textures = await PIXI.Assets.load(['letterTile']);
+  const letterTileSprite = new PIXI.Sprite(textures.letterTile);
+  return letterTileSprite;
+}
+  
