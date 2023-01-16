@@ -1,11 +1,15 @@
-function createMainMenu(app) {
+export default function createMainMenu(app) {
+  const MainMenu = new PIXI.Container();
+  MainMenu.width = app.view.width;
+  MainMenu.height = app.view.height;
+
   // LOADING ASSETS
-  // (we will directly get textures in promise so we don't need to make textures separately)
   const assetsPromise = PIXI.Assets.load([
     "mainMenuBackground",
     "menuBoard",
     "menuBtnBack",
   ]);
+
   assetsPromise.then((textures) => {
     // Adding main menu background
     const menuBackgroundSprite = new PIXI.Sprite(textures.mainMenuBackground);
@@ -14,22 +18,22 @@ function createMainMenu(app) {
     menuBackgroundSprite.anchor.set(0.5);
     menuBackgroundSprite.x = app.view.width / 2;
     menuBackgroundSprite.y = app.view.height / 2;
-    app.stage.addChild(menuBackgroundSprite);
-
+    MainMenu.addChild(menuBackgroundSprite);
+    
     // Adding menu board
-    const boardContainer = new PIXI.Container();
-    boardContainer.width = 550;
-    boardContainer.height = 550;
-    boardContainer.x = app.view.width / 2;
+    const BoardContainer = new PIXI.Container();
+    BoardContainer.width = 550;
+    BoardContainer.height = 550;
+    BoardContainer.x = app.view.width / 2;
     const menuBoardSprite = new PIXI.Sprite(textures.menuBoard);
     menuBoardSprite.width = 550;
     menuBoardSprite.height = 550;
     menuBoardSprite.anchor.x = 0.5;
     menuBoardSprite.anchor.y = 0;
-    menuBoardSprite.x = boardContainer.width / 2;
+    menuBoardSprite.x = BoardContainer.width / 2;
     menuBoardSprite.y = 0;
-    boardContainer.addChild(menuBoardSprite);
-
+    BoardContainer.addChild(menuBoardSprite);
+    
     // Adding PLAY NOW Text
     const playNowText = new PIXI.Text("PLAY NOW", {
       fontSize: 36,
@@ -41,7 +45,7 @@ function createMainMenu(app) {
     playNowText.y = 163;
     playNowText.anchor.x = 0.56;
     playNowText.anchor.y = 0.5;
-    boardContainer.addChild(playNowText);
+    BoardContainer.addChild(playNowText);
 
     // Adding Buttons
     const modeBtns = [
@@ -62,7 +66,7 @@ function createMainMenu(app) {
         height: 470,
       },
     ];
-
+    
     modeBtns.map((modeObj) => {
       const modeBtn = new PIXI.Sprite(textures.menuBtnBack);
       modeBtn.width = 250;
@@ -79,9 +83,10 @@ function createMainMenu(app) {
       });
       modeBtnText.anchor.set(0.6);
       modeBtn.addChild(modeBtnText);
-      boardContainer.addChild(modeBtn);
+      BoardContainer.addChild(modeBtn);
     });
 
-    app.stage.addChild(boardContainer);
+    MainMenu.addChild(BoardContainer);
   });
+  return MainMenu;
 }
