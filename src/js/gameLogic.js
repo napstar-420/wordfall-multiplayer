@@ -35,8 +35,15 @@ export function startGame(container, loadScoreBoard) {
   let wordSpeed = 1;
   let score = 0;
   let multiplier = 1;
+  let streak = 0;
   let troubledWords = [];
+  let typedWords = 0;
+  let time = 0;
 
+  function updateTime() {
+    time++;
+  }
+  const timeInterval = setInterval(updateTime, 1000);
   document.addEventListener("keyup", handleGame);
 
   // This function create new word
@@ -98,13 +105,19 @@ export function startGame(container, loadScoreBoard) {
       counter++;
       // if users types the entire word correctly
       if (activeWord.children.length === counter) {
-        score = score + (activeWord.children.length * multiplier);
-        container.children[3].children[0].text = score;
+        score += (activeWord.children.length - 1) * multiplier;
+        container.children[3].children[1].text = score;
         container.removeChild(activeWord);
         wordsOnScreen.splice(activeWordIndex, 1);
         activeWord = null;
         activeWordIndex = null;
         counter = 1;
+        typedWords++;
+        streak++;
+        if (streak % 15 === 0) {
+          multiplier = (streak / 15) + 1;
+        }
+        container.children[3].children[3].text = multiplier;
       }
     } else {
       // if user mistypes
@@ -119,6 +132,9 @@ export function startGame(container, loadScoreBoard) {
       activeWord = null;
       activeWordIndex = null;
       counter = 1;
+      streak = 0;
+      multiplier -= multiplier > 1 ? 1 : 0;
+      container.children[3].children[3].text = multiplier;
     }
   }
 
@@ -146,8 +162,15 @@ export function startGame(container, loadScoreBoard) {
           })
         }
         // If word reached the ground
-        if (word.y > app.view.height - 140) {
+        if (word.y > app.view.height - 130) {
           word.dead = true;
+          let troubledWord = '';
+          word.children.forEach((letter, index) => {
+            if (index > 0) {
+              troubledWord = troubledWord.concat(letter.text);
+            }
+          })
+          troubledWords.push(troubledWord);
           container.removeChild(word);
           wordsOnScreen.splice(index, 1);
           if (activeWord && activeWordIndex > index) {
@@ -164,6 +187,7 @@ export function startGame(container, loadScoreBoard) {
   }
 
   function endGame() {
+    clearInterval(timeInterval);
     app.ticker.remove(gameLoop);
     document.removeEventListener(document, handleGame);
     app.stage.removeChild(container);

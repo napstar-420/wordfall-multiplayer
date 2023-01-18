@@ -32,11 +32,13 @@ export default function loadNormalModeUI(app) {
     NormalModeContainer.addChild(getBackground(normalModeBg));
     NormalModeContainer.addChild(getForeground(normalModeFg));
     NormalModeContainer.addChild(getLivesContainer([flower, twinFlower1, twinFlower2]));
-    startGame(NormalModeContainer, loadScoreBoard);
     NormalModeContainer.addChild(getScoreFrame(scoreFrame));
     NormalModeContainer.addChild(getMenuBtn(menuBtn));
   });
   
+  setTimeout(() => {
+    startGame(NormalModeContainer, loadScoreBoard);
+  }, 2500);
   app.stage.addChild(NormalModeContainer);
 
   

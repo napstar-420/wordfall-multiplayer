@@ -1,5 +1,6 @@
 import loadBossScoreBoard from "./bossScoreBoard.js";
 import loadMainMenu from "./mainMenu.js";
+import loadNormalModeUI from "./normalModeUI.js";
 import createNormalModeUI from "./normalModeUI.js";
 import loadScoreBoard from "./scoreBoard.js";
 import createScoreBoard from "./scoreBoard.js";
@@ -66,5 +67,7 @@ PIXI.Assets.add(
 );
 PIXI.Assets.add('bossScoreBoardCross', '/src/assets/images/boss mode button.png')
 
-// loadMainMenu(app);
-loadScoreBoard(app, ['lorem', 'lorem'], 65464)
+// loadNormalModeUI(app);
+loadMainMenu(app);
+// loadScoreBoard(app, ['lorem', 'lorem'], 65464)
+// loadBossScoreBoard(app, ['lorem', 'lorem'], 65464)

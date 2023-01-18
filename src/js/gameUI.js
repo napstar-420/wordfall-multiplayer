@@ -21,22 +21,46 @@ export function getForeground(texture) {
 }
 
 export function getScoreFrame(texture) {
+  const scoreFrame = new PIXI.Container();
+  scoreFrame.x = 80;
+  scoreFrame.y = 40;
   const scoreFrameSprite = new PIXI.Sprite(texture);
   scoreFrameSprite.width = 200;
   scoreFrameSprite.height = 120;
   scoreFrameSprite.anchor.set(0.5);
-  scoreFrameSprite.x = 80;
-  scoreFrameSprite.y = 40;
   const score = new PIXI.Text('0', {
     fontWeight: 'bold',
     fill: '#303030',
     fontFamily: 'Barlow'
   });
   score.anchor.x = 0.5;
-  score.anchor.y = 0.6;
+  score.anchor.y = 0.5;
   score.x = 15;
-  scoreFrameSprite.addChild(score);
-  return scoreFrameSprite;
+  score.y = -3
+  scoreFrame.addChild(scoreFrameSprite);
+  scoreFrame.addChild(score);
+  // x
+  const x = new PIXI.Text('x', {
+    fontWeight: 'normal',
+    fill: '#cf0c12',
+    fontFamily: 'Luckiest Guy',
+    fontSize: 24,
+  })
+  x.x = 75;
+  x.y = -10;
+  scoreFrame.addChild(x);
+  // Multiplier
+  const multiplier = new PIXI.Text('1', {
+    fontWeight: 'normal',
+    fill: '#cf0c12',
+    fontFamily: 'Luckiest Guy',
+    fontSize: 40,
+  })
+  multiplier.anchor.set(0.5);
+  multiplier.x = 100;
+  multiplier.y = -5
+  scoreFrame.addChild(multiplier)
+  return scoreFrame;
 }
 
 export function getClockFrame(texture) {

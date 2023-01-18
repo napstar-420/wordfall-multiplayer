@@ -16,10 +16,6 @@ export default function loadMainMenu() {
   BoardContainer.x = app.view.width / 2;
   BoardContainer.y = -600;
 
-  // VARIABLES
-  let slideDown = true;
-  let slideUp = false;
-
   // LOADING ASSETS
   PIXI.Assets.load([
     "mainMenuBackground",
@@ -35,15 +31,17 @@ export default function loadMainMenu() {
 
     // PLAY NOW BTN
     const playNowButton = new PIXI.Text("PLAY NOW", {
-      fontSize: 45,
+      fontSize: 50,
       fill: 0xffffff,
       align: "left",
-      fontFamily: "Chewy",
+      fontFamily: "Boogaloo",
       fontWeight: "500",
     });
     playNowButton.y = 163;
     playNowButton.anchor.x = 0.56;
     playNowButton.anchor.y = 0.5;
+    playNowButton.scale.x = 0.8;
+    playNowButton.scale.y = 0.8;
     playNowButton.interactive = true;
     playNowButton.cursor = 'pointer';
     playNowButton
@@ -54,24 +52,19 @@ export default function loadMainMenu() {
 
     // CURSOR INTERACTIONS
     function cursorOver(button) {
-      button.scale.x = 1.1;
-      button.scale.y = 1.1;
+      button.scale.x = 0.9;
+      button.scale.y = 0.9;
     }
     function cursorOut(button) {
-      button.scale.x = 1;
-      button.scale.y = 1;
+      button.scale.x = 0.8;
+      button.scale.y = 0.8;
     }
     function startMode(callback) {
-      slideDown = false;
-      slideUp = true;
-
+      TweenMax.to(BoardContainer, 1, {ease: Back.easeIn.config(1.7), y: -600})
       setTimeout(() => {
-        app.ticker.remove()
-        slideDown = true;
-        slideUp = false;
         callback(app);
         app.stage.removeChild(MAIN_MENU);
-      }, 3000)
+      }, 1500)
     }
   
     // ADDING MAIN MENU BUTTONS
@@ -100,14 +93,14 @@ export default function loadMainMenu() {
     
     modeBtns.map((modeObj) => {
       const modeBtn = new PIXI.Sprite(menuBtnBack);
-      modeBtn.width = 250;
-      modeBtn.height = 70;
+      modeBtn.scale.x = 0.8;
+      modeBtn.scale.y = 0.8;
       modeBtn.x = 0;
       modeBtn.anchor.x = 0.55;
       modeBtn.anchor.y = 0.5;
       modeBtn.y = modeObj.height;
       const modeBtnText = new PIXI.Text(modeObj.mode, {
-        fontFamily: "Chewy",
+        fontFamily: "Boogaloo",
         fontSize: 35,
         fontWeight: "500",
         fill: "0xffffff",
@@ -117,28 +110,17 @@ export default function loadMainMenu() {
       modeBtn.interactive = true;
       modeBtn.cursor = 'pointer';
       modeBtn
-        .on('pointerover', () => cursorOver(modeBtnText))
-        .on('pointerout', () => cursorOut(modeBtnText))
+        .on('pointerover', () => cursorOver(modeBtn))
+        .on('pointerout', () => cursorOut(modeBtn))
         .on('click', modeObj.event)
       BoardContainer.addChild(modeBtn);
     });
     MAIN_MENU.addChild(BoardContainer);
   });
-  
-  // TICKER
-  app.ticker.add(animation);
-    
-  function animation(delta) {
-    if(slideDown && BoardContainer.y < 0){
-      BoardContainer.y += delta * 4;
-    }
-    if(slideUp && BoardContainer.y > -600){
-      BoardContainer.y -= delta * 4;
-      setTimeout(() => {
-        app.ticker.remove(animation);
-      }, 3000);
-    }
-  }
+
+  setTimeout(() => {
+    TweenMax.to(BoardContainer, 1, {ease: Elastic.easeOut.config(1, 0.75), y: -50})
+  }, 750)
 
   // ADDING MAIN MENU
   app.stage.addChild(MAIN_MENU);

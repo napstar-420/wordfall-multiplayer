@@ -7,10 +7,6 @@ export default function loadScoreBoard(app, troubledWords, score) {
   scoreBoard.width = app.view.width;
   scoreBoard.height = app.view.height;
 
-  // VARIABLES
-   let slideDown = true;
-   let slideUp = false;
-
   const assetsPromise = PIXI.Assets.load([
     "menuBtnBack",
     "scoreBoardBg",
@@ -34,7 +30,7 @@ export default function loadScoreBoard(app, troubledWords, score) {
     boardContainer.width = 650;
     boardContainer.height = 650;
     boardContainer.x = app.view.width / 2;
-    boardContainer.y = -600
+    boardContainer.y = -700
     const scoreBoardSprite = new PIXI.Sprite(textures.scoreBoard);
     scoreBoardSprite.width = 650;
     scoreBoardSprite.height = 650;
@@ -60,11 +56,11 @@ export default function loadScoreBoard(app, troubledWords, score) {
     boardContainer.addChild(crossBtn);
 
     // Adding Player Rank Text
-    const playerRankText = new PIXI.Text("Rank: 1025", {
+    const playerRankText = new PIXI.Text("Game Over", {
       fontSize: 40,
       fill: 0xffffff,
       align: "left",
-      fontFamily: "Chewy",
+      fontFamily: "Boogaloo",
       fontWeight: "500",
     });
     playerRankText.y = 140;
@@ -77,7 +73,7 @@ export default function loadScoreBoard(app, troubledWords, score) {
       fontSize: 55,
       fill: "#be6618",
       align: "left",
-      fontFamily: "Chewy",
+      fontFamily: "Luckiest Guy",
       fontWeight: "500",
     });
     playerScoreText.y = 225;
@@ -109,7 +105,7 @@ export default function loadScoreBoard(app, troubledWords, score) {
       extra.anchor.x = 0.5;
       extra.anchor.y = 0.5;
       const extraValueText = new PIXI.Text(extraObj.extraValue, {
-        fontFamily: "Chewy",
+        fontFamily: "Boogaloo",
         fontSize: 50,
         fontWeight: "500",
         fill: "0xffffff",
@@ -118,7 +114,7 @@ export default function loadScoreBoard(app, troubledWords, score) {
       extraValueText.y -= 15;
       extra.addChild(extraValueText);
       const extraNameText = new PIXI.Text(extraObj.extraName, {
-        fontFamily: "Chewy",
+        fontFamily: "Boogaloo",
         fontSize: 20,
         fontWeight: "500",
         fill: "#f2b44e",
@@ -137,9 +133,9 @@ export default function loadScoreBoard(app, troubledWords, score) {
     troubledWordBgSprite.anchor.set(0.53);
 
     const troubledWordText = new PIXI.Text("TROUBLED WORDS", {
-      fontFamily: "Chewy",
+      fontFamily: "Boogaloo",
       fontSize: 30,
-      fontWeight: "500",
+      fontWeight: "800",
       fill: "#be6618",
     });
     troubledWordText.anchor.set(0.5);
@@ -155,7 +151,7 @@ export default function loadScoreBoard(app, troubledWords, score) {
     practiceBtnBgSprite.anchor.set(0.5);
 
     const practiceBtnText = new PIXI.Text("PRACTICE", {
-      fontFamily: "Chewy",
+      fontFamily: "Boogaloo",
       fontSize: 25,
       fontWeight: "500",
       fill: "0xffffff",
@@ -176,9 +172,9 @@ export default function loadScoreBoard(app, troubledWords, score) {
     troubledWords.forEach((word, index) => {
       if (index < 16) {
         let wordText = new PIXI.Text(`${word}`, {
-          fontFamily: "Chewy",
+          fontFamily: "Barlow",
           fontSize: 15,
-          fontWeight: "500",
+          fontWeight: "600",
           fill: "#d19748",
         });
   
@@ -211,7 +207,7 @@ export default function loadScoreBoard(app, troubledWords, score) {
     playAgainBtnBgSprite.anchor.set(0.5);
 
     const playAgainBtnText = new PIXI.Text("PLAY AGAIN", {
-      fontFamily: "Chewy",
+      fontFamily: "Boogaloo",
       fontSize: 30,
       fontWeight: "500",
       fill: "0xffffff",
@@ -236,33 +232,15 @@ export default function loadScoreBoard(app, troubledWords, score) {
       button.scale.y = 1;
     }
     function handleClick(callback) {
-      slideDown = false;
-      slideUp = true;
-
+      TweenMax.to(boardContainer, 1, {ease: Back.easeIn.config(1.7), y: -700});
       setTimeout(() => {
-        app.ticker.remove()
-        slideDown = true;
-        slideUp = false;
-        callback(app);
         app.stage.removeChild(scoreBoard);
-      }, 3000)
+        callback(app);
+      }, 1500)
     }
-
-     // TICKER
-    app.ticker.add(animation);
-    
-    function animation(delta) {
-      if(slideDown && boardContainer.y < -60){
-        boardContainer.y += delta * 5;
-      }
-      if(slideUp && boardContainer.y > -700){
-        boardContainer.y -= delta * 5;
-        setTimeout(() => {
-          app.ticker.remove(animation);
-        }, 3000);
-      }
-    }
-
+    setTimeout(() => {
+      TweenMax.to(boardContainer, 1, {ease: Elastic.easeOut.config(1, 0.75), y: -60})
+    }, 750)
     app.stage.addChild(scoreBoard);
   });
 }

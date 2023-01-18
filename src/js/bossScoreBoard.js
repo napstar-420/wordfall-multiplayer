@@ -3,13 +3,10 @@ import { getBackground } from "./gameUI.js";
 import loadMainMenu from "./mainMenu.js";
 
 export default function loadBossScoreBoard(app) {
-
-  let slideDown = true;
-  let slideUp = false;
-
   const BossScoreBoard = new PIXI.Container();
   BossScoreBoard.width = app.view.width;
   BossScoreBoard.height = app.view.height;
+  
   const assetsPromise = PIXI.Assets.load([
     "scoreBoardExtras",
     "bossScoreBoard",
@@ -27,6 +24,7 @@ export default function loadBossScoreBoard(app) {
     boardContainer.x = app.view.width / 2;
     boardContainer.width = 550;
     boardContainer.height = 600;
+    boardContainer.y = -700
 
     const bossBoardSprite = new PIXI.Sprite(textures.bossScoreBoard);
     bossBoardSprite.width = 550;
@@ -53,11 +51,11 @@ export default function loadBossScoreBoard(app) {
     boardContainer.addChild(crossBtn);
 
     // Adding Player Rank Text
-    const playerRankText = new PIXI.Text("Rank:1025", {
+    const playerRankText = new PIXI.Text("Game Over", {
       fontSize: 45,
       fill: 0xffffff,
       align: "left",
-      fontFamily: "Chewy",
+      fontFamily: "Boogaloo",
       fontWeight: "500",
     });
     playerRankText.y = 105;
@@ -70,7 +68,7 @@ export default function loadBossScoreBoard(app) {
       fontSize: 55,
       fill: "#633f5c",
       align: "left",
-      fontFamily: "Chewy",
+      fontFamily: "Luckiest Guy",
       fontWeight: "500",
     });
     playerScoreText.y = 190;
@@ -102,7 +100,7 @@ export default function loadBossScoreBoard(app) {
       extra.anchor.x = 0.5;
       extra.anchor.y = 0.5;
       const extraValueText = new PIXI.Text(extraObj.extraValue, {
-        fontFamily: "Chewy",
+        fontFamily: "Boogaloo",
         fontSize: 50,
         fontWeight: "500",
         fill: "0xffffff",
@@ -111,7 +109,7 @@ export default function loadBossScoreBoard(app) {
       extraValueText.y -= 15;
       extra.addChild(extraValueText);
       const extraNameText = new PIXI.Text(extraObj.extraName, {
-        fontFamily: "Chewy",
+        fontFamily: "Boogaloo",
         fontSize: 20,
         fontWeight: "500",
         fill: "#ecd7b8",
@@ -133,7 +131,7 @@ export default function loadBossScoreBoard(app) {
     restartBtnBg.anchor.set(0.5);
 
     const restartBtnText = new PIXI.Text("RESTART", {
-      fontFamily: "Chewy",
+      fontFamily: "Boogaloo",
       fontSize: 25,
       fontWeight: "500",
       fill: "0xffffff",
@@ -163,7 +161,7 @@ export default function loadBossScoreBoard(app) {
     playAgainBtnBg.anchor.set(0.5);
 
     const playAgainBtnText = new PIXI.Text("PLAY AGAIN", {
-      fontFamily: "Chewy",
+      fontFamily: "Boogaloo",
       fontSize: 30,
       fontWeight: "500",
       fill: "0xffffff",
@@ -193,31 +191,16 @@ export default function loadBossScoreBoard(app) {
       button.scale.y = 1;
     }
     function handleClick(callback) {
-      slideDown = false;
-      slideUp = true;
-      
+      TweenMax.to(boardContainer, 1, {ease: Bounce.easeIn, y: -700})
       setTimeout(() => {
-        app.ticker.remove()
-        slideDown = true;
-        slideUp = false;
+        app.stage.removeChild(boardContainer);
         callback(app);
-        app.stage.removeChild();
-      }, 3000)
+      }, 1500)
     }
-      // TICKER
-    app.ticker.add(animation);
-      
-    function animation(delta) {
-      if(slideDown && boardContainer.y < 0){
-        boardContainer.y += delta * 4;
-      }
-      if(slideUp && boardContainer.y > -600){
-        boardContainer.y -= delta * 4;
-        setTimeout(() => {
-          app.ticker.remove(animation);
-        }, 3000);
-      }
-    }
+
+    setTimeout(() => {
+      TweenMax.to(boardContainer, 1, {ease: Bounce.easeOut, y: 0})
+    }, 750)
 
     app.stage.addChild(BossScoreBoard);
   });
