@@ -48,6 +48,7 @@ PIXI.Assets.add(
 );
 PIXI.Assets.add("scoreBoardExtras", "/src/assets/images/Rectangle 27.png");
 PIXI.Assets.add("troubledWordBg", "/src/assets/images/Rectangle 24.png");
+PIXI.Assets.add('normalCrossBtn', "/src/assets/images/normalScoreBoardCrossBtn.png");
 
 //Boss Mode Score Board
 PIXI.Assets.add(
@@ -65,4 +66,5 @@ PIXI.Assets.add(
 );
 PIXI.Assets.add('bossScoreBoardCross', '/src/assets/images/boss mode button.png')
 
-loadMainMenu(app);
+// loadMainMenu(app);
+loadScoreBoard(app, ['lorem', 'lorem'], 65464)

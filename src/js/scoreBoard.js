@@ -1,5 +1,5 @@
 import loadNormalModeUI from "./normalModeUI.js";
-import createNormalModeUI from "./normalModeUI.js";
+import loadMainMenu from "./mainMenu.js";
 
 export default function loadScoreBoard(app, troubledWords, score) {
 
@@ -17,6 +17,7 @@ export default function loadScoreBoard(app, troubledWords, score) {
     "scoreBoard",
     "scoreBoardExtras",
     "troubledWordBg",
+    "normalCrossBtn"
   ]);
   assetsPromise.then((textures) => {
     // Adding score board background
@@ -42,6 +43,21 @@ export default function loadScoreBoard(app, troubledWords, score) {
     scoreBoardSprite.x = boardContainer.width / 2;
     scoreBoardSprite.y = 0;
     boardContainer.addChild(scoreBoardSprite);
+
+    // Adding closing scoreboard button
+    const crossBtn = new PIXI.Sprite(textures.normalCrossBtn);
+    crossBtn.anchor.set(0.5);
+    crossBtn.x = 220;
+    crossBtn.y = 120;
+    crossBtn.scale.x = 0.7;
+    crossBtn.scale.y = 0.7;
+    crossBtn.interactive = true;
+    crossBtn.cursor = 'pointer';
+    crossBtn
+      .on('pointerover', () => {crossBtn.scale.x = 0.8; crossBtn.scale.y = 0.8;})
+      .on('pointerout', () => {crossBtn.scale.x = 0.7; crossBtn.scale.y = 0.7;})
+      .on('pointerdown', () => handleClick(loadMainMenu))
+    boardContainer.addChild(crossBtn);
 
     // Adding Player Rank Text
     const playerRankText = new PIXI.Text("Rank: 1025", {
