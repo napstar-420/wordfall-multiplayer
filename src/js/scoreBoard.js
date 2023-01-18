@@ -1,4 +1,16 @@
-function createScoreBoard(app) {
+import loadNormalModeUI from "./normalModeUI.js";
+import createNormalModeUI from "./normalModeUI.js";
+
+export default function loadScoreBoard(app, troubledWords, score) {
+
+  const scoreBoard = new PIXI.Container(); 
+  scoreBoard.width = app.view.width;
+  scoreBoard.height = app.view.height;
+
+  // VARIABLES
+   let slideDown = true;
+   let slideUp = false;
+
   const assetsPromise = PIXI.Assets.load([
     "menuBtnBack",
     "scoreBoardBg",
@@ -14,16 +26,17 @@ function createScoreBoard(app) {
     scoreBoardBgSprite.anchor.set(0.5);
     scoreBoardBgSprite.x = app.view.width / 2;
     scoreBoardBgSprite.y = app.view.height / 2;
-    app.stage.addChild(scoreBoardBgSprite);
+    scoreBoard.addChild(scoreBoardBgSprite);
 
     // Adding score board
     const boardContainer = new PIXI.Container();
-    boardContainer.width = 550;
-    boardContainer.height = 550;
+    boardContainer.width = 650;
+    boardContainer.height = 650;
     boardContainer.x = app.view.width / 2;
+    boardContainer.y = -600
     const scoreBoardSprite = new PIXI.Sprite(textures.scoreBoard);
-    scoreBoardSprite.width = 700;
-    scoreBoardSprite.height = 700;
+    scoreBoardSprite.width = 650;
+    scoreBoardSprite.height = 650;
     scoreBoardSprite.anchor.x = 0.5;
     scoreBoardSprite.anchor.y = 0;
     scoreBoardSprite.x = boardContainer.width / 2;
@@ -31,27 +44,27 @@ function createScoreBoard(app) {
     boardContainer.addChild(scoreBoardSprite);
 
     // Adding Player Rank Text
-    const playerRankText = new PIXI.Text("Rank:1025", {
-      fontSize: 45,
+    const playerRankText = new PIXI.Text("Rank: 1025", {
+      fontSize: 40,
       fill: 0xffffff,
       align: "left",
       fontFamily: "Chewy",
       fontWeight: "500",
     });
-    playerRankText.y = 155;
+    playerRankText.y = 140;
     playerRankText.anchor.x = 0.56;
     playerRankText.anchor.y = 0.5;
     boardContainer.addChild(playerRankText);
 
     // Adding Player Score Text
-    const playerScoreText = new PIXI.Text("SCORE: 1200", {
+    const playerScoreText = new PIXI.Text(`SCORE: ${score}`, {
       fontSize: 55,
       fill: "#be6618",
       align: "left",
       fontFamily: "Chewy",
       fontWeight: "500",
     });
-    playerScoreText.y = 250;
+    playerScoreText.y = 225;
     playerScoreText.anchor.x = 0.56;
     playerScoreText.anchor.y = 0.5;
     boardContainer.addChild(playerScoreText);
@@ -61,21 +74,21 @@ function createScoreBoard(app) {
       {
         extraName: "WPM",
         extraValue: "40",
-        extraWidth: -100,
+        extraWidth: -80,
       },
       {
         extraName: "ACCURACY",
         extraValue: "55%",
-        extraWidth: 80,
+        extraWidth: 60,
       },
     ];
-    extrasContainer = new PIXI.Container();
-    extrasContainer.y = 340;
+    const extrasContainer = new PIXI.Container();
+    extrasContainer.y = 310;
 
     extras.forEach((extraObj) => {
       const extra = new PIXI.Sprite(textures.scoreBoardExtras);
-      extra.width = 180;
-      extra.height = 150;
+      extra.width = 160;
+      extra.height = 130;
       extra.x = extraObj.extraWidth;
       extra.anchor.x = 0.5;
       extra.anchor.y = 0.5;
@@ -103,7 +116,7 @@ function createScoreBoard(app) {
 
     //Adding Troubled Word to scoreboard
     const troubledWordContainer = new PIXI.Container();
-    troubledWordContainer.y = 470;
+    troubledWordContainer.y = 430;
     const troubledWordBgSprite = new PIXI.Sprite(textures.troubledWordBg);
     troubledWordBgSprite.anchor.set(0.53);
 
@@ -115,24 +128,6 @@ function createScoreBoard(app) {
     });
     troubledWordText.anchor.set(0.5);
     troubledWordText.y = -40;
-
-    let troubledWordArr = [
-      "desire",
-      "delay",
-      "perpetual",
-      "pizzas",
-      "mess",
-      "abrupt",
-      "acoustic",
-      "sore",
-      "realize",
-      "instinctive",
-      "wry",
-      "dogs",
-      "kindly",
-      "board",
-      "beg",
-    ];
 
     // adding practice btn
     const practiceBtn = new PIXI.Container();
@@ -162,29 +157,37 @@ function createScoreBoard(app) {
     let height = -20;
     let width = -180;
     let counter = 1;
-    troubledWordArr.forEach((word) => {
-      let wordText = new PIXI.Text(`${word}`, {
-        fontFamily: "Chewy",
-        fontSize: 15,
-        fontWeight: "500",
-        fill: "#d19748",
-      });
-
-      wordText.y = height;
-      wordText.x = width;
-      troubledWordContainer.addChild(wordText);
-      if (counter % 3 === 0) {
-        console.log("match");
-        height = -20;
-        width += 75;
-      } else {
-        height += 20;
-      }
-      counter++;
+    troubledWords.forEach((word, index) => {
+      if (index < 16) {
+        let wordText = new PIXI.Text(`${word}`, {
+          fontFamily: "Chewy",
+          fontSize: 15,
+          fontWeight: "500",
+          fill: "#d19748",
+        });
+  
+        wordText.y = height;
+        wordText.x = width;
+        troubledWordContainer.addChild(wordText);
+        if (counter % 3 === 0) {
+          height = -20;
+          width += 75;
+        } else {
+          height += 20;
+        }
+        counter++;
+      };
     });
     // adding play again btn
     const playAgainBtn = new PIXI.Container();
-    playAgainBtn.y = 620;
+    playAgainBtn.y = 570;
+
+    playAgainBtn.interactive = true;
+    playAgainBtn.cursor = 'pointer';
+    playAgainBtn
+      .on('pointerover', () => cursorOver(playAgainBtnText))
+      .on('pointerout', () => cursorOut(playAgainBtnText))
+      .on('pointerdown', () => handleClick(loadNormalModeUI))
 
     const playAgainBtnBgSprite = new PIXI.Sprite(textures.menuBtnBack);
     playAgainBtnBgSprite.width = 250;
@@ -205,6 +208,45 @@ function createScoreBoard(app) {
 
     boardContainer.addChild(playAgainBtn);
     boardContainer.addChild(troubledWordContainer);
-    app.stage.addChild(boardContainer);
+    scoreBoard.addChild(boardContainer);
+
+    // CURSOR INTERACTIONS
+    function cursorOver(button) {
+      button.scale.x = 1.1;
+      button.scale.y = 1.1;
+    }
+    function cursorOut(button) {
+      button.scale.x = 1;
+      button.scale.y = 1;
+    }
+    function handleClick(callback) {
+      slideDown = false;
+      slideUp = true;
+
+      setTimeout(() => {
+        app.ticker.remove()
+        slideDown = true;
+        slideUp = false;
+        callback(app);
+        app.stage.removeChild(scoreBoard);
+      }, 3000)
+    }
+
+     // TICKER
+    app.ticker.add(animation);
+    
+    function animation(delta) {
+      if(slideDown && boardContainer.y < -60){
+        boardContainer.y += delta * 5;
+      }
+      if(slideUp && boardContainer.y > -700){
+        boardContainer.y -= delta * 5;
+        setTimeout(() => {
+          app.ticker.remove(animation);
+        }, 3000);
+      }
+    }
+
+    app.stage.addChild(scoreBoard);
   });
 }

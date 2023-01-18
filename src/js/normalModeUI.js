@@ -1,6 +1,9 @@
-import { getBackground, getForeground, getScoreFrame, getClockFrame, getMenuBtn, getLivesContainer } from "./gameUI.js";
+import { startGame } from "./gameLogic.js";
+import { getBackground, getForeground, getScoreFrame, getMenuBtn, getLivesContainer } from "./gameUI.js";
+import loadScoreBoard from "./scoreBoard.js";
 
-export default function createNormalModeUI(app) {
+export default function loadNormalModeUI(app) {
+  // NORMAL MODE
   const NormalModeContainer = new PIXI.Container();
   NormalModeContainer.width = app.view.width;
   NormalModeContainer.height = app.view.height;
@@ -19,7 +22,6 @@ export default function createNormalModeUI(app) {
       normalModeBg,
       normalModeFg,
       scoreFrame,
-      clockFrame,
       menuBtn,
       flower,
       twinFlower1,
@@ -29,12 +31,13 @@ export default function createNormalModeUI(app) {
     // ADDING BACKGROUND AND FOREGROUND
     NormalModeContainer.addChild(getBackground(normalModeBg));
     NormalModeContainer.addChild(getForeground(normalModeFg));
-    NormalModeContainer.addChild(getScoreFrame(scoreFrame));
-    NormalModeContainer.addChild(getClockFrame(clockFrame));
-    NormalModeContainer.addChild(getMenuBtn(menuBtn));
     NormalModeContainer.addChild(getLivesContainer([flower, twinFlower1, twinFlower2]));
-
+    startGame(NormalModeContainer, loadScoreBoard);
+    NormalModeContainer.addChild(getScoreFrame(scoreFrame));
+    NormalModeContainer.addChild(getMenuBtn(menuBtn));
   });
+  
+  app.stage.addChild(NormalModeContainer);
 
-  return NormalModeContainer;
+  
 };

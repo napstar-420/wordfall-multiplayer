@@ -1,33 +1,56 @@
-function createBossScoreBoard(app) {
+import loadBossModeUI from "./bossModeUI.js";
+import { getBackground } from "./gameUI.js";
+import loadMainMenu from "./mainMenu.js";
+
+export default function loadBossScoreBoard(app) {
+
+  let slideDown = true;
+  let slideUp = false;
+
+  const BossScoreBoard = new PIXI.Container();
+  BossScoreBoard.width = app.view.width;
+  BossScoreBoard.height = app.view.height;
   const assetsPromise = PIXI.Assets.load([
     "scoreBoardExtras",
     "bossScoreBoard",
     "bossScoreBtnBg",
     "bossScoreBg",
     "bossScoreExtrasBg",
+    "bossScoreBoardCross"
   ]);
   assetsPromise.then((textures) => {
     // Adding score board background
-    const bossBoardBgSprite = new PIXI.Sprite(textures.bossScoreBg);
-    bossBoardBgSprite.width = app.view.width;
-    bossBoardBgSprite.height = app.view.height;
-    bossBoardBgSprite.anchor.set(0.5);
-    bossBoardBgSprite.x = app.view.width / 2;
-    bossBoardBgSprite.y = app.view.height / 2;
-    app.stage.addChild(bossBoardBgSprite);
+    BossScoreBoard.addChild(getBackground(textures.bossScoreBg));
 
     // Adding score board
     const boardContainer = new PIXI.Container();
     boardContainer.x = app.view.width / 2;
+    boardContainer.width = 550;
+    boardContainer.height = 600;
 
     const bossBoardSprite = new PIXI.Sprite(textures.bossScoreBoard);
-    bossBoardSprite.width = 700;
-    bossBoardSprite.height = 700;
+    bossBoardSprite.width = 550;
+    bossBoardSprite.height = 600;
     bossBoardSprite.anchor.x = 0.5;
     bossBoardSprite.anchor.y = 0;
     bossBoardSprite.x = boardContainer.width / 2;
     bossBoardSprite.y = 0;
     boardContainer.addChild(bossBoardSprite);
+
+    // Adding score board cross btn
+    const crossBtn = new PIXI.Sprite(textures.bossScoreBoardCross);
+    crossBtn.anchor.set(0.5);
+    crossBtn.scale.x = 0.5;
+    crossBtn.scale.y = 0.5;
+    crossBtn.x = 200;
+    crossBtn.y = 80;
+    crossBtn.interactive = true;
+    crossBtn.cursor = 'pointer';
+    crossBtn
+      .on('pointerover', () => {crossBtn.scale.x = 0.6; crossBtn.scale.y = 0.6})
+      .on('pointerout', () => {crossBtn.scale.x = 0.5; crossBtn.scale.y = 0.5})
+      .on('pointerdown', () => handleClick(loadMainMenu))
+    boardContainer.addChild(crossBtn);
 
     // Adding Player Rank Text
     const playerRankText = new PIXI.Text("Rank:1025", {
@@ -37,7 +60,7 @@ function createBossScoreBoard(app) {
       fontFamily: "Chewy",
       fontWeight: "500",
     });
-    playerRankText.y = 120;
+    playerRankText.y = 105;
     playerRankText.anchor.x = 0.56;
     playerRankText.anchor.y = 0.5;
     boardContainer.addChild(playerRankText);
@@ -50,7 +73,7 @@ function createBossScoreBoard(app) {
       fontFamily: "Chewy",
       fontWeight: "500",
     });
-    playerScoreText.y = 220;
+    playerScoreText.y = 190;
     playerScoreText.anchor.x = 0.56;
     playerScoreText.anchor.y = 0.5;
     boardContainer.addChild(playerScoreText);
@@ -68,8 +91,8 @@ function createBossScoreBoard(app) {
         extraWidth: 80,
       },
     ];
-    extrasContainer = new PIXI.Container();
-    extrasContainer.y = 325;
+    const extrasContainer = new PIXI.Container();
+    extrasContainer.y = 290;
 
     extras.forEach((extraObj) => {
       const extra = new PIXI.Sprite(textures.bossScoreExtrasBg);
@@ -102,7 +125,7 @@ function createBossScoreBoard(app) {
 
     //adding the restart btn
     const restartBtn = new PIXI.Container();
-    restartBtn.y = 435;
+    restartBtn.y = 385;
 
     const restartBtnBg = new PIXI.Sprite(textures.bossScoreBtnBg);
     restartBtnBg.width = 200;
@@ -115,17 +138,24 @@ function createBossScoreBoard(app) {
       fontWeight: "500",
       fill: "0xffffff",
     });
+
     restartBtnText.anchor.y = 0.5;
     restartBtnText.anchor.x = 0.5;
 
     restartBtn.addChild(restartBtnBg);
     restartBtn.addChild(restartBtnText);
+    restartBtn.interactive = true;
+    restartBtn.cursor = 'pointer';
+    restartBtn
+      .on('pointerover', () => cursorOver(restartBtnText))
+      .on('pointerout', () => cursorOut(restartBtnText))
+      .on('pointerdown', () => handleClick(loadBossModeUI))
 
     boardContainer.addChild(restartBtn);
 
     // adding play again btn
     const playAgainBtn = new PIXI.Container();
-    playAgainBtn.y = 525;
+    playAgainBtn.y = 460;
 
     const playAgainBtnBg = new PIXI.Sprite(textures.bossScoreBtnBg);
     playAgainBtnBg.width = 250;
@@ -143,8 +173,52 @@ function createBossScoreBoard(app) {
 
     playAgainBtn.addChild(playAgainBtnBg);
     playAgainBtn.addChild(playAgainBtnText);
+    playAgainBtn.interactive = true;
+    playAgainBtn.cursor = 'pointer';
+    playAgainBtn
+      .on('pointerover', () => cursorOver(playAgainBtnText))
+      .on('pointerout', () => cursorOut(playAgainBtnText))
+      .on('pointerdown', () => handleClick(loadBossModeUI))
 
     boardContainer.addChild(playAgainBtn);
-    app.stage.addChild(boardContainer);
+    BossScoreBoard.addChild(boardContainer);
+    
+    // CURSOR INTERACTIONS
+    function cursorOver(button) {
+      button.scale.x = 1.1;
+      button.scale.y = 1.1;
+    }
+    function cursorOut(button) {
+      button.scale.x = 1;
+      button.scale.y = 1;
+    }
+    function handleClick(callback) {
+      slideDown = false;
+      slideUp = true;
+      
+      setTimeout(() => {
+        app.ticker.remove()
+        slideDown = true;
+        slideUp = false;
+        callback(app);
+        app.stage.removeChild();
+      }, 3000)
+    }
+      // TICKER
+    app.ticker.add(animation);
+      
+    function animation(delta) {
+      if(slideDown && boardContainer.y < 0){
+        boardContainer.y += delta * 4;
+      }
+      if(slideUp && boardContainer.y > -600){
+        boardContainer.y -= delta * 4;
+        setTimeout(() => {
+          app.ticker.remove(animation);
+        }, 3000);
+      }
+    }
+
+    app.stage.addChild(BossScoreBoard);
   });
 }

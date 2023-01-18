@@ -6,12 +6,13 @@ import {
   getMenuBtn,
   getLivesContainer,
 } from "./gameUI.js";
+import { startGame } from "./gameLogic.js";
+import loadBossScoreBoard from "./bossScoreBoard.js";
 
-export default function createBossModeUI(app) {
+export default function loadBossModeUI(app) {
   const BossModeContainer = new PIXI.Container();
   BossModeContainer.width = app.view.width;
   BossModeContainer.height = app.view.height;
-
   PIXI.Assets.load([
     "bossModeBg",
     "bossModeFg",
@@ -26,7 +27,6 @@ export default function createBossModeUI(app) {
       bossModeBg,
       bossModeFg,
       scoreFrame,
-      clockFrame,
       menuBtn,
       jackOLantern1,
       jackOLantern2,
@@ -34,13 +34,10 @@ export default function createBossModeUI(app) {
     } = textures;
     BossModeContainer.addChild(getBackground(bossModeBg));
     BossModeContainer.addChild(getForeground(bossModeFg));
+    BossModeContainer.addChild(getLivesContainer([jackOLantern1, jackOLantern2, jackOLantern3]));
+    startGame(BossModeContainer, loadBossScoreBoard);
     BossModeContainer.addChild(getScoreFrame(scoreFrame));
-    BossModeContainer.addChild(getClockFrame(clockFrame));
     BossModeContainer.addChild(getMenuBtn(menuBtn));
-    BossModeContainer.addChild(
-      getLivesContainer([jackOLantern1, jackOLantern2, jackOLantern3])
-    );
   });
-
-  return BossModeContainer;
+  app.stage.addChild(BossModeContainer);
 }

@@ -1,12 +1,13 @@
-import createMainMenu from "./mainMenu.js";
+import loadBossScoreBoard from "./bossScoreBoard.js";
+import loadMainMenu from "./mainMenu.js";
 import createNormalModeUI from "./normalModeUI.js";
-import createBossModeUI from "./bossModeUI.js";
-import { startGame } from "./normalModeGameLogic.js";
+import loadScoreBoard from "./scoreBoard.js";
+import createScoreBoard from "./scoreBoard.js";
 
 // PIXI APPLICATION
 export const app = new PIXI.Application({
-  width: window.innerWidth,
-  height: window.innerHeight,
+  width: 1000,
+  height: 600,
 });
 
 // APPENDING TO GAME DIV
@@ -27,9 +28,9 @@ PIXI.Assets.add(
 PIXI.Assets.add("scoreFrame", "/src/assets/images/score with frame.png");
 PIXI.Assets.add("clockFrame", "/src/assets/images/clock with frame.png");
 PIXI.Assets.add("menuBtn", "/src/assets/images/hamburger menu b.png");
-PIXI.Assets.add("flower", "/src/assets/images/flower 1.png");
-PIXI.Assets.add("twinFlower1", "/src/assets/images/twin flower 1.png");
-PIXI.Assets.add("twinFlower2", "/src/assets/images/twin flower 2.png");
+PIXI.Assets.add("flower", "/src/assets/images/flower without glow 1.png");
+PIXI.Assets.add("twinFlower1", "/src/assets/images/flower without glow 2.png");
+PIXI.Assets.add("twinFlower2", "/src/assets/images/flower without glow 3.png");
 PIXI.Assets.add("bossModeBg", "/src/assets/images/boss mode back.png");
 PIXI.Assets.add("bossModeFg", "/src/assets/images/boss mode foreground.png");
 PIXI.Assets.add("jackOLantern1", "/src/assets/images/jack-O-lantern 1.png");
@@ -62,20 +63,6 @@ PIXI.Assets.add(
   "bossScoreExtrasBg",
   "/src/assets/images/boss mode board shape1.png"
 );
+PIXI.Assets.add('bossScoreBoardCross', '/src/assets/images/boss mode button.png')
 
-const MAIN_MENU = createMainMenu(app);
-const NORMAL_MODE = createNormalModeUI(app);
-const BOSS_MODE = createBossModeUI(app);
-// createScoreBoard(app);
-// createBossScoreBoard(app);
-
-app.stage.addChild(MAIN_MENU);
-app.stage.addChild(NORMAL_MODE);
-app.stage.addChild(BOSS_MODE);
-
-NORMAL_MODE.visible = true;
-
-startGame(app)
-
-BOSS_MODE.visible = false;
-
+loadMainMenu(app);

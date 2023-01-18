@@ -1,74 +1,105 @@
-export default function createMainMenu(app) {
-  const MainMenu = new PIXI.Container();
-  MainMenu.width = app.view.width;
-  MainMenu.height = app.view.height;
+import { app } from "./app.js";
+import loadBossModeUI from "./bossModeUI.js";
+import loadNormalModeUI from "./normalModeUI.js";
+import { getBackground, getMenuBoard } from "./gameUI.js";
+
+export default function loadMainMenu() {
+  // MAIN MENU
+  const MAIN_MENU = new PIXI.Container();
+  MAIN_MENU.width = app.view.width;
+  MAIN_MENU.height = app.view.height;
+
+  // BOARD CONTAINER
+  const BoardContainer = new PIXI.Container();
+  BoardContainer.width = 550;
+  BoardContainer.height = 550;
+  BoardContainer.x = app.view.width / 2;
+  BoardContainer.y = -600;
+
+  // VARIABLES
+  let slideDown = true;
+  let slideUp = false;
 
   // LOADING ASSETS
-  const assetsPromise = PIXI.Assets.load([
+  PIXI.Assets.load([
     "mainMenuBackground",
     "menuBoard",
     "menuBtnBack",
-  ]);
+  ]).then((textures) => {
+    // DESTRUCTURING
+    const {mainMenuBackground, menuBoard, menuBtnBack} = textures;
 
-  assetsPromise.then((textures) => {
-    // Adding main menu background
-    const menuBackgroundSprite = new PIXI.Sprite(textures.mainMenuBackground);
-    menuBackgroundSprite.width = app.view.width;
-    menuBackgroundSprite.height = app.view.height;
-    menuBackgroundSprite.anchor.set(0.5);
-    menuBackgroundSprite.x = app.view.width / 2;
-    menuBackgroundSprite.y = app.view.height / 2;
-    MainMenu.addChild(menuBackgroundSprite);
-    
-    // Adding menu board
-    const BoardContainer = new PIXI.Container();
-    BoardContainer.width = 550;
-    BoardContainer.height = 550;
-    BoardContainer.x = app.view.width / 2;
-    const menuBoardSprite = new PIXI.Sprite(textures.menuBoard);
-    menuBoardSprite.width = 550;
-    menuBoardSprite.height = 550;
-    menuBoardSprite.anchor.x = 0.5;
-    menuBoardSprite.anchor.y = 0;
-    menuBoardSprite.x = BoardContainer.width / 2;
-    menuBoardSprite.y = 0;
-    BoardContainer.addChild(menuBoardSprite);
-    
-    // Adding PLAY NOW Text
-    const playNowText = new PIXI.Text("PLAY NOW", {
-      fontSize: 36,
+    // ADD BACKGROUND AND BOARD SPRITE
+    MAIN_MENU.addChild(getBackground(mainMenuBackground));
+    BoardContainer.addChild(getMenuBoard(menuBoard));
+
+    // PLAY NOW BTN
+    const playNowButton = new PIXI.Text("PLAY NOW", {
+      fontSize: 45,
       fill: 0xffffff,
       align: "left",
       fontFamily: "Chewy",
       fontWeight: "500",
     });
-    playNowText.y = 163;
-    playNowText.anchor.x = 0.56;
-    playNowText.anchor.y = 0.5;
-    BoardContainer.addChild(playNowText);
+    playNowButton.y = 163;
+    playNowButton.anchor.x = 0.56;
+    playNowButton.anchor.y = 0.5;
+    playNowButton.interactive = true;
+    playNowButton.cursor = 'pointer';
+    playNowButton
+      .on('pointerover', () => cursorOver(playNowButton))
+      .on('pointerout', () => cursorOut(playNowButton))
+      .on('pointerdown', () => startMode(loadNormalModeUI))
+    BoardContainer.addChild(playNowButton);
 
-    // Adding Buttons
+    // CURSOR INTERACTIONS
+    function cursorOver(button) {
+      button.scale.x = 1.1;
+      button.scale.y = 1.1;
+    }
+    function cursorOut(button) {
+      button.scale.x = 1;
+      button.scale.y = 1;
+    }
+    function startMode(callback) {
+      slideDown = false;
+      slideUp = true;
+
+      setTimeout(() => {
+        app.ticker.remove()
+        slideDown = true;
+        slideUp = false;
+        callback(app);
+        app.stage.removeChild(MAIN_MENU);
+      }, 3000)
+    }
+  
+    // ADDING MAIN MENU BUTTONS
     const modeBtns = [
       {
         mode: "BOSS MODE",
         height: 260,
+        event: () => startMode(loadBossModeUI),
       },
       {
         mode: "PRACTICE",
         height: 330,
+        event: () => alert('have not added yet'),
       },
       {
         mode: "MULTIPLAYER",
         height: 400,
+        event: () => alert('have not added yet'),
       },
       {
         mode: "LEADERBOARD",
         height: 470,
+        event: () => alert('have not added yet'),
       },
     ];
     
     modeBtns.map((modeObj) => {
-      const modeBtn = new PIXI.Sprite(textures.menuBtnBack);
+      const modeBtn = new PIXI.Sprite(menuBtnBack);
       modeBtn.width = 250;
       modeBtn.height = 70;
       modeBtn.x = 0;
@@ -77,16 +108,38 @@ export default function createMainMenu(app) {
       modeBtn.y = modeObj.height;
       const modeBtnText = new PIXI.Text(modeObj.mode, {
         fontFamily: "Chewy",
-        fontSize: 30,
+        fontSize: 35,
         fontWeight: "500",
         fill: "0xffffff",
       });
       modeBtnText.anchor.set(0.6);
       modeBtn.addChild(modeBtnText);
+      modeBtn.interactive = true;
+      modeBtn.cursor = 'pointer';
+      modeBtn
+        .on('pointerover', () => cursorOver(modeBtnText))
+        .on('pointerout', () => cursorOut(modeBtnText))
+        .on('click', modeObj.event)
       BoardContainer.addChild(modeBtn);
     });
-
-    MainMenu.addChild(BoardContainer);
+    MAIN_MENU.addChild(BoardContainer);
   });
-  return MainMenu;
+  
+  // TICKER
+  app.ticker.add(animation);
+    
+  function animation(delta) {
+    if(slideDown && BoardContainer.y < 0){
+      BoardContainer.y += delta * 4;
+    }
+    if(slideUp && BoardContainer.y > -600){
+      BoardContainer.y -= delta * 4;
+      setTimeout(() => {
+        app.ticker.remove(animation);
+      }, 3000);
+    }
+  }
+
+  // ADDING MAIN MENU
+  app.stage.addChild(MAIN_MENU);
 }
