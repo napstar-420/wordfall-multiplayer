@@ -108,10 +108,9 @@ export function getLivesContainer(textures) {
 
 export function getWordsContainer() {
   const container = new PIXI.Container();
-  const width = app.view.width > 1000 ? 1000 : app.view.width;
+  const width = app.view.width;
   container.width = width;
   container.height = app.view.height - 140;
-  container.x = ((app.view.width - width) / 2)
   return container
 }
 

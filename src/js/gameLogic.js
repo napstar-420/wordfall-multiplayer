@@ -69,7 +69,7 @@ export function startGame(container, loadScoreBoard) {
     });
     sprite.width = wordContainer.width + 15;
     sprite.height = wordContainer.height + 10;
-    wordContainer.x = getRandomNumber(app.view.width > 1000 ? 1000 - sprite.width : app.view.width - sprite.width, container.children[3].x);
+    wordContainer.x = getRandomNumber(app.view.width - sprite.width, 0);
     wordContainer.y = -20;
     container.children[3].addChild(wordContainer);
     return wordContainer;
@@ -82,7 +82,7 @@ export function startGame(container, loadScoreBoard) {
     setTimeout(() => {
       wordSpeed += 0.1;
       launchWord();
-    }, 2500);
+    }, 500);
   })();
 
   // This function will be run when user types
