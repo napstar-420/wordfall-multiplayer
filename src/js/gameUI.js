@@ -85,13 +85,11 @@ export function getMenuBtn(texture) {
 
 export function getLivesContainer(textures) {
   const livesContainer = new PIXI.Container();
-  const width = app.view.width > 1000 ? 1000 : app.view.width;
+  const width = app.view.width;
   livesContainer.width = width;
   livesContainer.height = 80;
-  livesContainer.x = ((app.view.width - width) / 2) + 60
   livesContainer.y = app.view.height - 160;
   const numberOfLoops = Math.floor(width / 150);
-  console.log(numberOfLoops)
   const distanceBetweenLife = (width / numberOfLoops);
   for (let i = 0; i < numberOfLoops; i++) {
     const lifeSprite = new PIXI.Sprite(
