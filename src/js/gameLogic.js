@@ -2,16 +2,79 @@ import { getRandomNumber } from "./gameUI.js";
 import { app } from "./app.js";
 
 const wordsList = [
-  "sample",
-  "specimen",
-  "max",
-  "longest",
-  "mine",
-  "taper",
-  "sizing",
-  "everest",
-  "bo",
-  "toe",
+  "dispensable",
+  "romantic",
+  "squirrel",
+  "bolt",
+  "fixed",
+  "winter",
+  "many",
+  'poke',
+  'rhetorical',
+  'linen',
+  'tempt',
+  'sassy',
+  'hushed',
+  'pathetic',
+  'harm',
+  'misty',
+  'ready',
+  'belong',
+  'children',
+  'quartz',
+  'annoyed',
+  'puzzled',
+  'ritzy',
+  'grotesque',
+'acidic',
+'evanescent',
+'name',
+'ruin',
+'questionable',
+'dear',
+'retire',
+'crabby',
+'shallow',
+'attach',
+'doll',
+'raise',
+'fog',
+'rural',
+'ambitious',
+'nine',
+'crook',
+'lavish',
+'prefer',
+'bare',
+'bashful',
+'stupendous',
+'neighborly',
+'elegant',
+'title',
+'assorted',
+'sound',
+'frequent',
+'part',
+'compete',
+'unequaled',
+'grass',
+'strengthen',
+'blink',
+'tiresome',
+'club',
+'divergent',
+'kill',
+'sugar',
+'scribble',
+'rabbit',
+'average',
+'faulty',
+'leather',
+'polish',
+'offbeat',
+'stormy',
+'song',
+'racial',
 ];
 
 const letterStyling = new PIXI.TextStyle({
@@ -26,8 +89,9 @@ const typedLetterStyling = new PIXI.TextStyle({
   fill: "yellow",
 });
 
+
 export function startGame(container, loadScoreBoard) {
-  
+  let wordFromApi = ''
   let wordsOnScreen = [];
   let activeWord = null;
   let activeWordIndex = null;
@@ -39,8 +103,25 @@ export function startGame(container, loadScoreBoard) {
   let troubledWords = [];
   let typedWords = 0;
   let completedWords = 0;
-  let mistypedWords = 0;
   let time = 0;
+
+  
+function getWordFromApi() {
+  const options = {
+    method: 'GET',
+    headers: {
+      'X-RapidAPI-Key': 'c33169b7b7mshd4cdd31d9ac58dep1dfd47jsnf4695d416579',
+      'X-RapidAPI-Host': 'random-word-by-api-ninjas.p.rapidapi.com'
+    }
+  };
+  
+  const word = fetch('https://random-word-by-api-ninjas.p.rapidapi.com/v1/randomword?type=verb', options)
+    .then(response => response.json())
+    .then(response => wordFromApi = response.word)
+    .catch(err => console.error(err));
+
+  return word;
+}
 
   function updateTime() {
     time++;
@@ -51,7 +132,8 @@ export function startGame(container, loadScoreBoard) {
   // This function create new word
   function createWord() {
     const wordContainer = new PIXI.Container();
-    const word = wordsList[getRandomNumber(wordsList.length - 1, 0)];
+    // const word = wordFromApi; // uncomment this line when want to use Api 
+    const word = wordsList[getRandomNumber(wordsList.length - 1, 0)]
     const texture = PIXI.Texture.from("/src/assets/images/letters tile 1.png");
     const sprite = new PIXI.Sprite(texture);
     sprite.width = 0;
@@ -77,12 +159,15 @@ export function startGame(container, loadScoreBoard) {
 
   // This Function launches new words on screen
   (function launchWord() {
-    const word = createWord(container);
-    wordsOnScreen.push(word);
+    // getWordFromApi(); // uncomment this line when want to use Api
+    const word = createWord();
+    if (word.children.length > 1) {
+      wordsOnScreen.push(word);
+    }
     setTimeout(() => {
-      wordSpeed += 0.1;
+      wordSpeed += 0.03;
       launchWord();
-    }, 500);
+    }, (5000 / wordSpeed) < 1000 ? 1000 : 5000 / wordSpeed);
   })();
 
   // This function will be run when user types
@@ -91,17 +176,18 @@ export function startGame(container, loadScoreBoard) {
     // if there is no active key
     if (!activeWord) {
       // loops through words on screen
-      wordsOnScreen.forEach((word, index) => {
-        if (key === word.children[1].text) {
-          word.active = true;
-          activeWord = word;
-          activeWordIndex = index;
+      for(let i = 0; i < wordsOnScreen.length; i++) {
+        if (wordsOnScreen[i].children[1].text === key) {
+          wordsOnScreen[i].active = true;
+          activeWord = wordsOnScreen[i];
+          activeWordIndex = i;
           counter++;
           typedWords++;
-          word.children[1].style = typedLetterStyling;
+          wordsOnScreen[i].children[1].style = typedLetterStyling;
           return;
         }
-      })
+      }
+      return;
       // if active word exist
     } else if (activeWord.children[counter].text === key) {
       wordsOnScreen[activeWordIndex].children[counter].style = typedLetterStyling;
@@ -120,11 +206,10 @@ export function startGame(container, loadScoreBoard) {
         if (streak % 10 === 0) {
           multiplier = (streak / 10) + 1;
         }
-        container.children[4].children[3].text = multiplier;
+        container.children[6].text = `x${multiplier}`;
       }
     } else {
       // if user mistypes
-      mistypedWords++;
       let troubledWord = '';
       wordsOnScreen[activeWordIndex].children.forEach((letter, index) => {
         if (index > 0) {
@@ -138,7 +223,7 @@ export function startGame(container, loadScoreBoard) {
       counter = 1;
       streak = 0;
       multiplier -= multiplier > 1 ? 1 : 0;
-      container.children[4].children[3].text = multiplier;
+      container.children[6].text = `x${multiplier}`;
     }
   }
 
@@ -169,7 +254,7 @@ export function startGame(container, loadScoreBoard) {
         if (word.y > app.view.height - 130) {
           streak = 0;
           multiplier -= multiplier > 1 ? 1 : 0;
-          container.children[4].children[3].text = multiplier;
+          container.children[6].text = `x${multiplier}`;
           word.dead = true;
           let troubledWord = '';
           word.children.forEach((letter, index) => {
@@ -197,13 +282,13 @@ export function startGame(container, loadScoreBoard) {
   }
 
   function endGame() {
-    const nanCheck = isNaN(typedWords / mistypedWords);
-    const accuracy = Math.round((nanCheck ? 0 : typedWords / mistypedWords) * 100);
+    const setOfTroubledWords = [...new Set(troubledWords)];
+    const accuracy = Math.round((typedWords === 0 ? 0 : typedWords / setOfTroubledWords.length) * 100);
     const wpm = Math.round((completedWords / time) * 60);
     const endScore = {
       accuracy,
       wpm,
-      troubledWords: [...new Set(troubledWords)],
+      troubledWords: setOfTroubledWords,
       score
     }
     clearInterval(timeInterval);

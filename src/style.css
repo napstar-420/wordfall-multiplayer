@@ -11,10 +11,15 @@
     display: grid;
     place-items: center;
     background-color: black;
+    background-image: url('/src/assets/images//download\ \(1\).jpeg');
+    background-position: center;
+    background-size: cover;
 }
 
 canvas {
     display: block;
+    box-shadow: 0px 0px 20px #012e1e;
+    /* border: 10px solid rgb(200, 248, 188); */
 }
 
 .font-boogaloo {

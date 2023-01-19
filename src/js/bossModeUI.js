@@ -5,6 +5,7 @@ import {
   getMenuBtn,
   getLivesContainer,
   getWordsContainer,
+  getMultiplier,
 } from "./gameUI.js";
 import { startGame } from "./gameLogic.js";
 import loadBossScoreBoard from "./bossScoreBoard.js";
@@ -38,6 +39,7 @@ export default function loadBossModeUI(app) {
     BossModeContainer.addChild(getWordsContainer());
     BossModeContainer.addChild(getScoreFrame(scoreFrame));
     BossModeContainer.addChild(getMenuBtn(menuBtn));
+    BossModeContainer.addChild(getMultiplier());
   }).then(() => {
     setTimeout(() => {
       startGame(BossModeContainer, loadBossScoreBoard);

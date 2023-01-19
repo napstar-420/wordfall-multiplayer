@@ -1,5 +1,5 @@
 import { startGame } from "./gameLogic.js";
-import { getBackground, getForeground, getScoreFrame, getMenuBtn, getLivesContainer, getWordsContainer } from "./gameUI.js";
+import { getBackground, getForeground, getScoreFrame, getMenuBtn, getLivesContainer, getWordsContainer, getMultiplier } from "./gameUI.js";
 import loadScoreBoard from "./scoreBoard.js";
 
 export default function loadNormalModeUI(app) {
@@ -35,6 +35,7 @@ export default function loadNormalModeUI(app) {
     NormalModeContainer.addChild(getWordsContainer());
     NormalModeContainer.addChild(getScoreFrame(scoreFrame));
     NormalModeContainer.addChild(getMenuBtn(menuBtn));
+    NormalModeContainer.addChild(getMultiplier());
   }).then(() => {
     setTimeout(() => {
       startGame(NormalModeContainer, loadScoreBoard);

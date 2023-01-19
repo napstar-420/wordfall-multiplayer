@@ -54,8 +54,8 @@ export default function loadMainMenu() {
 
     // CURSOR INTERACTIONS
     function cursorOver(button, scale) {
-      button.scale.x = scale + 0.1;
-      button.scale.y = scale + 0.1;
+      button.scale.x = scale + 0.05;
+      button.scale.y = scale + 0.05;
     }
     function cursorOut(button, scale) {
       button.scale.x = scale;
