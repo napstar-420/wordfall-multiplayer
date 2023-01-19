@@ -104,6 +104,7 @@ export function startGame(container, loadScoreBoard) {
   let typedWords = 0;
   let completedWords = 0;
   let time = 0;
+  let tileCounter = 0;
 
   
 function getWordFromApi() {
@@ -153,7 +154,7 @@ function getWordFromApi() {
     sprite.height = wordContainer.height + 10;
     wordContainer.x = getRandomNumber(app.view.width - sprite.width, 0);
     wordContainer.y = -20;
-    container.children[3].addChild(wordContainer);
+    container.children[4].addChild(wordContainer);
     return wordContainer;
   }
 
@@ -172,7 +173,7 @@ function getWordFromApi() {
 
   // This function will be run when user types
   function handleGame(e) {
-    const key = e.key
+    const key = e.key;
     // if there is no active key
     if (!activeWord) {
       // loops through words on screen
@@ -190,13 +191,14 @@ function getWordFromApi() {
       return;
       // if active word exist
     } else if (activeWord.children[counter].text === key) {
-      wordsOnScreen[activeWordIndex].children[counter].style = typedLetterStyling;
+      wordsOnScreen[activeWordIndex].children[counter].style =
+        typedLetterStyling;
       counter++;
       // if users types the entire word correctly
       if (activeWord.children.length === counter) {
         score += (activeWord.children.length - 1) * multiplier;
-        container.children[4].children[1].text = score;
-        container.children[3].removeChild(activeWord);
+        container.children[5].children[1].text = score;
+        container.children[4].removeChild(activeWord);
         wordsOnScreen.splice(activeWordIndex, 1);
         activeWord = null;
         activeWordIndex = null;
@@ -204,13 +206,13 @@ function getWordFromApi() {
         completedWords++;
         streak++;
         if (streak % 10 === 0) {
-          multiplier = (streak / 10) + 1;
+          multiplier = streak / 10 + 1;
         }
         container.children[6].text = `x${multiplier}`;
       }
     } else {
       // if user mistypes
-      let troubledWord = '';
+      let troubledWord = "";
       wordsOnScreen[activeWordIndex].children.forEach((letter, index) => {
         if (index > 0) {
           letter.style = letterStyling;
@@ -223,7 +225,7 @@ function getWordFromApi() {
       counter = 1;
       streak = 0;
       multiplier -= multiplier > 1 ? 1 : 0;
-      container.children[6].text = `x${multiplier}`;
+      container.children[7].text = `x${multiplier}`;
     }
   }
 
@@ -231,6 +233,10 @@ function getWordFromApi() {
 
   function gameLoop() {
     updateWords();
+    updateTile();
+  }
+  function updateTile() {
+    container.children[1].tilePosition.x += 0.1;
   }
 
   // This function update words on screen
@@ -240,33 +246,33 @@ function getWordFromApi() {
         word.y += wordSpeed;
         if (word.y > app.view.height - 300) {
           // this will be collision check
-          container.children[1].children.forEach(flower => {
+          container.children[2].children.forEach((flower) => {
             const collision = testForCollision(word, flower);
             if (collision) {
-              container.children[1].removeChild(flower);
-              if (container.children[1].children.length === 0) {
+              container.children[2].removeChild(flower);
+              if (container.children[2].children.length === 0) {
                 endGame();
               }
             }
-          })
+          });
         }
         // If word reached the ground
         if (word.y > app.view.height - 130) {
           streak = 0;
           multiplier -= multiplier > 1 ? 1 : 0;
-          container.children[6].text = `x${multiplier}`;
+          container.children[7].text = `x${multiplier}`;
           word.dead = true;
-          let troubledWord = '';
+          let troubledWord = "";
           word.children.forEach((letter, index) => {
             if (index > 0) {
               troubledWord = troubledWord.concat(letter.text);
             }
-          })
+          });
           troubledWords.push(troubledWord);
-          TweenMax.to(word, 2.5, {ease: Power4.easeOut, alpha: 0});
+          TweenMax.to(word, 2.5, { ease: Power4.easeOut, alpha: 0 });
           setTimeout(() => {
-            container.children[3].removeChild(4);
-          }, 1000)
+            container.children[4].removeChild(word);
+          }, 1000);
           wordsOnScreen.splice(index, 1);
           if (activeWord && activeWordIndex > index) {
             activeWordIndex = activeWordIndex - 1;
@@ -295,7 +301,7 @@ function getWordFromApi() {
     app.ticker.remove(gameLoop);
     document.removeEventListener(document, handleGame);
     app.stage.removeChild(container);
-    loadScoreBoard(app, endScore)
+    loadScoreBoard(app, endScore);
   }
 }
 
