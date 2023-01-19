@@ -5,6 +5,7 @@ import {
   getMenuBtn,
   getLivesContainer,
   getWordsContainer,
+  getNormalClouds,
 } from "./gameUI.js";
 import { startGame } from "./gameLogic.js";
 import loadBossScoreBoard from "./bossScoreBoard.js";
@@ -22,28 +23,34 @@ export default function loadBossModeUI(app) {
     "jackOLantern1",
     "jackOLantern2",
     "jackOLantern3",
-  ]).then((textures) => {
-    const {
-      bossModeBg,
-      bossModeFg,
-      scoreFrame,
-      menuBtn,
-      jackOLantern1,
-      jackOLantern2,
-      jackOLantern3,
-    } = textures;
-    BossModeContainer.addChild(getBackground(bossModeBg));
-    BossModeContainer.addChild(getLivesContainer([jackOLantern1, jackOLantern2, jackOLantern3]));
-    BossModeContainer.addChild(getForeground(bossModeFg));
-    BossModeContainer.addChild(getWordsContainer());
-    BossModeContainer.addChild(getScoreFrame(scoreFrame));
-    BossModeContainer.addChild(getMenuBtn(menuBtn));
-  }).then(() => {
-    setTimeout(() => {
-      startGame(BossModeContainer, loadBossScoreBoard);
-    }, 2500);
-  })
-
+    "bossModeClouds",
+  ])
+    .then((textures) => {
+      const {
+        bossModeBg,
+        bossModeFg,
+        scoreFrame,
+        menuBtn,
+        jackOLantern1,
+        jackOLantern2,
+        jackOLantern3,
+        bossModeClouds,
+      } = textures;
+      BossModeContainer.addChild(getBackground(bossModeBg));
+      BossModeContainer.addChild(
+        getLivesContainer([jackOLantern1, jackOLantern2, jackOLantern3])
+      );
+      BossModeContainer.addChild(getForeground(bossModeFg));
+      BossModeContainer.addChild(getWordsContainer());
+      BossModeContainer.addChild(getScoreFrame(scoreFrame));
+      BossModeContainer.addChild(getMenuBtn(menuBtn));
+      BossModeContainer.addChild(getNormalClouds(bossModeClouds));
+    })
+    .then(() => {
+      setTimeout(() => {
+        startGame(BossModeContainer, loadBossScoreBoard);
+      }, 2500);
+    });
 
   app.stage.addChild(BossModeContainer);
 }

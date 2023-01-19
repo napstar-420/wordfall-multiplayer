@@ -2,9 +2,9 @@ import { app } from "./app.js";
 
 export function getMenuBoard(texture) {
   const menuBoardSprite = new PIXI.Sprite(texture);
-  menuBoardSprite.width = app.view.height * 90 / 100;
-  menuBoardSprite.height = app.view.height * 100 / 100;
-  menuBoardSprite.anchor.x = 0.5
+  menuBoardSprite.width = (app.view.height * 90) / 100;
+  menuBoardSprite.height = (app.view.height * 100) / 100;
+  menuBoardSprite.anchor.x = 0.5;
   return menuBoardSprite;
 }
 
@@ -13,6 +13,13 @@ export function getBackground(texture) {
   bgSprite.width = app.view.width;
   bgSprite.height = app.view.height;
   return bgSprite;
+}
+
+export function getNormalClouds(texture) {
+  const clouds = new PIXI.TilingSprite(texture, app.screen.width);
+  clouds.width = app.view.width;
+  clouds.height = app.view.height;
+  return clouds;
 }
 
 export function getForeground(texture) {
@@ -30,38 +37,38 @@ export function getScoreFrame(texture) {
   scoreFrameSprite.width = 200;
   scoreFrameSprite.height = 120;
   scoreFrameSprite.anchor.set(0.5);
-  const score = new PIXI.Text('0', {
-    fontWeight: 'bold',
-    fill: '#303030',
-    fontFamily: 'Barlow'
+  const score = new PIXI.Text("0", {
+    fontWeight: "bold",
+    fill: "#303030",
+    fontFamily: "Barlow",
   });
   score.anchor.x = 0.5;
   score.anchor.y = 0.5;
   score.x = 15;
-  score.y = -3
+  score.y = -3;
   scoreFrame.addChild(scoreFrameSprite);
   scoreFrame.addChild(score);
   // x
-  const x = new PIXI.Text('x', {
-    fontWeight: 'normal',
-    fill: '#cf0c12',
-    fontFamily: 'Luckiest Guy',
+  const x = new PIXI.Text("x", {
+    fontWeight: "normal",
+    fill: "#cf0c12",
+    fontFamily: "Luckiest Guy",
     fontSize: 24,
-  })
+  });
   x.x = 75;
   x.y = -10;
   scoreFrame.addChild(x);
   // Multiplier
-  const multiplier = new PIXI.Text('1', {
-    fontWeight: 'normal',
-    fill: '#cf0c12',
-    fontFamily: 'Luckiest Guy',
+  const multiplier = new PIXI.Text("1", {
+    fontWeight: "normal",
+    fill: "#cf0c12",
+    fontFamily: "Luckiest Guy",
     fontSize: 40,
-  })
+  });
   multiplier.anchor.set(0.5);
   multiplier.x = 100;
-  multiplier.y = -5
-  scoreFrame.addChild(multiplier)
+  multiplier.y = -5;
+  scoreFrame.addChild(multiplier);
   return scoreFrame;
 }
 
@@ -90,7 +97,7 @@ export function getLivesContainer(textures) {
   livesContainer.height = 80;
   livesContainer.y = app.view.height - 160;
   const numberOfLoops = Math.floor(width / 150);
-  const distanceBetweenLife = (width / numberOfLoops);
+  const distanceBetweenLife = width / numberOfLoops;
   for (let i = 0; i < numberOfLoops; i++) {
     const lifeSprite = new PIXI.Sprite(
       textures[getRandomNumber(textures.length, 0)]
@@ -109,7 +116,7 @@ export function getWordsContainer() {
   const width = app.view.width;
   container.width = width;
   container.height = app.view.height - 140;
-  return container
+  return container;
 }
 
 export function getRandomNumber(max, min) {
@@ -117,8 +124,7 @@ export function getRandomNumber(max, min) {
 }
 
 export async function getWordBg() {
-  const textures = await PIXI.Assets.load(['letterTile']);
+  const textures = await PIXI.Assets.load(["letterTile"]);
   const letterTileSprite = new PIXI.Sprite(textures.letterTile);
   return letterTileSprite;
 }
-  

@@ -27,7 +27,6 @@ const typedLetterStyling = new PIXI.TextStyle({
 });
 
 export function startGame(container, loadScoreBoard) {
-  
   let wordsOnScreen = [];
   let activeWord = null;
   let activeWordIndex = null;
@@ -41,6 +40,7 @@ export function startGame(container, loadScoreBoard) {
   let completedWords = 0;
   let mistypedWords = 0;
   let time = 0;
+  let tileCounter = 0;
 
   function updateTime() {
     time++;
@@ -87,7 +87,7 @@ export function startGame(container, loadScoreBoard) {
 
   // This function will be run when user types
   function handleGame(e) {
-    const key = e.key
+    const key = e.key;
     // if there is no active key
     if (!activeWord) {
       // loops through words on screen
@@ -101,10 +101,11 @@ export function startGame(container, loadScoreBoard) {
           word.children[1].style = typedLetterStyling;
           return;
         }
-      })
+      });
       // if active word exist
     } else if (activeWord.children[counter].text === key) {
-      wordsOnScreen[activeWordIndex].children[counter].style = typedLetterStyling;
+      wordsOnScreen[activeWordIndex].children[counter].style =
+        typedLetterStyling;
       counter++;
       // if users types the entire word correctly
       if (activeWord.children.length === counter) {
@@ -118,14 +119,14 @@ export function startGame(container, loadScoreBoard) {
         completedWords++;
         streak++;
         if (streak % 10 === 0) {
-          multiplier = (streak / 10) + 1;
+          multiplier = streak / 10 + 1;
         }
         container.children[4].children[3].text = multiplier;
       }
     } else {
       // if user mistypes
       mistypedWords++;
-      let troubledWord = '';
+      let troubledWord = "";
       wordsOnScreen[activeWordIndex].children.forEach((letter, index) => {
         if (index > 0) {
           letter.style = letterStyling;
@@ -146,6 +147,10 @@ export function startGame(container, loadScoreBoard) {
 
   function gameLoop() {
     updateWords();
+    updateTile();
+  }
+  function updateTile() {
+    container.children[6].tilePosition.x += 0.1;
   }
 
   // This function update words on screen
@@ -155,7 +160,7 @@ export function startGame(container, loadScoreBoard) {
         word.y += wordSpeed;
         if (word.y > app.view.height - 300) {
           // this will be collision check
-          container.children[1].children.forEach(flower => {
+          container.children[1].children.forEach((flower) => {
             const collision = testForCollision(word, flower);
             if (collision) {
               container.children[1].removeChild(flower);
@@ -163,7 +168,7 @@ export function startGame(container, loadScoreBoard) {
                 endGame();
               }
             }
-          })
+          });
         }
         // If word reached the ground
         if (word.y > app.view.height - 130) {
@@ -171,17 +176,17 @@ export function startGame(container, loadScoreBoard) {
           multiplier -= multiplier > 1 ? 1 : 0;
           container.children[4].children[3].text = multiplier;
           word.dead = true;
-          let troubledWord = '';
+          let troubledWord = "";
           word.children.forEach((letter, index) => {
             if (index > 0) {
               troubledWord = troubledWord.concat(letter.text);
             }
-          })
+          });
           troubledWords.push(troubledWord);
-          TweenMax.to(word, 2.5, {ease: Power4.easeOut, alpha: 0});
+          TweenMax.to(word, 2.5, { ease: Power4.easeOut, alpha: 0 });
           setTimeout(() => {
             container.children[3].removeChild(4);
-          }, 1000)
+          }, 1000);
           wordsOnScreen.splice(index, 1);
           if (activeWord && activeWordIndex > index) {
             activeWordIndex = activeWordIndex - 1;
@@ -198,19 +203,21 @@ export function startGame(container, loadScoreBoard) {
 
   function endGame() {
     const nanCheck = isNaN(typedWords / mistypedWords);
-    const accuracy = Math.round((nanCheck ? 0 : typedWords / mistypedWords) * 100);
+    const accuracy = Math.round(
+      (nanCheck ? 0 : typedWords / mistypedWords) * 100
+    );
     const wpm = Math.round((completedWords / time) * 60);
     const endScore = {
       accuracy,
       wpm,
       troubledWords: [...new Set(troubledWords)],
-      score
-    }
+      score,
+    };
     clearInterval(timeInterval);
     app.ticker.remove(gameLoop);
     document.removeEventListener(document, handleGame);
     app.stage.removeChild(container);
-    loadScoreBoard(app, endScore)
+    loadScoreBoard(app, endScore);
   }
 }
 
