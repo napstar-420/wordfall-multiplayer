@@ -1,22 +1,24 @@
+import { app } from "./app.js";
+
 export function getMenuBoard(texture) {
   const menuBoardSprite = new PIXI.Sprite(texture);
-  menuBoardSprite.width = 550;
-  menuBoardSprite.height = 550;
+  menuBoardSprite.width = app.view.height * 90 / 100;
+  menuBoardSprite.height = app.view.height * 100 / 100;
   menuBoardSprite.anchor.x = 0.5
   return menuBoardSprite;
 }
 
 export function getBackground(texture) {
   const bgSprite = new PIXI.Sprite(texture);
-  bgSprite.width = 1000;
-  bgSprite.height = 600;
+  bgSprite.width = app.view.width;
+  bgSprite.height = app.view.height;
   return bgSprite;
 }
 
 export function getForeground(texture) {
   const fgSprite = new PIXI.Sprite(texture);
-  fgSprite.width = 1000;
-  fgSprite.y = 600 - 140;
+  fgSprite.width = app.view.width;
+  fgSprite.y = app.view.height - 140;
   return fgSprite;
 }
 
@@ -76,30 +78,41 @@ export function getMenuBtn(texture) {
   menuBtn.width = 130;
   menuBtn.height = 130;
   menuBtn.anchor.set(0.5);
-  menuBtn.x = 1000 - 45;
+  menuBtn.x = app.view.width - 45;
   menuBtn.y = 40;
   return menuBtn;
 }
 
 export function getLivesContainer(textures) {
   const livesContainer = new PIXI.Container();
-  livesContainer.width = 800;
+  const width = app.view.width > 1000 ? 1000 : app.view.width;
+  livesContainer.width = width;
   livesContainer.height = 80;
-  livesContainer.x = 100
-  livesContainer.y = 700 - 250;
-
-  for (let i = 0; i < 7; i++) {
+  livesContainer.x = ((app.view.width - width) / 2) + 60
+  livesContainer.y = app.view.height - 160;
+  const numberOfLoops = Math.floor(width / 150);
+  console.log(numberOfLoops)
+  const distanceBetweenLife = (width / numberOfLoops);
+  for (let i = 0; i < numberOfLoops; i++) {
     const lifeSprite = new PIXI.Sprite(
       textures[getRandomNumber(textures.length, 0)]
     );
     lifeSprite.anchor.y = 0;
     lifeSprite.anchor.x = 0;
     lifeSprite.y = 0;
-    lifeSprite.x = i * 125;
+    lifeSprite.x = i * distanceBetweenLife;
     livesContainer.addChild(lifeSprite);
   }
-
   return livesContainer;
+}
+
+export function getWordsContainer() {
+  const container = new PIXI.Container();
+  const width = app.view.width > 1000 ? 1000 : app.view.width;
+  container.width = width;
+  container.height = app.view.height - 140;
+  container.x = ((app.view.width - width) / 2)
+  return container
 }
 
 export function getRandomNumber(max, min) {

@@ -1,3 +1,4 @@
+import loadBossModeUI from "./bossModeUI.js";
 import loadBossScoreBoard from "./bossScoreBoard.js";
 import loadMainMenu from "./mainMenu.js";
 import loadNormalModeUI from "./normalModeUI.js";
@@ -7,9 +8,14 @@ import createScoreBoard from "./scoreBoard.js";
 
 // PIXI APPLICATION
 export const app = new PIXI.Application({
-  width: 1000,
-  height: 600,
+  width: window.innerHeight * (5 / 3),
+  height: window.innerHeight,
 });
+
+window.addEventListener('resize', () => {
+  app.view.width =  window.innerHeight * (5 / 3);
+  app.view.height =  window.innerHeight;
+})
 
 // APPENDING TO GAME DIV
 document.getElementById("game-container").appendChild(app.view);
@@ -69,5 +75,12 @@ PIXI.Assets.add('bossScoreBoardCross', '/src/assets/images/boss mode button.png'
 
 // loadNormalModeUI(app);
 loadMainMenu(app);
-// loadScoreBoard(app, ['lorem', 'lorem'], 65464)
-// loadBossScoreBoard(app, ['lorem', 'lorem'], 65464)
+// loadBossModeUI(app);
+// const endScore = {
+//   accuracy: 56,
+//   wpm: 40,
+//   troubledWords: ['lorem', 'ipsum','lorem', 'ipsum','lorem', 'ipsum','lorem', 'ipsum','lorem', 'ipsum','lorem', 'ipsum', 'lorem', 'ipsum',],
+//   score: 1245
+// }
+// loadScoreBoard(app, endScore);
+// loadBossScoreBoard(app, endScore)

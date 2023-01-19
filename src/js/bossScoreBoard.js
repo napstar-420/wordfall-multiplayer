@@ -2,7 +2,10 @@ import loadBossModeUI from "./bossModeUI.js";
 import { getBackground } from "./gameUI.js";
 import loadMainMenu from "./mainMenu.js";
 
-export default function loadBossScoreBoard(app) {
+export default function loadBossScoreBoard(app, endScore) {
+
+  const {accuracy, wpm, troubledWords, score} = endScore;
+
   const BossScoreBoard = new PIXI.Container();
   BossScoreBoard.width = app.view.width;
   BossScoreBoard.height = app.view.height;
@@ -21,14 +24,16 @@ export default function loadBossScoreBoard(app) {
 
     // Adding score board
     const boardContainer = new PIXI.Container();
+    const boardWidth = app.view.height * 90 / 100;
+    const boardHeight = app.view.height * 100 / 100;
+    boardContainer.width = boardWidth;
+    boardContainer.height = boardHeight;
     boardContainer.x = app.view.width / 2;
-    boardContainer.width = 550;
-    boardContainer.height = 600;
-    boardContainer.y = -700
+    boardContainer.y = -(boardHeight + 50);
 
     const bossBoardSprite = new PIXI.Sprite(textures.bossScoreBoard);
-    bossBoardSprite.width = 550;
-    bossBoardSprite.height = 600;
+    bossBoardSprite.width = boardWidth;
+    bossBoardSprite.height = boardHeight;
     bossBoardSprite.anchor.x = 0.5;
     bossBoardSprite.anchor.y = 0;
     bossBoardSprite.x = boardContainer.width / 2;
@@ -38,40 +43,41 @@ export default function loadBossScoreBoard(app) {
     // Adding score board cross btn
     const crossBtn = new PIXI.Sprite(textures.bossScoreBoardCross);
     crossBtn.anchor.set(0.5);
-    crossBtn.scale.x = 0.5;
-    crossBtn.scale.y = 0.5;
-    crossBtn.x = 200;
-    crossBtn.y = 80;
+    crossBtn.x = (boardWidth * 34) / 100;
+    crossBtn.y = (boardHeight * 15) / 100;
+    const crossBtnScale = ((boardHeight * 0.8) / 100) / 10;
+    crossBtn.scale.x = crossBtnScale;
+    crossBtn.scale.y = crossBtnScale;
     crossBtn.interactive = true;
     crossBtn.cursor = 'pointer';
     crossBtn
-      .on('pointerover', () => {crossBtn.scale.x = 0.6; crossBtn.scale.y = 0.6})
-      .on('pointerout', () => {crossBtn.scale.x = 0.5; crossBtn.scale.y = 0.5})
+      .on('pointerover', () => {crossBtn.scale.x = crossBtnScale + 0.1; crossBtn.scale.y = crossBtnScale + 0.1})
+      .on('pointerout', () => {crossBtn.scale.x = crossBtnScale; crossBtn.scale.y = crossBtnScale})
       .on('pointerdown', () => handleClick(loadMainMenu))
     boardContainer.addChild(crossBtn);
 
     // Adding Player Rank Text
     const playerRankText = new PIXI.Text("Game Over", {
-      fontSize: 45,
+      fontSize: (boardHeight * 7) / 100,
       fill: 0xffffff,
       align: "left",
       fontFamily: "Boogaloo",
       fontWeight: "500",
     });
-    playerRankText.y = 105;
+    playerRankText.y = (boardHeight * 17) / 100;
     playerRankText.anchor.x = 0.56;
     playerRankText.anchor.y = 0.5;
     boardContainer.addChild(playerRankText);
 
     // Adding Player Score Text
     const playerScoreText = new PIXI.Text("SCORE: 1200", {
-      fontSize: 55,
+      fontSize: (boardHeight * 8) / 100,
       fill: "#633f5c",
       align: "left",
       fontFamily: "Luckiest Guy",
       fontWeight: "500",
     });
-    playerScoreText.y = 190;
+    playerScoreText.y = (boardHeight * 30) / 100;
     playerScoreText.anchor.x = 0.56;
     playerScoreText.anchor.y = 0.5;
     boardContainer.addChild(playerScoreText);
@@ -80,22 +86,24 @@ export default function loadBossScoreBoard(app) {
     const extras = [
       {
         extraName: "WPM",
-        extraValue: "40",
-        extraWidth: -100,
+        extraValue: wpm,
+        extraWidth: 0,
       },
       {
         extraName: "ACCURACY",
-        extraValue: "55%",
-        extraWidth: 80,
+        extraValue: `${accuracy} %`,
+        extraWidth: (boardWidth * 25) / 100,
       },
     ];
     const extrasContainer = new PIXI.Container();
-    extrasContainer.y = 290;
+    extrasContainer.width = boardWidth;
+    extrasContainer.x =  -((boardWidth * 14) / 100);
+    extrasContainer.y = (boardHeight * 44) / 100;
 
     extras.forEach((extraObj) => {
       const extra = new PIXI.Sprite(textures.bossScoreExtrasBg);
-      extra.width = 180;
-      extra.height = 150;
+      extra.width = (boardWidth * 30) / 100;
+      extra.height = (boardWidth * 25) / 100;
       extra.x = extraObj.extraWidth;
       extra.anchor.x = 0.5;
       extra.anchor.y = 0.5;
@@ -123,16 +131,16 @@ export default function loadBossScoreBoard(app) {
 
     //adding the restart btn
     const restartBtn = new PIXI.Container();
-    restartBtn.y = 385;
+    restartBtn.y = (boardHeight * 65) / 100;
 
     const restartBtnBg = new PIXI.Sprite(textures.bossScoreBtnBg);
-    restartBtnBg.width = 200;
-    restartBtnBg.height = 65;
+    restartBtnBg.width = (boardWidth * 30) / 100;
+    restartBtnBg.height = (boardHeight * 8) / 100;
     restartBtnBg.anchor.set(0.5);
 
     const restartBtnText = new PIXI.Text("RESTART", {
       fontFamily: "Boogaloo",
-      fontSize: 25,
+      fontSize: (boardHeight * 4) / 100,
       fontWeight: "500",
       fill: "0xffffff",
     });
@@ -153,16 +161,16 @@ export default function loadBossScoreBoard(app) {
 
     // adding play again btn
     const playAgainBtn = new PIXI.Container();
-    playAgainBtn.y = 460;
+    playAgainBtn.y = (boardHeight * 75) / 100;
 
     const playAgainBtnBg = new PIXI.Sprite(textures.bossScoreBtnBg);
-    playAgainBtnBg.width = 250;
-    playAgainBtnBg.height = 70;
+    playAgainBtnBg.width = (boardWidth * 40) / 100;
+    playAgainBtnBg.height = (boardHeight * 8) / 100;
     playAgainBtnBg.anchor.set(0.5);
 
     const playAgainBtnText = new PIXI.Text("PLAY AGAIN", {
       fontFamily: "Boogaloo",
-      fontSize: 30,
+      fontSize: (boardHeight * 4) / 100,
       fontWeight: "500",
       fill: "0xffffff",
     });
@@ -191,7 +199,7 @@ export default function loadBossScoreBoard(app) {
       button.scale.y = 1;
     }
     function handleClick(callback) {
-      TweenMax.to(boardContainer, 1, {ease: Bounce.easeIn, y: -700})
+      TweenMax.to(boardContainer, 1, {ease: Bounce.easeIn, y: -(boardHeight + 100)})
       setTimeout(() => {
         app.stage.removeChild(boardContainer);
         callback(app);

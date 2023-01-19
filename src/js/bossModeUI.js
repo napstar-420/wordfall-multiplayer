@@ -2,9 +2,9 @@ import {
   getBackground,
   getForeground,
   getScoreFrame,
-  getClockFrame,
   getMenuBtn,
   getLivesContainer,
+  getWordsContainer,
 } from "./gameUI.js";
 import { startGame } from "./gameLogic.js";
 import loadBossScoreBoard from "./bossScoreBoard.js";
@@ -33,11 +33,17 @@ export default function loadBossModeUI(app) {
       jackOLantern3,
     } = textures;
     BossModeContainer.addChild(getBackground(bossModeBg));
-    BossModeContainer.addChild(getForeground(bossModeFg));
     BossModeContainer.addChild(getLivesContainer([jackOLantern1, jackOLantern2, jackOLantern3]));
-    startGame(BossModeContainer, loadBossScoreBoard);
+    BossModeContainer.addChild(getForeground(bossModeFg));
+    BossModeContainer.addChild(getWordsContainer());
     BossModeContainer.addChild(getScoreFrame(scoreFrame));
     BossModeContainer.addChild(getMenuBtn(menuBtn));
-  });
+  }).then(() => {
+    setTimeout(() => {
+      startGame(BossModeContainer, loadBossScoreBoard);
+    }, 2500);
+  })
+
+
   app.stage.addChild(BossModeContainer);
 }

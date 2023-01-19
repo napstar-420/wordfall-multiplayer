@@ -1,5 +1,5 @@
 import { startGame } from "./gameLogic.js";
-import { getBackground, getForeground, getScoreFrame, getMenuBtn, getLivesContainer } from "./gameUI.js";
+import { getBackground, getForeground, getScoreFrame, getMenuBtn, getLivesContainer, getWordsContainer } from "./gameUI.js";
 import loadScoreBoard from "./scoreBoard.js";
 
 export default function loadNormalModeUI(app) {
@@ -30,15 +30,18 @@ export default function loadNormalModeUI(app) {
 
     // ADDING BACKGROUND AND FOREGROUND
     NormalModeContainer.addChild(getBackground(normalModeBg));
-    NormalModeContainer.addChild(getForeground(normalModeFg));
     NormalModeContainer.addChild(getLivesContainer([flower, twinFlower1, twinFlower2]));
+    NormalModeContainer.addChild(getForeground(normalModeFg));
+    NormalModeContainer.addChild(getWordsContainer());
     NormalModeContainer.addChild(getScoreFrame(scoreFrame));
     NormalModeContainer.addChild(getMenuBtn(menuBtn));
-  });
+  }).then(() => {
+    setTimeout(() => {
+      startGame(NormalModeContainer, loadScoreBoard);
+    }, 2500);
+  })
   
-  setTimeout(() => {
-    startGame(NormalModeContainer, loadScoreBoard);
-  }, 2500);
+  
   app.stage.addChild(NormalModeContainer);
 
   

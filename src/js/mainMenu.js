@@ -11,10 +11,12 @@ export default function loadMainMenu() {
 
   // BOARD CONTAINER
   const BoardContainer = new PIXI.Container();
-  BoardContainer.width = 550;
-  BoardContainer.height = 550;
+  const width = (app.view.height * 90 / 100);
+  const height = app.view.height * 100 / 100;
+  BoardContainer.width = width;
+  BoardContainer.height = height;
   BoardContainer.x = app.view.width / 2;
-  BoardContainer.y = -600;
+  BoardContainer.y = -height - 200;
 
   // LOADING ASSETS
   PIXI.Assets.load([
@@ -31,13 +33,13 @@ export default function loadMainMenu() {
 
     // PLAY NOW BTN
     const playNowButton = new PIXI.Text("PLAY NOW", {
-      fontSize: 50,
+      fontSize: (BoardContainer.height * 10) / 100,
       fill: 0xffffff,
       align: "left",
       fontFamily: "Boogaloo",
       fontWeight: "500",
     });
-    playNowButton.y = 163;
+    playNowButton.y = (BoardContainer.height * 29) / 100;
     playNowButton.anchor.x = 0.56;
     playNowButton.anchor.y = 0.5;
     playNowButton.scale.x = 0.8;
@@ -45,22 +47,22 @@ export default function loadMainMenu() {
     playNowButton.interactive = true;
     playNowButton.cursor = 'pointer';
     playNowButton
-      .on('pointerover', () => cursorOver(playNowButton))
-      .on('pointerout', () => cursorOut(playNowButton))
+      .on('pointerover', () => cursorOver(playNowButton, 0.8))
+      .on('pointerout', () => cursorOut(playNowButton, 0.8))
       .on('pointerdown', () => startMode(loadNormalModeUI))
     BoardContainer.addChild(playNowButton);
 
     // CURSOR INTERACTIONS
-    function cursorOver(button) {
-      button.scale.x = 0.9;
-      button.scale.y = 0.9;
+    function cursorOver(button, scale) {
+      button.scale.x = scale + 0.1;
+      button.scale.y = scale + 0.1;
     }
-    function cursorOut(button) {
-      button.scale.x = 0.8;
-      button.scale.y = 0.8;
+    function cursorOut(button, scale) {
+      button.scale.x = scale;
+      button.scale.y = scale;
     }
     function startMode(callback) {
-      TweenMax.to(BoardContainer, 1, {ease: Back.easeIn.config(1.7), y: -600})
+      TweenMax.to(BoardContainer, 1, {ease: Back.easeIn.config(1.7), y:  -height - 200})
       setTimeout(() => {
         callback(app);
         app.stage.removeChild(MAIN_MENU);
@@ -71,30 +73,31 @@ export default function loadMainMenu() {
     const modeBtns = [
       {
         mode: "BOSS MODE",
-        height: 260,
+        height: (BoardContainer.height * 49) / 100,
         event: () => startMode(loadBossModeUI),
       },
       {
         mode: "PRACTICE",
-        height: 330,
+        height: (BoardContainer.height * 61) / 100,
         event: () => alert('have not added yet'),
       },
       {
         mode: "MULTIPLAYER",
-        height: 400,
+        height: (BoardContainer.height * 73) / 100,
         event: () => alert('have not added yet'),
       },
       {
         mode: "LEADERBOARD",
-        height: 470,
+        height: (BoardContainer.height * 85) / 100,
         event: () => alert('have not added yet'),
       },
     ];
     
     modeBtns.map((modeObj) => {
       const modeBtn = new PIXI.Sprite(menuBtnBack);
-      modeBtn.scale.x = 0.8;
-      modeBtn.scale.y = 0.8;
+      const modeBtnScale = ((BoardContainer.height * 1.35) / 100) / 10;
+      modeBtn.scale.x = modeBtnScale;
+      modeBtn.scale.y = modeBtnScale;
       modeBtn.x = 0;
       modeBtn.anchor.x = 0.55;
       modeBtn.anchor.y = 0.5;
@@ -110,8 +113,8 @@ export default function loadMainMenu() {
       modeBtn.interactive = true;
       modeBtn.cursor = 'pointer';
       modeBtn
-        .on('pointerover', () => cursorOver(modeBtn))
-        .on('pointerout', () => cursorOut(modeBtn))
+        .on('pointerover', () => cursorOver(modeBtn, modeBtnScale))
+        .on('pointerout', () => cursorOut(modeBtn, modeBtnScale))
         .on('click', modeObj.event)
       BoardContainer.addChild(modeBtn);
     });
@@ -119,7 +122,7 @@ export default function loadMainMenu() {
   });
 
   setTimeout(() => {
-    TweenMax.to(BoardContainer, 1, {ease: Elastic.easeOut.config(1, 0.75), y: -50})
+    TweenMax.to(BoardContainer, 1, {ease: Elastic.easeOut.config(1, 0.99), y: -50})
   }, 750)
 
   // ADDING MAIN MENU
