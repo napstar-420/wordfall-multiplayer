@@ -247,7 +247,13 @@ function getWordFromApi() {
         }
       } else {
         // if user mistypes
+        streak = 0; // reset streak
+        multiplier -= multiplier > 1 ? 1 : 0; // decrement multiplier
+        // update multiplier on ui
+        container.children[7].text = `x${multiplier}`;
+        // adding word to troubled array
         let troubledWord = "";
+        // changing style from type to regular
         wordsOnScreen[activeWordIndex].children.forEach((letter, index) => {
           if (index > 0) {
             letter.style = letterStyling;
@@ -258,9 +264,6 @@ function getWordFromApi() {
         activeWord = null;
         activeWordIndex = null;
         counter = 1;
-        streak = 0;
-        multiplier -= multiplier > 1 ? 1 : 0;
-        container.children[7].text = `x${multiplier}`;
       }
     }
   }
@@ -296,30 +299,42 @@ function getWordFromApi() {
         }
         // If word reached the ground
         if (word.y > app.view.height - 130) {
-          streak = 0;
-          multiplier -= multiplier > 1 ? 1 : 0;
+          streak = 0; // reset streak
+          multiplier -= multiplier > 1 ? 1 : 0; // decrement multiplier
+          // update multiplier on ui
           container.children[7].text = `x${multiplier}`;
-          word.dead = true;
           let troubledWord = "";
           word.children.forEach((letter, index) => {
             if (index > 0) {
               troubledWord = troubledWord.concat(letter.text);
             }
           });
+          // adding word to troubled array
           troubledWords.push(troubledWord);
-          TweenMax.to(word, 2.5, { ease: Power4.easeOut, alpha: 0 });
-          setTimeout(() => {
-            container.children[4].removeChild(word);
-          }, 1000);
+          // updating words on screen
           wordsOnScreen.splice(index, 1);
+          // updating active word index
           if (activeWord && activeWordIndex > index) {
             activeWordIndex = activeWordIndex - 1;
           }
+          // if the active word is touching the ground
           if (word.active === true) {
+            // changing style from type to regular
+            wordsOnScreen[activeWordIndex].children.forEach((letter, index) => {
+              if (index > 0) {
+                letter.style = letterStyling;
+              }
+            });
             activeWord = null;
             activeWordIndex = null;
             counter = 1;
           }
+          // animation
+          TweenMax.to(word, 2.5, { ease: Power4.easeOut, alpha: 0 });
+          // removing word from screen
+          setTimeout(() => {
+            container.children[4].removeChild(word);
+          }, 1000);
         }
       }
     });
