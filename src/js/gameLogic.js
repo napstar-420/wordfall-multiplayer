@@ -246,9 +246,8 @@ export function startGame(container, loadScoreBoard) {
           counter = 1;
           completedWords++;
           streak++;
-          console.log(streak)
-          if (streak % 10 === 0) {
-            multiplier = streak / 10 + 1;
+          if (streak % 5 === 0) {
+            multiplier = streak / 5 + 1;
             console.log(multiplier)
           }
           container.children[7].text = `x${multiplier}`;
