@@ -248,7 +248,6 @@ export function startGame(container, loadScoreBoard) {
           streak++;
           if (streak % 5 === 0) {
             multiplier = streak / 5 + 1;
-            console.log(multiplier)
           }
           container.children[7].text = `x${multiplier}`;
         }

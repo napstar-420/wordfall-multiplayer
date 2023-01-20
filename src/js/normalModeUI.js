@@ -58,9 +58,7 @@ export default function loadNormalModeUI(app) {
       NormalModeContainer.addChild(getPauseMenu());
     })
     .then(() => {
-      setTimeout(() => {
         startGame(NormalModeContainer, loadScoreBoard);
-      }, 2500);
     });
 
   app.stage.addChild(NormalModeContainer);
