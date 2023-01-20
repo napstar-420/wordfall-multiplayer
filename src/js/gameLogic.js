@@ -299,6 +299,18 @@ function getWordFromApi() {
         }
         // If word reached the ground
         if (word.y > app.view.height - 130) {
+          // if the active word is touching the ground
+          if (word.active === true) {
+            // changing style from type to regular
+            wordsOnScreen[activeWordIndex].children.forEach((letter, index) => {
+              if (index > 0) {
+                letter.style = letterStyling;
+              }
+            });
+            activeWord = null;
+            activeWordIndex = null;
+            counter = 1;
+          }
           streak = 0; // reset streak
           multiplier -= multiplier > 1 ? 1 : 0; // decrement multiplier
           // update multiplier on ui
@@ -317,18 +329,7 @@ function getWordFromApi() {
           if (activeWord && activeWordIndex > index) {
             activeWordIndex = activeWordIndex - 1;
           }
-          // if the active word is touching the ground
-          if (word.active === true) {
-            // changing style from type to regular
-            wordsOnScreen[activeWordIndex].children.forEach((letter, index) => {
-              if (index > 0) {
-                letter.style = letterStyling;
-              }
-            });
-            activeWord = null;
-            activeWordIndex = null;
-            counter = 1;
-          }
+          
           // animation
           TweenMax.to(word, 2.5, { ease: Power4.easeOut, alpha: 0 });
           // removing word from screen
