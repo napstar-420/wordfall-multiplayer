@@ -105,7 +105,8 @@ export function startGame(container, loadScoreBoard) {
   let completedWords = 0;
   let time = 0;
   let tileCounter = 0;
-
+  var brickBreakSound = new Audio("/src/assets/music and sound effects/brickSound.wav");
+  var keyPressSound = new Audio("/src/assets/music and sound effects/keyPress.mp3");
   
 function getWordFromApi() {
   const options = {
@@ -196,6 +197,7 @@ function getWordFromApi() {
       counter++;
       // if users types the entire word correctly
       if (activeWord.children.length === counter) {
+        brickBreakSound.play();
         score += (activeWord.children.length - 1) * multiplier;
         container.children[5].children[1].text = score;
         container.children[4].removeChild(activeWord);

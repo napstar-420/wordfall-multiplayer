@@ -4,6 +4,8 @@ import loadNormalModeUI from "./normalModeUI.js";
 import { getBackground, getMenuBoard } from "./gameUI.js";
 
 export default function loadMainMenu() {
+  const hoverSound = new Audio("/src/assets/music and sound effects/hoverSound.mp3");
+  const tapSound = new Audio("/src/assets/music and sound effects/tapSound.wav");
   // MAIN MENU
   const MAIN_MENU = new PIXI.Container();
   MAIN_MENU.width = app.view.width;
@@ -56,12 +58,16 @@ export default function loadMainMenu() {
     function cursorOver(button, scale) {
       button.scale.x = scale + 0.05;
       button.scale.y = scale + 0.05;
+      hoverSound.play();
     }
     function cursorOut(button, scale) {
       button.scale.x = scale;
       button.scale.y = scale;
+      hoverSound.pause();
+      hoverSound.currentTime = 0;
     }
     function startMode(callback) {
+      tapSound.play();
       TweenMax.to(BoardContainer, 1, {ease: Back.easeIn.config(1.7), y:  -height - 200})
       setTimeout(() => {
         callback(app);
