@@ -9,72 +9,72 @@ const wordsList = [
   "fixed",
   "winter",
   "many",
-  'poke',
-  'rhetorical',
-  'linen',
-  'tempt',
-  'sassy',
-  'hushed',
-  'pathetic',
-  'harm',
-  'misty',
-  'ready',
-  'belong',
-  'children',
-  'quartz',
-  'annoyed',
-  'puzzled',
-  'ritzy',
-  'grotesque',
-'acidic',
-'evanescent',
-'name',
-'ruin',
-'questionable',
-'dear',
-'retire',
-'crabby',
-'shallow',
-'attach',
-'doll',
-'raise',
-'fog',
-'rural',
-'ambitious',
-'nine',
-'crook',
-'lavish',
-'prefer',
-'bare',
-'bashful',
-'stupendous',
-'neighborly',
-'elegant',
-'title',
-'assorted',
-'sound',
-'frequent',
-'part',
-'compete',
-'unequaled',
-'grass',
-'strengthen',
-'blink',
-'tiresome',
-'club',
-'divergent',
-'kill',
-'sugar',
-'scribble',
-'rabbit',
-'average',
-'faulty',
-'leather',
-'polish',
-'offbeat',
-'stormy',
-'song',
-'racial',
+  "poke",
+  "rhetorical",
+  "linen",
+  "tempt",
+  "sassy",
+  "hushed",
+  "pathetic",
+  "harm",
+  "misty",
+  "ready",
+  "belong",
+  "children",
+  "quartz",
+  "annoyed",
+  "puzzled",
+  "ritzy",
+  "grotesque",
+  "acidic",
+  "evanescent",
+  "name",
+  "ruin",
+  "questionable",
+  "dear",
+  "retire",
+  "crabby",
+  "shallow",
+  "attach",
+  "doll",
+  "raise",
+  "fog",
+  "rural",
+  "ambitious",
+  "nine",
+  "crook",
+  "lavish",
+  "prefer",
+  "bare",
+  "bashful",
+  "stupendous",
+  "neighborly",
+  "elegant",
+  "title",
+  "assorted",
+  "sound",
+  "frequent",
+  "part",
+  "compete",
+  "unequaled",
+  "grass",
+  "strengthen",
+  "blink",
+  "tiresome",
+  "club",
+  "divergent",
+  "kill",
+  "sugar",
+  "scribble",
+  "rabbit",
+  "average",
+  "faulty",
+  "leather",
+  "polish",
+  "offbeat",
+  "stormy",
+  "song",
+  "racial",
 ];
 
 const letterStyling = new PIXI.TextStyle({
@@ -89,37 +89,38 @@ const typedLetterStyling = new PIXI.TextStyle({
   fill: "yellow",
 });
 
-
 export function startGame(container, loadScoreBoard) {
   let gamePaused = false;
   const menuBtn = container.children[6];
   const pauseMenu = container.children[8];
 
-  pauseMenu.children[pauseMenu.children.length - 1]
-    .on('pointerdown', () => {
-      TweenMax.to(pauseMenu, 1, {ease: Expo.easeIn, y: -(pauseMenu.height + 100)});
-      setTimeout(() => {
-        gamePaused = false;
-      }, 500)
-    })
+  pauseMenu.children[pauseMenu.children.length - 1].on("pointerdown", () => {
+    TweenMax.to(pauseMenu, 1, {
+      ease: Expo.easeIn,
+      y: -(pauseMenu.height + 100),
+    });
+    setTimeout(() => {
+      gamePaused = false;
+    }, 500);
+  });
 
   menuBtn.interactive = true;
-  menuBtn.cursor = 'pointer';
+  menuBtn.cursor = "pointer";
   menuBtn
-    .on('pointerover', () => {
+    .on("pointerover", () => {
       menuBtn.scale.x = (app.view.height * 0.16) / 100;
       menuBtn.scale.y = (app.view.height * 0.16) / 100;
     })
-    .on('pointerout', () => {
+    .on("pointerout", () => {
       menuBtn.scale.x = (app.view.height * 0.15) / 100;
       menuBtn.scale.y = (app.view.height * 0.15) / 100;
     })
-    .on('pointerdown', () => {
+    .on("pointerdown", () => {
       gamePaused = true;
-      TweenMax.to(pauseMenu, 1, {ease: Expo.easeOut, y: 0});
+      TweenMax.to(pauseMenu, 1, { ease: Expo.easeOut, y: 0 });
     });
 
-  let wordFromApi = ''
+  let wordFromApi = "";
   let wordsOnScreen = [];
   let activeWord = null;
   let activeWordIndex = null;
@@ -133,27 +134,34 @@ export function startGame(container, loadScoreBoard) {
   let completedWords = 0;
   let time = 0;
   let tileCounter = 0;
-  var brickBreakSound = new Audio("/src/assets/music and sound effects/brickSound.wav");
-  
-function getWordFromApi() {
-  const options = {
-    method: 'GET',
-    headers: {
-      'X-RapidAPI-Key': 'c33169b7b7mshd4cdd31d9ac58dep1dfd47jsnf4695d416579',
-      'X-RapidAPI-Host': 'random-word-by-api-ninjas.p.rapidapi.com'
-    }
-  };
-  
-  const word = fetch('https://random-word-by-api-ninjas.p.rapidapi.com/v1/randomword?type=verb', options)
-    .then(response => response.json())
-    .then(response => wordFromApi = response.word)
-    .catch(err => console.error(err));
+  let launchSpeed = 2000;
+  var brickBreakSound = new Audio(
+    "/src/assets/music and sound effects/brickSound.wav"
+  );
 
-  return word;
-}
+  function getWordFromApi() {
+    const options = {
+      method: "GET",
+      headers: {
+        "X-RapidAPI-Key": "c33169b7b7mshd4cdd31d9ac58dep1dfd47jsnf4695d416579",
+        "X-RapidAPI-Host": "random-word-by-api-ninjas.p.rapidapi.com",
+      },
+    };
+
+    const word = fetch(
+      "https://random-word-by-api-ninjas.p.rapidapi.com/v1/randomword?type=verb",
+      options
+    )
+      .then((response) => response.json())
+      .then((response) => (wordFromApi = response.word))
+      .catch((err) => console.error(err));
+
+    return word;
+  }
 
   function updateTime() {
     time++;
+    launchSpeed -= 8.33333;
   }
   const timeInterval = setInterval(updateTime, 1000);
   document.addEventListener("keyup", handleGame);
@@ -161,8 +169,8 @@ function getWordFromApi() {
   // This function create new word
   function createWord() {
     const wordContainer = new PIXI.Container();
-    // const word = wordFromApi; // uncomment this line when want to use Api 
-    const word = wordsList[getRandomNumber(wordsList.length - 1, 0)]
+    // const word = wordFromApi; // uncomment this line when want to use Api
+    const word = wordsList[getRandomNumber(wordsList.length - 1, 0)];
     const texture = PIXI.Texture.from("/src/assets/images/letters tile 1.png");
     const sprite = new PIXI.Sprite(texture);
     sprite.width = 0;
@@ -198,7 +206,7 @@ function getWordFromApi() {
     }
     setTimeout(() => {
       launchWord();
-    }, (5000 / wordSpeed) < 1000 ? 1000 : 5000 / wordSpeed);
+    }, launchSpeed);
   })();
 
   // This function will be run when user types
@@ -208,7 +216,7 @@ function getWordFromApi() {
       // if there is no active key
       if (!activeWord) {
         // loops through words on screen
-        for(let i = 0; i < wordsOnScreen.length; i++) {
+        for (let i = 0; i < wordsOnScreen.length; i++) {
           if (wordsOnScreen[i].children[1].text === key) {
             wordsOnScreen[i].active = true;
             activeWord = wordsOnScreen[i];
@@ -287,7 +295,7 @@ function getWordFromApi() {
             if (collision) {
               container.children[2].removeChild(flower);
               if (container.children[2].children.length === 0) {
-                // endGame();
+                endGame();
               }
             }
           });
@@ -325,14 +333,18 @@ function getWordFromApi() {
 
   function endGame() {
     const setOfTroubledWords = [...new Set(troubledWords)];
-    const accuracy = Math.round((typedWords === 0 ? 0 : typedWords / setOfTroubledWords.length) * 100);
+    const accuracy = Math.round(
+      (typedWords === 0
+        ? 0
+        : typedWords / (setOfTroubledWords.length + typedWords)) * 100
+    );
     const wpm = Math.round((completedWords / time) * 60);
     const endScore = {
       accuracy,
       wpm,
       troubledWords: setOfTroubledWords,
-      score
-    }
+      score,
+    };
     clearInterval(timeInterval);
     app.ticker.remove(gameLoop);
     document.removeEventListener(document, handleGame);

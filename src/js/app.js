@@ -92,7 +92,7 @@ PIXI.Assets.add(
 );
 
 // loadNormalModeUI(app);
- loadMainMenu(app);
+loadMainMenu(app);
 // loadBossModeUI(app);
 // const endScore = {
 //   accuracy: 56,
@@ -116,4 +116,4 @@ PIXI.Assets.add(
 //   score: 1245,
 // };
 // loadScoreBoard(app, endScore);
-// loadBossScoreBoard(app, endScore)
+// loadBossScoreBoard(app, endScore);
