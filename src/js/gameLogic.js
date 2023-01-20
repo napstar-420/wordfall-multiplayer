@@ -1,4 +1,4 @@
-import { getRandomNumber } from "./gameUI.js";
+import { getPauseMenu, getRandomNumber } from "./gameUI.js";
 import { app } from "./app.js";
 
 const wordsList = [
@@ -91,6 +91,34 @@ const typedLetterStyling = new PIXI.TextStyle({
 
 
 export function startGame(container, loadScoreBoard) {
+  let gamePaused = false;
+  const menuBtn = container.children[6];
+  const pauseMenu = container.children[8];
+
+  pauseMenu.children[pauseMenu.children.length - 1]
+    .on('pointerdown', () => {
+      TweenMax.to(pauseMenu, 1, {ease: Expo.easeIn, y: -(pauseMenu.height + 100)});
+      setTimeout(() => {
+        gamePaused = false;
+      }, 500)
+    })
+
+  menuBtn.interactive = true;
+  menuBtn.cursor = 'pointer';
+  menuBtn
+    .on('pointerover', () => {
+      menuBtn.scale.x = (app.view.height * 0.16) / 100;
+      menuBtn.scale.y = (app.view.height * 0.16) / 100;
+    })
+    .on('pointerout', () => {
+      menuBtn.scale.x = (app.view.height * 0.15) / 100;
+      menuBtn.scale.y = (app.view.height * 0.15) / 100;
+    })
+    .on('pointerdown', () => {
+      gamePaused = true;
+      TweenMax.to(pauseMenu, 1, {ease: Expo.easeOut, y: 0});
+    });
+
   let wordFromApi = ''
   let wordsOnScreen = [];
   let activeWord = null;
@@ -106,7 +134,6 @@ export function startGame(container, loadScoreBoard) {
   let time = 0;
   let tileCounter = 0;
   var brickBreakSound = new Audio("/src/assets/music and sound effects/brickSound.wav");
-  var keyPressSound = new Audio("/src/assets/music and sound effects/keyPress.mp3");
   
 function getWordFromApi() {
   const options = {
@@ -161,80 +188,87 @@ function getWordFromApi() {
 
   // This Function launches new words on screen
   (function launchWord() {
-    // getWordFromApi(); // uncomment this line when want to use Api
-    const word = createWord();
-    if (word.children.length > 1) {
-      wordsOnScreen.push(word);
+    if (!gamePaused) {
+      // getWordFromApi(); // uncomment this line when want to use Api
+      const word = createWord();
+      if (word.children.length > 1) {
+        wordsOnScreen.push(word);
+      }
+      wordSpeed += 0.03;
     }
     setTimeout(() => {
-      wordSpeed += 0.03;
       launchWord();
     }, (5000 / wordSpeed) < 1000 ? 1000 : 5000 / wordSpeed);
   })();
 
   // This function will be run when user types
   function handleGame(e) {
-    const key = e.key;
-    // if there is no active key
-    if (!activeWord) {
-      // loops through words on screen
-      for(let i = 0; i < wordsOnScreen.length; i++) {
-        if (wordsOnScreen[i].children[1].text === key) {
-          wordsOnScreen[i].active = true;
-          activeWord = wordsOnScreen[i];
-          activeWordIndex = i;
-          counter++;
-          typedWords++;
-          wordsOnScreen[i].children[1].style = typedLetterStyling;
+    if (!gamePaused) {
+      const key = e.key;
+      // if there is no active key
+      if (!activeWord) {
+        // loops through words on screen
+        for(let i = 0; i < wordsOnScreen.length; i++) {
+          if (wordsOnScreen[i].children[1].text === key) {
+            wordsOnScreen[i].active = true;
+            activeWord = wordsOnScreen[i];
+            activeWordIndex = i;
+            counter++;
+            typedWords++;
+            wordsOnScreen[i].children[1].style = typedLetterStyling;
+            return;
+          }
           return;
         }
-      }
-      return;
-      // if active word exist
-    } else if (activeWord.children[counter].text === key) {
-      wordsOnScreen[activeWordIndex].children[counter].style =
-        typedLetterStyling;
-      counter++;
-      // if users types the entire word correctly
-      if (activeWord.children.length === counter) {
-        brickBreakSound.play();
-        score += (activeWord.children.length - 1) * multiplier;
-        container.children[5].children[1].text = score;
-        container.children[4].removeChild(activeWord);
-        wordsOnScreen.splice(activeWordIndex, 1);
+        return;
+        // if active word exist
+      } else if (activeWord.children[counter].text === key) {
+        wordsOnScreen[activeWordIndex].children[counter].style =
+          typedLetterStyling;
+        counter++;
+        // if users types the entire word correctly
+        if (activeWord.children.length === counter) {
+          brickBreakSound.play();
+          score += (activeWord.children.length - 1) * multiplier;
+          container.children[5].children[1].text = score;
+          container.children[4].removeChild(activeWord);
+          wordsOnScreen.splice(activeWordIndex, 1);
+          activeWord = null;
+          activeWordIndex = null;
+          counter = 1;
+          completedWords++;
+          streak++;
+          if (streak % 10 === 0) {
+            multiplier = streak / 10 + 1;
+          }
+          container.children[6].text = `x${multiplier}`;
+        }
+      } else {
+        // if user mistypes
+        let troubledWord = "";
+        wordsOnScreen[activeWordIndex].children.forEach((letter, index) => {
+          if (index > 0) {
+            letter.style = letterStyling;
+            troubledWord = troubledWord.concat(letter.text);
+          }
+        });
+        troubledWords.unshift(troubledWord);
         activeWord = null;
         activeWordIndex = null;
         counter = 1;
-        completedWords++;
-        streak++;
-        if (streak % 10 === 0) {
-          multiplier = streak / 10 + 1;
-        }
-        container.children[6].text = `x${multiplier}`;
+        streak = 0;
+        multiplier -= multiplier > 1 ? 1 : 0;
+        container.children[7].text = `x${multiplier}`;
       }
-    } else {
-      // if user mistypes
-      let troubledWord = "";
-      wordsOnScreen[activeWordIndex].children.forEach((letter, index) => {
-        if (index > 0) {
-          letter.style = letterStyling;
-          troubledWord = troubledWord.concat(letter.text);
-        }
-      });
-      troubledWords.unshift(troubledWord);
-      activeWord = null;
-      activeWordIndex = null;
-      counter = 1;
-      streak = 0;
-      multiplier -= multiplier > 1 ? 1 : 0;
-      container.children[7].text = `x${multiplier}`;
     }
   }
 
   app.ticker.add(gameLoop);
 
   function gameLoop() {
-    updateWords();
+    if (!gamePaused) {
+      updateWords();
+    }
     updateTile();
   }
   function updateTile() {
@@ -253,7 +287,7 @@ function getWordFromApi() {
             if (collision) {
               container.children[2].removeChild(flower);
               if (container.children[2].children.length === 0) {
-                endGame();
+                // endGame();
               }
             }
           });

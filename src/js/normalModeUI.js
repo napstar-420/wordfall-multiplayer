@@ -8,6 +8,7 @@ import {
   getWordsContainer,
   getNormalClouds,
   getMultiplier,
+  getPauseMenu,
 } from "./gameUI.js";
 import loadScoreBoard from "./scoreBoard.js";
 
@@ -28,10 +29,10 @@ export default function loadNormalModeUI(app) {
     "twinFlower2",
     "normalModeClouds",
     "normalModeBg1",
+    "pauseMenuBg",
   ])
     .then((textures) => {
       const {
-        normalModeBg,
         normalModeFg,
         scoreFrame,
         menuBtn,
@@ -40,6 +41,7 @@ export default function loadNormalModeUI(app) {
         twinFlower2,
         normalModeBg1,
         normalModeClouds,
+        pauseMenuBg
       } = textures;
 
       // ADDING BACKGROUND AND FOREGROUND
@@ -53,6 +55,7 @@ export default function loadNormalModeUI(app) {
       NormalModeContainer.addChild(getScoreFrame(scoreFrame));
       NormalModeContainer.addChild(getMenuBtn(menuBtn));
       NormalModeContainer.addChild(getMultiplier());
+      NormalModeContainer.addChild(getPauseMenu());
     })
     .then(() => {
       setTimeout(() => {

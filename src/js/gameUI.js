@@ -1,4 +1,6 @@
 import { app } from "./app.js";
+import loadMainMenu from "./mainMenu.js";
+import loadNormalModeUI from "./normalModeUI.js";
 
 export function getMenuBoard(texture) {
   const menuBoardSprite = new PIXI.Sprite(texture);
@@ -19,6 +21,7 @@ export function getNormalClouds(texture) {
   const clouds = new PIXI.TilingSprite(texture, app.screen.width);
   clouds.width = app.view.width;
   clouds.height = app.view.height;
+  clouds.alpha = 0.6;
   return clouds;
 }
 
@@ -134,4 +137,180 @@ export async function getWordBg() {
   const textures = await PIXI.Assets.load(["letterTile"]);
   const letterTileSprite = new PIXI.Sprite(textures.letterTile);
   return letterTileSprite;
+}
+
+export function getPauseMenu() {
+
+  let isMusicOn = true;
+  let isSfxOn = true;
+  
+  // Container
+  const pauseMenu = new PIXI.Container();
+  const width = (app.view.height * 60) / 100;
+  const height = (app.view.height * 80) / 100;
+  pauseMenu.height = height;
+  pauseMenu.width = width;
+  pauseMenu.x = (app.view.width / 2) - width / 2;
+  pauseMenu.y = -(height + 100);
+
+  // background
+  const texture = PIXI.Texture.from('/src/assets/options menu assets/mini options baord.png');
+  const pauseMenuBgSprite = new PIXI.Sprite(texture);
+  pauseMenuBgSprite.width = width;
+  pauseMenuBgSprite.height = height;
+  pauseMenu.addChild(pauseMenuBgSprite);
+
+  // Options Text
+  const optionText = new PIXI.Text('OPTIONS', {
+    fontSize: height * 9 / 100,
+    fontWeight: '500',
+    fontFamily: 'Boogaloo',
+    fill: '#ffffff'
+  })
+  optionText.y = height * 28 / 100;
+  optionText.anchor.x = 0.5;
+  optionText.x = width / 2
+  pauseMenu.addChild(optionText);
+
+  // Music text
+  const musicText = new PIXI.Text('MUSIC', {
+    fontSize: height * 7 / 100,
+    fontWeight: '600',
+    fontFamily: 'Boogaloo',
+    fill: '#56210c'
+  })
+  musicText.y = (height * 28 / 100) * 1.8;
+  musicText.x = width * 15 / 100;
+  pauseMenu.addChild(musicText)
+
+  //MUSIC CHECK FILL
+  const musicCheckFill = PIXI.Sprite.from('/src/assets/options menu assets/check box indicator.png');
+  musicCheckFill.width = height * 6 / 100;
+  musicCheckFill.height = height * 6 / 100;
+  musicCheckFill.anchor.x = 1;
+  musicCheckFill.x = width - (width * 17 / 100);
+  musicCheckFill.y = (height * 28 / 100) * 1.84;
+  
+  //Music on or off btn
+  const musicCheckBox = PIXI.Sprite.from('/src/assets/options menu assets/check box.png');
+  musicCheckBox.anchor.x = 1;
+  musicCheckBox.width = height * 9 / 100;
+  musicCheckBox.height = height * 9 / 100;
+  musicCheckBox.y = (height * 28 / 100) * 1.8;
+  musicCheckBox.x = width - (width * 15 / 100);
+  musicCheckBox.interactive = true;
+  musicCheckBox.cursor = 'pointer';
+  musicCheckBox.on('pointerdown', () => {
+    if (isMusicOn) {
+      isMusicOn = false;
+      pauseMenu.removeChild(musicCheckFill);
+    } else {
+      isMusicOn = true;
+      pauseMenu.addChild(musicCheckFill);
+    }
+  })
+  pauseMenu.addChild(musicCheckBox);
+  pauseMenu.addChild(musicCheckFill);
+
+  // SFX Text
+  const sfxText = new PIXI.Text('SFX', {
+    fontSize: height * 7 / 100,
+    fontWeight: '600',
+    fontFamily: 'Boogaloo',
+    fill: '#56210c'
+  })
+  sfxText.y = (height * 28 / 100) * 2.2;
+  sfxText.x = width * 15 / 100;
+  pauseMenu.addChild(sfxText)
+
+  // SFX CHECK FILL
+  const sfxCheckFill = PIXI.Sprite.from('/src/assets/options menu assets/check box indicator.png');
+  sfxCheckFill.width = height * 6 / 100;
+  sfxCheckFill.height = height * 6 / 100;
+  sfxCheckFill.anchor.x = 1;
+  sfxCheckFill.x = width - (width * 17 / 100);
+  sfxCheckFill.y = (height * 28 / 100) * 2.24;
+  
+  //SFX on or off btn
+  const sfxBox = PIXI.Sprite.from('/src/assets/options menu assets/check box.png');
+  const sfxDimension = height * 9 / 100;
+  sfxBox.anchor.x = 1;
+  sfxBox.width = sfxDimension;
+  sfxBox.height = sfxDimension;
+  sfxBox.y = (height * 28 / 100) * 2.2;
+  sfxBox.x = width - (width * 15 / 100);
+  sfxBox.interactive = true;
+  sfxBox.cursor = 'pointer';
+  sfxBox.on('pointerdown', () => {
+    if (isSfxOn) {
+      isSfxOn = false;
+      pauseMenu.removeChild(sfxCheckFill);
+    } else {
+      isSfxOn = true;
+      pauseMenu.addChild(sfxCheckFill);
+    }
+  })
+  pauseMenu.addChild(sfxBox);
+  pauseMenu.addChild(sfxCheckFill);
+
+  const pauseButtons = [
+    {
+      spriteSrc: '/src/assets/options menu assets/reset button.png',
+      anchor: 0,
+      xPos: width * 20 / 100,
+      type: 'RESTART'
+    },
+    {
+      spriteSrc: '/src/assets/options menu assets/Main menu button.png',
+      anchor: 0.5,
+      xPos: width / 2,
+      type: "MAIN MENU"
+    },
+    {
+      spriteSrc: '/src/assets/options menu assets/resume_play button.png',
+      anchor: 1,
+      xPos: width - (width * 20 / 100),
+      type: 'WILL BE HANDLED BY GAME LOGIC'
+    }, 
+  ]
+
+  pauseButtons.map(button => {
+    const btn = PIXI.Sprite.from(button.spriteSrc);
+    btn.width = width * 15 / 100;
+    btn.height = width * 15 / 100;
+    btn.anchor.x = button.anchor;
+    btn.y = (height * 28 / 100) * 2.9;
+    btn.x = button.xPos;
+    btn.interactive = true;
+    btn.cursor = 'pointer';
+    btn.on('pointerover', () => cursorOver(btn));
+    btn.on('pointerout', () => cursorOut(btn));
+    btn.on('pointerdown', () => handleClick(button.type));
+    pauseMenu.addChild(btn);
+  })
+
+  function cursorOver(button) {
+    button.width = width * 16 / 100;
+    button.height = width * 16 / 100;
+  }
+
+  function cursorOut(button) {
+    button.width = width * 15 / 100;
+    button.height = width * 15 / 100;
+  }
+
+  function handleClick(type) {
+    switch (type) {
+      case 'RESTART':
+        app.stage.removeChild(app.stage.children[0]);
+        loadNormalModeUI(app);
+        break;
+      case "MAIN MENU":
+        app.stage.removeChild(app.stage.children[0]);
+        loadMainMenu(app);
+        break;
+    }
+  }
+  
+  return pauseMenu;
 }
