@@ -238,10 +238,12 @@ function getWordFromApi() {
           counter = 1;
           completedWords++;
           streak++;
+          console.log(streak)
           if (streak % 10 === 0) {
             multiplier = streak / 10 + 1;
+            console.log(multiplier)
           }
-          container.children[6].text = `x${multiplier}`;
+          container.children[7].text = `x${multiplier}`;
         }
       } else {
         // if user mistypes
@@ -287,7 +289,7 @@ function getWordFromApi() {
             if (collision) {
               container.children[2].removeChild(flower);
               if (container.children[2].children.length === 0) {
-                // endGame();
+                endGame();
               }
             }
           });
