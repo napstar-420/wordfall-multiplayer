@@ -171,6 +171,9 @@ export function startGame(container, loadScoreBoard) {
     const wordContainer = new PIXI.Container();
     // const word = wordFromApi; // uncomment this line when want to use Api
     const word = wordsList[getRandomNumber(wordsList.length - 1, 0)];
+    if (word.length > 7) {
+      return createWord();
+    }
     const texture = PIXI.Texture.from("/src/assets/images/letters tile 1.png");
     const sprite = new PIXI.Sprite(texture);
     sprite.width = 0;
@@ -201,8 +204,8 @@ export function startGame(container, loadScoreBoard) {
       const word = createWord();
       if (word.children.length > 1) {
         wordsOnScreen.push(word);
+        wordSpeed += 0.03;
       }
-      wordSpeed += 0.03;
     }
     setTimeout(() => {
       launchWord();
