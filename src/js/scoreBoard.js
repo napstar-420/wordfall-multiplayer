@@ -29,7 +29,7 @@ export default function loadScoreBoard(app, endScore) {
     // Adding score board
     const boardContainer = new PIXI.Container();
     const boardWidth = (app.view.height * 90) / 100;
-    const boardHeight = (app.view.height * 100) / 100;
+    const boardHeight = (app.view.height * 105) / 100;
     boardContainer.width = boardWidth;
     boardContainer.height = boardHeight;
     boardContainer.x = app.view.width / 2;
@@ -48,7 +48,7 @@ export default function loadScoreBoard(app, endScore) {
     const crossBtn = new PIXI.Sprite(textures.normalCrossBtn);
     crossBtn.anchor.set(0.5);
     crossBtn.x = (boardWidth * 34) / 100;
-    crossBtn.y = (boardHeight * 20) / 100;
+    crossBtn.y = (boardHeight * 29) / 100;
     let crossBtnScale = (boardHeight * 0.9) / 100 / 10;
     crossBtn.scale.x = crossBtnScale;
     crossBtn.scale.y = crossBtnScale;
@@ -74,7 +74,7 @@ export default function loadScoreBoard(app, endScore) {
       fontFamily: "Boogaloo",
       fontWeight: "500",
     });
-    playerRankText.y = (boardHeight * 21) / 100;
+    playerRankText.y = (boardHeight * 30) / 100;
     playerRankText.anchor.x = 0.56;
     playerRankText.anchor.y = 0.5;
     boardContainer.addChild(playerRankText);
@@ -87,7 +87,7 @@ export default function loadScoreBoard(app, endScore) {
       fontFamily: "Luckiest Guy",
       fontWeight: "500",
     });
-    playerScoreText.y = (boardHeight * 34) / 100;
+    playerScoreText.y = (boardHeight * 41) / 100;
     playerScoreText.anchor.x = 0.56;
     playerScoreText.anchor.y = 0.5;
     boardContainer.addChild(playerScoreText);
@@ -108,7 +108,7 @@ export default function loadScoreBoard(app, endScore) {
     const extrasContainer = new PIXI.Container();
     extrasContainer.width = boardWidth;
     extrasContainer.x = -((boardWidth * 14) / 100);
-    extrasContainer.y = (boardHeight * 48) / 100;
+    extrasContainer.y = (boardHeight * 54) / 100;
 
     extras.forEach((extraObj) => {
       const extra = new PIXI.Sprite(textures.scoreBoardExtras);
@@ -142,11 +142,11 @@ export default function loadScoreBoard(app, endScore) {
     //Adding Troubled Word to scoreboard
     const troubledWordContainer = new PIXI.Container();
     troubledWordContainer.width = (boardWidth * 90) / 100;
-    troubledWordContainer.y = (boardHeight * 68) / 100;
+    troubledWordContainer.y = (boardHeight * 73) / 100;
     const troubledWordBgSprite = new PIXI.Sprite(textures.troubledWordBg);
     troubledWordBgSprite.anchor.x = 0.535;
     troubledWordBgSprite.anchor.y = 0.48;
-    troubledWordBgSprite.height = (boardHeight * 22) / 100;
+    troubledWordBgSprite.height = (boardHeight * 20) / 100;
     troubledWordBgSprite.width = (boardWidth * 65) / 100;
     const troubledWordText = new PIXI.Text("TROUBLED WORDS", {
       fontFamily: "Boogaloo",
@@ -155,34 +155,34 @@ export default function loadScoreBoard(app, endScore) {
       fill: "#be6618",
     });
     troubledWordText.anchor.set(0.5);
-    troubledWordText.y = -((boardHeight * 7) / 100);
+    troubledWordText.y = -((boardHeight * 6) / 100);
 
     // adding practice btn
-    const practiceBtn = new PIXI.Container();
-    practiceBtn.y = (boardHeight * 12) / 100;
+    // const practiceBtn = new PIXI.Container();
+    // practiceBtn.y = (boardHeight * 12) / 100;
 
-    const practiceBtnBgSprite = new PIXI.Sprite(textures.menuBtnBack);
-    practiceBtnBgSprite.width = (boardWidth * 26) / 100;
-    practiceBtnBgSprite.height = (boardHeight * 8) / 100;
-    practiceBtnBgSprite.anchor.set(0.5);
+    // const practiceBtnBgSprite = new PIXI.Sprite(textures.menuBtnBack);
+    // practiceBtnBgSprite.width = (boardWidth * 26) / 100;
+    // practiceBtnBgSprite.height = (boardHeight * 8) / 100;
+    // practiceBtnBgSprite.anchor.set(0.5);
 
-    const practiceBtnText = new PIXI.Text("PRACTICE", {
-      fontFamily: "Boogaloo",
-      fontSize: (boardHeight * 4) / 100,
-      fontWeight: "500",
-      fill: "0xffffff",
-    });
-    practiceBtnText.anchor.y = 0.6;
-    practiceBtnText.anchor.x = 0.5;
+    // const practiceBtnText = new PIXI.Text("PRACTICE", {
+    //   fontFamily: "Boogaloo",
+    //   fontSize: (boardHeight * 4) / 100,
+    //   fontWeight: "500",
+    //   fill: "0xffffff",
+    // });
+    // practiceBtnText.anchor.y = 0.6;
+    // practiceBtnText.anchor.x = 0.5;
 
-    practiceBtn.addChild(practiceBtnBgSprite);
-    practiceBtn.addChild(practiceBtnText);
+    // practiceBtn.addChild(practiceBtnBgSprite);
+    // practiceBtn.addChild(practiceBtnText);
 
     troubledWordContainer.addChild(troubledWordBgSprite);
     troubledWordContainer.addChild(troubledWordText);
-    troubledWordContainer.addChild(practiceBtn);
+    // troubledWordContainer.addChild(practiceBtn);
 
-    let height = -((boardHeight * 5) / 100);
+    let height = -((boardHeight * 3) / 100);
     let width = -((boardWidth * 31) / 100);
     let counter = 1;
     troubledWords.forEach((word, index) => {
@@ -198,7 +198,7 @@ export default function loadScoreBoard(app, endScore) {
         wordText.x = width;
         troubledWordContainer.addChild(wordText);
         if (counter % 4 === 0) {
-          height = -((boardHeight * 5) / 100);
+          height = -((boardHeight * 3) / 100);
           width += (boardWidth * 16) / 100;
         } else {
           height += (boardHeight * 3) / 100;

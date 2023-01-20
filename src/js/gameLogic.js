@@ -226,7 +226,6 @@ export function startGame(container, loadScoreBoard) {
             wordsOnScreen[i].children[1].style = typedLetterStyling;
             return;
           }
-          return;
         }
         return;
         // if active word exist
@@ -308,7 +307,7 @@ export function startGame(container, loadScoreBoard) {
           // if the active word is touching the ground
           if (word.active === true) {
             // changing style from type to regular
-            wordsOnScreen[activeWordIndex].children.forEach((letter, index) => {
+            word.children.forEach((letter, index) => {
               if (index > 0) {
                 letter.style = letterStyling;
               }
