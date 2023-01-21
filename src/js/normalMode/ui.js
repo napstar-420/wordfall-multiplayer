@@ -1,4 +1,4 @@
-import { startGame } from "./gameLogic.js";
+import { startGame } from "../gameLogic.js";
 import {
   getBackground,
   getForeground,
@@ -9,7 +9,8 @@ import {
   getNormalClouds,
   getMultiplier,
   getPauseMenu,
-} from "./gameUI.js";
+  getClockFrame,
+} from "../gameUI.js";
 import loadScoreBoard from "./scoreBoard.js";
 
 export default function loadNormalModeUI(app) {
@@ -30,6 +31,7 @@ export default function loadNormalModeUI(app) {
     "normalModeClouds",
     "normalModeBg1",
     "pauseMenuBg",
+    "clockFrame"
   ])
     .then((textures) => {
       const {
@@ -41,7 +43,7 @@ export default function loadNormalModeUI(app) {
         twinFlower2,
         normalModeBg1,
         normalModeClouds,
-        pauseMenuBg
+        clockFrame
       } = textures;
 
       // ADDING BACKGROUND AND FOREGROUND
@@ -55,6 +57,7 @@ export default function loadNormalModeUI(app) {
       NormalModeContainer.addChild(getScoreFrame(scoreFrame));
       NormalModeContainer.addChild(getMenuBtn(menuBtn));
       NormalModeContainer.addChild(getMultiplier());
+      NormalModeContainer.addChild(getClockFrame(clockFrame))
       NormalModeContainer.addChild(getPauseMenu());
     })
     .then(() => {

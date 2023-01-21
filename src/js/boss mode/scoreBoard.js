@@ -1,9 +1,9 @@
-import loadBossModeUI from "./bossModeUI.js";
-import { getBackground } from "./gameUI.js";
-import loadMainMenu from "./mainMenu.js";
+import loadBossModeUI from "./ui.js";
+import { getBackground } from "../gameUI.js";
+import loadMainMenu from "../mainMenu.js";
 
-export default function loadBossScoreBoard(app, endScore) {
-  const { accuracy, wpm, troubledWords, score } = endScore;
+export default function loadBossScoreBoard(app, endScore, type) {
+  const { accuracy, wpm, score, level } = endScore;
 
   const BossScoreBoard = new PIXI.Container();
   BossScoreBoard.width = app.view.width;
@@ -24,7 +24,7 @@ export default function loadBossScoreBoard(app, endScore) {
     // Adding score board
     const boardContainer = new PIXI.Container();
     const boardWidth = (app.view.height * 90) / 100;
-    const boardHeight = (app.view.height * 100) / 100;
+    const boardHeight = (app.view.height * 105) / 100;
     boardContainer.width = boardWidth;
     boardContainer.height = boardHeight;
     boardContainer.x = app.view.width / 2;
@@ -36,53 +36,46 @@ export default function loadBossScoreBoard(app, endScore) {
     bossBoardSprite.anchor.x = 0.5;
     bossBoardSprite.anchor.y = 0;
     bossBoardSprite.x = boardContainer.width / 2;
-    bossBoardSprite.y = -90;
+    bossBoardSprite.y = -40;
     boardContainer.addChild(bossBoardSprite);
 
-    // Adding score board cross btn
-    const crossBtn = new PIXI.Sprite(textures.bossScoreBoardCross);
-    crossBtn.anchor.set(0.5);
-    crossBtn.x = (boardWidth * 34) / 100;
-    crossBtn.y = (boardHeight * 15) / 100;
-    const crossBtnScale = (boardHeight * 0.8) / 100 / 10;
-    crossBtn.scale.x = crossBtnScale;
-    crossBtn.scale.y = crossBtnScale;
-    crossBtn.interactive = true;
-    crossBtn.cursor = "pointer";
-    crossBtn
-      .on("pointerover", () => {
-        crossBtn.scale.x = crossBtnScale + 0.1;
-        crossBtn.scale.y = crossBtnScale + 0.1;
-      })
-      .on("pointerout", () => {
-        crossBtn.scale.x = crossBtnScale;
-        crossBtn.scale.y = crossBtnScale;
-      })
-      .on("pointerdown", () => handleClick(loadMainMenu));
-    boardContainer.addChild(crossBtn);
+    if (type === "COMPLETED") {
+      // Adding Player Rank Text
+      const levelStatus = new PIXI.Text(`Phase ${level} Completed`, {
+        fontSize: (boardHeight * 5) / 100,
+        fill: '#27ff00',
+        align: "left",
+        fontFamily: "Boogaloo",
+        fontWeight: "500",
+      });
+      levelStatus.y = (boardHeight * 22) / 100;
+      levelStatus.anchor.x = 0.56;
+      levelStatus.anchor.y = 0.5;
+      boardContainer.addChild(levelStatus);
+    } else {
+      const levelStatus = new PIXI.Text("Phase Failed", {
+        fontSize: (boardHeight * 7) / 100,
+        fill: '#ffffff',
+        align: "left",
+        fontFamily: "Boogaloo",
+        fontWeight: "500",
+      });
+      levelStatus.y = (boardHeight * 22) / 100;
+      levelStatus.anchor.x = 0.56;
+      levelStatus.anchor.y = 0.5;
+      boardContainer.addChild(levelStatus);
+    }
 
-    // Adding Player Rank Text
-    const playerRankText = new PIXI.Text("Game Over", {
-      fontSize: (boardHeight * 7) / 100,
-      fill: 0xffffff,
-      align: "left",
-      fontFamily: "Boogaloo",
-      fontWeight: "500",
-    });
-    playerRankText.y = (boardHeight * 17) / 100;
-    playerRankText.anchor.x = 0.56;
-    playerRankText.anchor.y = 0.5;
-    boardContainer.addChild(playerRankText);
 
     // Adding Player Score Text
-    const playerScoreText = new PIXI.Text("SCORE: 1200", {
+    const playerScoreText = new PIXI.Text(`SCORE: ${score}`, {
       fontSize: (boardHeight * 8) / 100,
       fill: "#633f5c",
       align: "left",
       fontFamily: "Luckiest Guy",
       fontWeight: "500",
     });
-    playerScoreText.y = (boardHeight * 30) / 100;
+    playerScoreText.y = (boardHeight * 34) / 100;
     playerScoreText.anchor.x = 0.56;
     playerScoreText.anchor.y = 0.5;
     boardContainer.addChild(playerScoreText);
@@ -103,7 +96,7 @@ export default function loadBossScoreBoard(app, endScore) {
     const extrasContainer = new PIXI.Container();
     extrasContainer.width = boardWidth;
     extrasContainer.x = -((boardWidth * 14) / 100);
-    extrasContainer.y = (boardHeight * 44) / 100;
+    extrasContainer.y = (boardHeight * 48) / 100;
 
     extras.forEach((extraObj) => {
       const extra = new PIXI.Sprite(textures.bossScoreExtrasBg);
@@ -134,48 +127,57 @@ export default function loadBossScoreBoard(app, endScore) {
     });
     boardContainer.addChild(extrasContainer);
 
-    //adding the restart btn
-    const restartBtn = new PIXI.Container();
-    restartBtn.y = (boardHeight * 59) / 100;
+    //adding the main menu btn
+    const mainMenu = new PIXI.Container();
+    mainMenu.y = (boardHeight * 64) / 100;
 
-    const restartBtnBg = new PIXI.Sprite(textures.bossScoreBtnBg);
-    restartBtnBg.width = (boardWidth * 30) / 100;
-    restartBtnBg.height = (boardHeight * 8) / 100;
-    restartBtnBg.anchor.set(0.5);
+    const mainMenuBg = new PIXI.Sprite(textures.bossScoreBtnBg);
+    mainMenuBg.width = (boardWidth * 30) / 100;
+    mainMenuBg.height = (boardHeight * 8) / 100;
+    mainMenuBg.anchor.set(0.5);
 
-    const restartBtnText = new PIXI.Text("RESTART", {
+    const mainMenuText = new PIXI.Text("MAIN MENU", {
       fontFamily: "Boogaloo",
       fontSize: (boardHeight * 4) / 100,
       fontWeight: "500",
       fill: "0xffffff",
     });
 
-    restartBtnText.anchor.y = 0.5;
-    restartBtnText.anchor.x = 0.5;
+    mainMenuText.anchor.y = 0.5;
+    mainMenuText.anchor.x = 0.5;
 
-    restartBtn.addChild(restartBtnBg);
-    restartBtn.addChild(restartBtnText);
-    restartBtn.interactive = true;
-    restartBtn.cursor = "pointer";
-    restartBtn
-      .on("pointerover", () => cursorOver(restartBtnText))
-      .on("pointerout", () => cursorOut(restartBtnText))
-      .on("pointerdown", () => handleClick(loadBossModeUI));
+    mainMenu.addChild(mainMenuBg);
+    mainMenu.addChild(mainMenuText);
+    mainMenu.interactive = true;
+    mainMenu.cursor = "pointer";
+    mainMenu
+      .on("pointerover", () => cursorOver(mainMenuText))
+      .on("pointerout", () => cursorOut(mainMenuText))
+      .on("pointerdown", () => {
+        TweenMax.to(boardContainer, 1, {
+          ease: Bounce.easeIn,
+          y: -(boardHeight + 100),
+        });
+        setTimeout(() => {
+          app.stage.removeChild(boardContainer);
+          loadMainMenu();
+        }, 1500);
+      });
 
-    boardContainer.addChild(restartBtn);
+    boardContainer.addChild(mainMenu);
 
     // adding play again btn
     const playAgainBtn = new PIXI.Container();
-    playAgainBtn.y = (boardHeight * 68) / 100;
+    playAgainBtn.y = (boardHeight * 73) / 100;
 
     const playAgainBtnBg = new PIXI.Sprite(textures.bossScoreBtnBg);
-    playAgainBtnBg.width = (boardWidth * 40) / 100;
-    playAgainBtnBg.height = (boardHeight * 8) / 100;
+    playAgainBtnBg.width = (boardWidth * 42) / 100;
+    playAgainBtnBg.height = (boardHeight * 9) / 100;
     playAgainBtnBg.anchor.set(0.5);
 
-    const playAgainBtnText = new PIXI.Text("PLAY AGAIN", {
+    const playAgainBtnText = new PIXI.Text(type === 'COMPLETED' ? "NEXT PHASE" : "TRY AGAIN", {
       fontFamily: "Boogaloo",
-      fontSize: (boardHeight * 4) / 100,
+      fontSize: (boardHeight * 5) / 100,
       fontWeight: "500",
       fill: "0xffffff",
     });
@@ -189,7 +191,23 @@ export default function loadBossScoreBoard(app, endScore) {
     playAgainBtn
       .on("pointerover", () => cursorOver(playAgainBtnText))
       .on("pointerout", () => cursorOut(playAgainBtnText))
-      .on("pointerdown", () => handleClick(loadBossModeUI));
+      .on("pointerdown", () => {
+        TweenMax.to(boardContainer, 1, {
+          ease: Bounce.easeIn,
+          y: -(boardHeight + 100),
+        });
+        setTimeout(() => {
+          app.stage.removeChild(BossScoreBoard);
+          switch (type) {
+            case 'COMPLETED':
+              loadBossModeUI(app, level === 3 ? 1 : level + 1)
+              break;
+              case 'FAILED':
+              loadBossModeUI(app, level)
+              break;
+          }
+        }, 1500);
+      });
 
     boardContainer.addChild(playAgainBtn);
     BossScoreBoard.addChild(boardContainer);
@@ -202,16 +220,6 @@ export default function loadBossScoreBoard(app, endScore) {
     function cursorOut(button) {
       button.scale.x = 1;
       button.scale.y = 1;
-    }
-    function handleClick(callback) {
-      TweenMax.to(boardContainer, 1, {
-        ease: Bounce.easeIn,
-        y: -(boardHeight + 100),
-      });
-      setTimeout(() => {
-        app.stage.removeChild(boardContainer);
-        callback(app);
-      }, 1500);
     }
 
     setTimeout(() => {

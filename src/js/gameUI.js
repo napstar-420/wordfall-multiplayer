@@ -1,6 +1,6 @@
 import { app } from "./app.js";
 import loadMainMenu from "./mainMenu.js";
-import loadNormalModeUI from "./normalModeUI.js";
+import loadNormalModeUI from "./normalMode/ui.js";
 
 export function getMenuBoard(texture) {
   const menuBoardSprite = new PIXI.Sprite(texture);
@@ -37,11 +37,14 @@ export function getScoreFrame(texture) {
   const scoreFrame = new PIXI.Container();
   scoreFrame.x = app.view.width / 2;
   scoreFrame.y = (app.view.height * 6) / 100;
+  scoreFrame.scale.x = (app.view.height * 0.15) / 100;
+  scoreFrame.scale.y = (app.view.height * 0.15) / 100;
 
   const scoreFrameSprite = new PIXI.Sprite(texture);
   scoreFrameSprite.width = 200;
   scoreFrameSprite.height = 120;
   scoreFrameSprite.anchor.set(0.5);
+
   const score = new PIXI.Text("0", {
     fontWeight: "bold",
     fill: "#303030",
@@ -51,11 +54,9 @@ export function getScoreFrame(texture) {
   score.anchor.y = 0.5;
   score.x = 15;
   score.y = -3;
+
   scoreFrame.addChild(scoreFrameSprite);
   scoreFrame.addChild(score);
-
-  scoreFrame.scale.x = (app.view.height * 0.15) / 100;
-  scoreFrame.scale.y = (app.view.height * 0.15) / 100;
 
   return scoreFrame;
 }
@@ -78,11 +79,33 @@ export function getMultiplier() {
 }
 
 export function getClockFrame(texture) {
+  const clockFrame = new PIXI.Container();
+  clockFrame.x = 30;
+  clockFrame.y = 5;
+  clockFrame.scale.x = (app.view.height * 0.15) / 100;
+  clockFrame.scale.y = (app.view.height * 0.15) / 100;
+
   const clockFrameSprite = new PIXI.Sprite(texture);
-  clockFrameSprite.anchor.set(0.5);
-  clockFrameSprite.x = 80;
-  clockFrameSprite.y = 40;
-  return clockFrameSprite;
+  clockFrameSprite.width = 200;
+  clockFrameSprite.height = 120;
+  clockFrameSprite.anchor.y = 0.25;
+  clockFrameSprite.anchor.x = 0.27;
+  
+
+  const time = new PIXI.Text("0", {
+    fontWeight: "bold",
+    fill: "#303030",
+    fontFamily: "Barlow",
+  });
+  time.anchor.x = 0.5;
+  time.anchor.y = 0.5;
+  time.x = 65;
+  time.y = 27;
+
+  clockFrame.addChild(clockFrameSprite);
+  clockFrame.addChild(time);
+
+  return clockFrame;
 }
 
 export function getMenuBtn(texture) {

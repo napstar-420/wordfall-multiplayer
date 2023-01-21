@@ -1,5 +1,6 @@
-import loadNormalModeUI from "./normalModeUI.js";
-import loadMainMenu from "./mainMenu.js";
+import loadNormalModeUI from "./ui.js";
+import loadMainMenu from "../mainMenu.js";
+import { getBackground } from "../gameUI.js";
 
 export default function loadScoreBoard(app, endScore) {
   const { accuracy, wpm, troubledWords, score } = endScore;
@@ -18,13 +19,7 @@ export default function loadScoreBoard(app, endScore) {
   ]);
   assetsPromise.then((textures) => {
     // Adding score board background
-    const scoreBoardBgSprite = new PIXI.Sprite(textures.scoreBoardBg);
-    scoreBoardBgSprite.width = app.view.width;
-    scoreBoardBgSprite.height = app.view.height;
-    scoreBoardBgSprite.anchor.set(0.5);
-    scoreBoardBgSprite.x = app.view.width / 2;
-    scoreBoardBgSprite.y = app.view.height / 2;
-    scoreBoard.addChild(scoreBoardBgSprite);
+    scoreBoard.addChild(getBackground(textures.scoreBoardBg));
 
     // Adding score board
     const boardContainer = new PIXI.Container();
@@ -157,30 +152,8 @@ export default function loadScoreBoard(app, endScore) {
     troubledWordText.anchor.set(0.5);
     troubledWordText.y = -((boardHeight * 6) / 100);
 
-    // adding practice btn
-    // const practiceBtn = new PIXI.Container();
-    // practiceBtn.y = (boardHeight * 12) / 100;
-
-    // const practiceBtnBgSprite = new PIXI.Sprite(textures.menuBtnBack);
-    // practiceBtnBgSprite.width = (boardWidth * 26) / 100;
-    // practiceBtnBgSprite.height = (boardHeight * 8) / 100;
-    // practiceBtnBgSprite.anchor.set(0.5);
-
-    // const practiceBtnText = new PIXI.Text("PRACTICE", {
-    //   fontFamily: "Boogaloo",
-    //   fontSize: (boardHeight * 4) / 100,
-    //   fontWeight: "500",
-    //   fill: "0xffffff",
-    // });
-    // practiceBtnText.anchor.y = 0.6;
-    // practiceBtnText.anchor.x = 0.5;
-
-    // practiceBtn.addChild(practiceBtnBgSprite);
-    // practiceBtn.addChild(practiceBtnText);
-
     troubledWordContainer.addChild(troubledWordBgSprite);
     troubledWordContainer.addChild(troubledWordText);
-    // troubledWordContainer.addChild(practiceBtn);
 
     let height = -((boardHeight * 3) / 100);
     let width = -((boardWidth * 31) / 100);

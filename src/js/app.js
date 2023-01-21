@@ -1,10 +1,11 @@
-import loadBossModeUI from "./bossModeUI.js";
-import loadBossScoreBoard from "./bossScoreBoard.js";
+import loadBossModeUI from "./boss mode/ui.js";
+import loadBossScoreBoard from "./boss mode/scoreBoard.js";
+import loadBossModeInfo from "./boss mode/info.js";
 import loadMainMenu from "./mainMenu.js";
-import loadNormalModeUI from "./normalModeUI.js";
-import createNormalModeUI from "./normalModeUI.js";
-import loadScoreBoard from "./scoreBoard.js";
-import createScoreBoard from "./scoreBoard.js";
+import loadNormalModeUI from "./normalMode/ui.js";
+import createNormalModeUI from "./normalMode/ui.js";
+import loadScoreBoard from "./normalMode/scoreBoard.js";
+import createScoreBoard from "./normalMode/scoreBoard.js";
 
 // PIXI APPLICATION
 export const app = new PIXI.Application({
@@ -46,10 +47,9 @@ PIXI.Assets.add("menuBtn", "/src/assets/images/hamburger menu b.png");
 PIXI.Assets.add("flower", "/src/assets/images/flower without glow 1.png");
 PIXI.Assets.add("twinFlower1", "/src/assets/images/flower without glow 2.png");
 PIXI.Assets.add("twinFlower2", "/src/assets/images/flower without glow 3.png");
-PIXI.Assets.add(
-  "bossModeBg",
-  "/src/assets/images/back only for tiling dark.png"
-);
+PIXI.Assets.add('bossModeBg1', '/src/assets/images/boss mode back 1.png');
+PIXI.Assets.add('bossModeBg2', '/src/assets/images/boss mode back 2.png');
+PIXI.Assets.add('bossModeBg3', '/src/assets/images/boss mode back 3.png');
 PIXI.Assets.add("bossModeClouds", "/src/assets/images/clouds group dark.png");
 PIXI.Assets.add("bossModeFg", "/src/assets/images/boss mode foreground.png");
 PIXI.Assets.add("jackOLantern1", "/src/assets/images/jack-O-lantern 1.png");
@@ -93,27 +93,13 @@ PIXI.Assets.add(
 
 // loadNormalModeUI(app);
 loadMainMenu(app);
-// loadBossModeUI(app);
+// loadBossModeUI(app, 'ACCURACY');
 // const endScore = {
 //   accuracy: 56,
 //   wpm: 40,
-//   troubledWords: [
-//     "lorem",
-//     "ipsum",
-//     "lorem",
-//     "ipsum",
-//     "lorem",
-//     "ipsum",
-//     "lorem",
-//     "ipsum",
-//     "lorem",
-//     "ipsum",
-//     "lorem",
-//     "ipsum",
-//     "lorem",
-//     "ipsum",
-//   ],
+//   level: 1,
 //   score: 1245,
 // };
 // loadScoreBoard(app, endScore);
-// loadBossScoreBoard(app, endScore);
+// loadBossScoreBoard(app, endScore, 'COMPLETED');
+// loadBossModeInfo(app);

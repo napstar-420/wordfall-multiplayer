@@ -1,7 +1,7 @@
 import { app } from "./app.js";
-import loadBossModeUI from "./bossModeUI.js";
-import loadNormalModeUI from "./normalModeUI.js";
+import loadNormalModeUI from "./normalMode/ui.js";
 import { getBackground, getMenuBoard } from "./gameUI.js";
+import loadBossModeInfo from "./boss mode/info.js";
 
 export default function loadMainMenu() {
   const hoverSound = new Audio(
@@ -84,7 +84,17 @@ export default function loadMainMenu() {
         {
           mode: "BOSS MODE",
           height: (BoardContainer.height * 45) / 100,
-          event: () => startMode(loadBossModeUI),
+          event: () => {
+            tapSound.play();
+            TweenMax.to(BoardContainer, 1, {
+              ease: Back.easeIn.config(1.7),
+              y: -height - 200,
+            });
+            setTimeout(() => {
+              loadBossModeInfo(app);
+              app.stage.removeChild(MAIN_MENU);
+            }, 1500);
+          },
         },
         {
           mode: "PRACTICE",

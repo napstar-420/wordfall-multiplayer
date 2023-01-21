@@ -7,16 +7,19 @@ import {
   getWordsContainer,
   getMultiplier,
   getNormalClouds,
-} from "./gameUI.js";
-import { startGame } from "./gameLogic.js";
-import loadBossScoreBoard from "./bossScoreBoard.js";
+  getPauseMenu,
+  getClockFrame,
+} from "../gameUI.js";
 
-export default function loadBossModeUI(app) {
+import loadBossScoreBoard from "./scoreBoard.js";
+import {startGame} from '../gameLogic.js'
+
+export default function loadBossModeUI(app, level) {
   const BossModeContainer = new PIXI.Container();
   BossModeContainer.width = app.view.width;
   BossModeContainer.height = app.view.height;
   PIXI.Assets.load([
-    "bossModeBg",
+    `bossModeBg${level}`,
     "bossModeFg",
     "scoreFrame",
     "clockFrame",
@@ -28,7 +31,9 @@ export default function loadBossModeUI(app) {
   ])
     .then((textures) => {
       const {
-        bossModeBg,
+        bossModeBg1,
+        bossModeBg2,
+        bossModeBg3,
         bossModeFg,
         scoreFrame,
         menuBtn,
@@ -36,8 +41,20 @@ export default function loadBossModeUI(app) {
         jackOLantern2,
         jackOLantern3,
         bossModeClouds,
+        clockFrame
       } = textures;
-      BossModeContainer.addChild(getBackground(bossModeBg));
+      switch (level) {
+        case 1:
+          BossModeContainer.addChild(getBackground(bossModeBg1));
+          break;
+          case 2:
+          BossModeContainer.addChild(getBackground(bossModeBg2));
+          break;
+          case 3:
+          BossModeContainer.addChild(getBackground(bossModeBg3));
+          break;
+      }
+      BossModeContainer.addChild(getNormalClouds(bossModeClouds));
       BossModeContainer.addChild(
         getLivesContainer([jackOLantern1, jackOLantern2, jackOLantern3])
       );
@@ -46,12 +63,11 @@ export default function loadBossModeUI(app) {
       BossModeContainer.addChild(getScoreFrame(scoreFrame));
       BossModeContainer.addChild(getMenuBtn(menuBtn));
       BossModeContainer.addChild(getMultiplier());
-      BossModeContainer.addChild(getNormalClouds(bossModeClouds));
+      BossModeContainer.addChild(getClockFrame(clockFrame))
+      BossModeContainer.addChild(getPauseMenu());
     })
     .then(() => {
-      setTimeout(() => {
-        startGame(BossModeContainer, loadBossScoreBoard);
-      }, 2500);
+      startGame(BossModeContainer, loadBossScoreBoard, level);
     });
 
   app.stage.addChild(BossModeContainer);
