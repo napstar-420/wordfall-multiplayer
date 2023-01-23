@@ -179,7 +179,7 @@ export default function loadBossScoreBoard(app, endScore, type) {
     playAgainBtnBg.height = (boardHeight * 9) / 100;
     playAgainBtnBg.anchor.set(0.5);
 
-    const playAgainBtnText = new PIXI.Text(type === 'COMPLETED' ? "NEXT PHASE" : "TRY AGAIN", {
+    const playAgainBtnText = new PIXI.Text(type === 'COMPLETED' ? level === 3 ? "PLAY AGAIN" : "NEXT PHASE" : "TRY AGAIN", {
       fontFamily: "Boogaloo",
       fontSize: (boardHeight * 5) / 100,
       fontWeight: "500",

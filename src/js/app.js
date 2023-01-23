@@ -93,13 +93,13 @@ PIXI.Assets.add(
 
 // loadNormalModeUI(app);
 loadMainMenu(app);
-// loadBossModeUI(app, 1);
-// const endScore = {
-//   accuracy: 56,
-//   wpm: 40,
-//   level: 1,
-//   score: 1245,
-// };
-// loadScoreBoard(app, endScore);
-// loadBossScoreBoard(app, endScore, 'COMPLETED');
+loadBossModeUI(app, 1);
+const endScore = {
+  accuracy: 56,
+  wpm: 40,
+  level: 3,
+  score: 1245,
+};
+loadScoreBoard(app, endScore);
+loadBossScoreBoard(app, endScore, 'FAILED');
 // loadBossModeInfo(app);
