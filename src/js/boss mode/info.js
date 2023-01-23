@@ -1,4 +1,5 @@
 import loadMainMenu from "../mainMenu.js";
+import { hoverSound, tapSound } from "../music and sounds/index.js";
 import loadBossModeUI from "./ui.js";
 
 export default function loadBossModeInfo(app) {
@@ -52,6 +53,9 @@ export default function loadBossModeInfo(app) {
     crossBtn.cursor = "pointer";
     crossBtn
       .on("pointerover", () => {
+        hoverSound.pause();
+        hoverSound.currentTime = 0;
+        hoverSound.play();
         crossBtn.scale.x = crossBtnScale + 0.1;
         crossBtn.scale.y = crossBtnScale + 0.1;
       })
@@ -60,6 +64,9 @@ export default function loadBossModeInfo(app) {
         crossBtn.scale.y = crossBtnScale;
       })
       .on("pointerdown", () => {
+        tapSound.pause();
+        tapSound.currentTime = 0;
+        tapSound.play();
         TweenMax.to(board, 1, {
           ease: Back.easeIn.config(1.7),
           y: -(boardHeight + 200),
@@ -171,6 +178,9 @@ export default function loadBossModeInfo(app) {
     launchBtn.cursor = "pointer";
     launchBtn
       .on("pointerover", () => {
+        hoverSound.pause();
+        hoverSound.currentTime = 0;
+        hoverSound.play();
         launchBtnText.scale.x = 1.1;
         launchBtnText.scale.y = 1.1;
       })
@@ -179,6 +189,9 @@ export default function loadBossModeInfo(app) {
         launchBtnText.scale.y = 1.0;
       })
       .on("pointerdown", () => {
+        tapSound.pause();
+        tapSound.currentTime = 0;
+        tapSound.play();
         TweenMax.to(board, 1, {
           ease: Back.easeIn.config(1.7),
           y: -(boardHeight + 200),

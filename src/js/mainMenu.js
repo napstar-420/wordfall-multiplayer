@@ -2,16 +2,11 @@ import { app } from "./app.js";
 import loadNormalModeUI from "./normalMode/ui.js";
 import { getBackground, getMenuBoard } from "./gameUI.js";
 import loadBossModeInfo from "./boss mode/info.js";
+import { hoverSound, tapSound } from "./music and sounds/index.js";
 
 export default function loadMainMenu() {
   document.getElementById("game-container")
     .style.backgroundImage = "url('/src/assets/images/download (1).jpeg')";
-  const hoverSound = new Audio(
-    "/src/assets/music and sound effects/hoverSound.mp3"
-  );
-  const tapSound = new Audio(
-    "/src/assets/music and sound effects/tapSound.wav"
-  );
   // MAIN MENU
   const MAIN_MENU = new PIXI.Container();
   MAIN_MENU.width = app.view.width;

@@ -1,6 +1,7 @@
 import { app } from "./app.js";
 import loadMainMenu from "./mainMenu.js";
 import loadNormalModeUI from "./normalMode/ui.js";
+import { hoverSound, tapSound } from "./music and sounds/index.js";
 
 export function getMenuBoard(texture) {
   const menuBoardSprite = new PIXI.Sprite(texture);
@@ -229,6 +230,9 @@ export function getPauseMenu() {
   musicCheckBox.interactive = true;
   musicCheckBox.cursor = "pointer";
   musicCheckBox.on("pointerdown", () => {
+    tapSound.pause();
+    tapSound.currentTime = 0;
+    tapSound.play();
     if (isMusicOn) {
       isMusicOn = false;
       pauseMenu.removeChild(musicCheckFill);
@@ -274,6 +278,9 @@ export function getPauseMenu() {
   sfxBox.interactive = true;
   sfxBox.cursor = "pointer";
   sfxBox.on("pointerdown", () => {
+    tapSound.pause();
+    tapSound.currentTime = 0;
+    tapSound.play();
     if (isSfxOn) {
       isSfxOn = false;
       pauseMenu.removeChild(sfxCheckFill);
@@ -322,16 +329,25 @@ export function getPauseMenu() {
   });
 
   function cursorOver(button) {
+    hoverSound.pause();
+    hoverSound.currentTime = 0;
+    hoverSound.play();
     button.width = (width * 16) / 100;
     button.height = (width * 16) / 100;
   }
 
   function cursorOut(button) {
+    hoverSound.pause();
+    hoverSound.currentTime = 0;
+    hoverSound.play();
     button.width = (width * 15) / 100;
     button.height = (width * 15) / 100;
   }
 
   function handleClick(type) {
+    tapSound.pause();
+    tapSound.currentTime = 0;
+    tapSound.play();
     switch (type) {
       case "RESTART":
         app.stage.removeChild(app.stage.children[0]);
@@ -411,6 +427,9 @@ export function getRulesBoard(texture, btnTexture,rulesInfo) {
   startGameBtn.cursor = 'pointer';
   startGameBtn
   .on('pointerover', () => {
+    hoverSound.pause();
+    hoverSound.currentTime = 0;
+    hoverSound.play();
     startText.scale.x = 1.1;
     startText.scale.y = 1.1;
   })

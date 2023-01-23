@@ -1,6 +1,7 @@
 import loadBossModeUI from "./ui.js";
 import { getBackground } from "../gameUI.js";
 import loadMainMenu from "../mainMenu.js";
+import { hoverSound, tapSound } from "../music and sounds/index.js";
 
 export default function loadBossScoreBoard(app, endScore, type) {
   const { accuracy, wpm, score, level } = endScore;
@@ -154,6 +155,9 @@ export default function loadBossScoreBoard(app, endScore, type) {
       .on("pointerover", () => cursorOver(mainMenuText))
       .on("pointerout", () => cursorOut(mainMenuText))
       .on("pointerdown", () => {
+        tapSound.pause();
+        tapSound.currentTime = 0;
+        tapSound.play();
         TweenMax.to(boardContainer, 1, {
           ease: Bounce.easeIn,
           y: -(boardHeight + 100),
@@ -192,6 +196,9 @@ export default function loadBossScoreBoard(app, endScore, type) {
       .on("pointerover", () => cursorOver(playAgainBtnText))
       .on("pointerout", () => cursorOut(playAgainBtnText))
       .on("pointerdown", () => {
+        tapSound.pause();
+        tapSound.currentTime = 0;
+        tapSound.play();
         TweenMax.to(boardContainer, 1, {
           ease: Bounce.easeIn,
           y: -(boardHeight + 100),
@@ -214,6 +221,9 @@ export default function loadBossScoreBoard(app, endScore, type) {
 
     // CURSOR INTERACTIONS
     function cursorOver(button) {
+      hoverSound.pause();
+      hoverSound.currentTime = 0;
+      hoverSound.play();
       button.scale.x = 1.1;
       button.scale.y = 1.1;
     }

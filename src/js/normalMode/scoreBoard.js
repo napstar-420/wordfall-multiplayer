@@ -1,6 +1,7 @@
 import loadNormalModeUI from "./ui.js";
 import loadMainMenu from "../mainMenu.js";
 import { getBackground } from "../gameUI.js";
+import { hoverSound, tapSound } from "../music and sounds/index.js";
 
 export default function loadScoreBoard(app, endScore) {
   const { accuracy, wpm, troubledWords, score } = endScore;
@@ -51,6 +52,9 @@ export default function loadScoreBoard(app, endScore) {
     crossBtn.cursor = "pointer";
     crossBtn
       .on("pointerover", () => {
+        hoverSound.pause();
+        hoverSound.currentTime = 0;
+        hoverSound.play();
         crossBtn.scale.x = crossBtnScale + 0.1;
         crossBtn.scale.y = crossBtnScale + 0.1;
       })
@@ -213,6 +217,9 @@ export default function loadScoreBoard(app, endScore) {
 
     // CURSOR INTERACTIONS
     function cursorOver(button) {
+      hoverSound.pause();
+    hoverSound.currentTime = 0;
+    hoverSound.play();
       button.scale.x = 1.1;
       button.scale.y = 1.1;
     }
@@ -221,6 +228,9 @@ export default function loadScoreBoard(app, endScore) {
       button.scale.y = 1;
     }
     function handleClick(callback) {
+      tapSound.pause();
+      tapSound.currentTime = 0;
+      tapSound.play();
       TweenMax.to(boardContainer, 1, {
         ease: Back.easeIn.config(1.7),
         y: -(boardHeight + 100),

@@ -1,5 +1,6 @@
 import { getRandomNumber } from "./gameUI.js";
 import { app } from "./app.js";
+import { tapSound } from "./music and sounds/index.js";
 
 const wordsList = [
   "dispensable",
@@ -124,7 +125,7 @@ export function startGame(container, loadScoreBoard, level) {
   );
   
   // Variables to use in the game
-  let gamePaused = true;
+  let gamePaused = false;
   let wordFromApi = "";
   let wordsOnScreen = [];
   let activeWord = null;
@@ -207,10 +208,14 @@ export function startGame(container, loadScoreBoard, level) {
   }
 
   if (level) {
+    gamePaused = true;
     clearInterval(timeInterval);
     rulesBoard = container.children[10];
     startGameBtn = rulesBoard.children[3];
     startGameBtn.on('pointerdown', () => {
+      tapSound.pause();
+      tapSound.currentTime = 0;
+      tapSound.play();
       TweenMax.to(rulesBoard, 1, { ease: Expo.easeIn, y: -(app.view.height * 90 / 100) });
       setTimeout(() => {
         gamePaused = false;
