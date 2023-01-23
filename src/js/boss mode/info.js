@@ -1,6 +1,10 @@
+import loadMainMenu from "../mainMenu.js";
 import loadBossModeUI from "./ui.js";
 
 export default function loadBossModeInfo(app) {
+  document.getElementById("game-container").style.backgroundImage =
+    "url('/src/assets/images/game-back.jpg')";
+
   // Container
   const bossModeInfoContainer = new PIXI.Container();
   bossModeInfoContainer.width = app.view.width;
@@ -16,8 +20,13 @@ export default function loadBossModeInfo(app) {
   board.x = app.view.width / 2 - boardWidth / 2;
   board.y = -(boardHeight + 200);
 
-  PIXI.Assets.load(["bossScoreBg", "bossScoreBoard", "bossScoreBtnBg"]).then((textures) => {
-    const { bossScoreBg, bossScoreBoard, bossScoreBtnBg } = textures;
+  PIXI.Assets.load([
+    "bossScoreBg",
+    "bossScoreBoard",
+    "bossScoreBtnBg",
+    "bossScoreBoardCross",
+  ]).then((textures) => {
+    const { bossScoreBg, bossScoreBoard, bossScoreBtnBg, bossScoreBoardCross } = textures;
 
     // Background
     const background = new PIXI.Sprite(bossScoreBg);
@@ -31,6 +40,37 @@ export default function loadBossModeInfo(app) {
     boardSprite.height = boardHeight;
     board.addChild(boardSprite);
 
+    // Cross Button
+    const crossBtn = new PIXI.Sprite(bossScoreBoardCross);
+    crossBtn.anchor.set(0.5);
+    crossBtn.x = (boardWidth * 85) / 100;
+    crossBtn.y = (boardHeight * 26) / 100;
+    let crossBtnScale = (boardHeight * 0.65) / 100 / 10;
+    crossBtn.scale.x = crossBtnScale;
+    crossBtn.scale.y = crossBtnScale;
+    crossBtn.interactive = true;
+    crossBtn.cursor = "pointer";
+    crossBtn
+      .on("pointerover", () => {
+        crossBtn.scale.x = crossBtnScale + 0.1;
+        crossBtn.scale.y = crossBtnScale + 0.1;
+      })
+      .on("pointerout", () => {
+        crossBtn.scale.x = crossBtnScale;
+        crossBtn.scale.y = crossBtnScale;
+      })
+      .on("pointerdown", () => {
+        TweenMax.to(board, 1, {
+          ease: Back.easeIn.config(1.7),
+          y: -(boardHeight + 200),
+        });
+        setTimeout(() => {
+          app.stage.removeChild(bossModeInfoContainer);
+          loadMainMenu();
+        }, 1200);
+      });
+    board.addChild(crossBtn);
+
     // Phases Text
     const phasesText = new PIXI.Text("PHASES", {
       fontSize: (boardHeight * 8) / 100,
@@ -38,38 +78,38 @@ export default function loadBossModeInfo(app) {
       fontWeight: "600",
       fontFamily: "Boogaloo",
     });
-    phasesText.anchor.set(0.5)
-    phasesText.x = boardWidth / 2 - boardWidth * 1 / 100;
-    phasesText.y = boardHeight * 28 / 100;
+    phasesText.anchor.set(0.5);
+    phasesText.x = boardWidth / 2 - (boardWidth * 1) / 100;
+    phasesText.y = (boardHeight * 28) / 100;
 
     board.addChild(phasesText);
 
     const phases = [
       {
-        name: 'ACCURACY',
-        nameColor: '#77c627',
-        info: 'Type with precision and attention as every letter count to \npass this stage. One mistake and you\'re out.',
-        nameY: boardHeight * 38 / 100,
-        paraY: boardHeight * 42 / 100,
+        name: "ACCURACY",
+        nameColor: "#77c627",
+        info: "Type with precision and attention as every letter count to \npass this stage. One mistake and you're out.",
+        nameY: (boardHeight * 38) / 100,
+        paraY: (boardHeight * 42) / 100,
       },
       {
-        name: 'ENDURANCE',
-        nameColor: '#fe8c27',
-        info: 'Keep your fingers moving and your mind focused.\nSurvive by typing as many words as possible.\nSpeed matters.',
-        nameY: boardHeight * 51 / 100,
-        paraY: boardHeight * 55 / 100,
+        name: "ENDURANCE",
+        nameColor: "#fe8c27",
+        info: "Keep your fingers moving and your mind focused.\nSurvive by typing as many words as possible.\nSpeed matters.",
+        nameY: (boardHeight * 51) / 100,
+        paraY: (boardHeight * 55) / 100,
       },
       {
-        name: 'SKILL CRUSHER',
-        nameColor: '#cf0c12',
-        info: 'Race against the clock to type every word with accuracy.\nYou won\'t be able to feel your fingers after this.',
-        nameY: boardHeight * 66 / 100,
-        paraY: boardHeight * 70 / 100,
+        name: "SKILL CRUSHER",
+        nameColor: "#cf0c12",
+        info: "Race against the clock to type every word with accuracy.\nYou won't be able to feel your fingers after this.",
+        nameY: (boardHeight * 66) / 100,
+        paraY: (boardHeight * 70) / 100,
       },
-    ]
+    ];
 
     phases.map((phase, index) => {
-      const {name, nameColor, info, nameY, paraY} = phase;
+      const { name, nameColor, info, nameY, paraY } = phase;
 
       // LEVEL TEXT
       const levelText = new PIXI.Text(`LEVEL ${index + 1} -`, {
@@ -77,10 +117,10 @@ export default function loadBossModeInfo(app) {
         fill: "#441559",
         fontWeight: "600",
         fontFamily: "Boogaloo",
-      })
-      levelText.x = boardWidth * 19 / 100;
+      });
+      levelText.x = (boardWidth * 19) / 100;
       levelText.y = nameY;
-      board.addChild(levelText)
+      board.addChild(levelText);
 
       // LEVEL NAME TEXT
       const nameText = new PIXI.Text(name, {
@@ -88,71 +128,77 @@ export default function loadBossModeInfo(app) {
         fill: nameColor,
         fontWeight: "600",
         fontFamily: "Boogaloo",
-      })
-      nameText.x = boardWidth * 35 / 100;
+      });
+      nameText.x = (boardWidth * 35) / 100;
       nameText.y = nameY;
-      board.addChild(nameText)
+      board.addChild(nameText);
 
       // LEVEL INFO TEXT
       const infoText = new PIXI.Text(info, {
         fontSize: (boardWidth * 3) / 100,
-        fill: '#694e51',
+        fill: "#694e51",
         fontWeight: 100,
         fontFamily: "Boogaloo",
         // wordWrap: true,
         // wordWrapWidth: boardWidth * 60 / 100,
-        lineJoin: 'round',
-        textAlign: 'center'
-      })
-      infoText.x = boardWidth * 19 / 100;
+        lineJoin: "round",
+        textAlign: "center",
+      });
+      infoText.x = (boardWidth * 19) / 100;
       infoText.y = paraY;
-      board.addChild(infoText)
+      board.addChild(infoText);
     });
 
     // Launch btn Text
-    const launchBtnText = new PIXI.Text('LAUNCH IN', {
+    const launchBtnText = new PIXI.Text("LAUNCH IN", {
       fontSize: (boardWidth * 4) / 100,
       fill: 0xffffff,
       fontWeight: 500,
-      fontFamily: 'Boogaloo',
-    })
+      fontFamily: "Boogaloo",
+    });
     launchBtnText.anchor.set(0.5);
     launchBtnText.x = boardWidth / 2;
-    launchBtnText.y = boardHeight * 81 / 100;
+    launchBtnText.y = (boardHeight * 81) / 100;
 
     // LAUNCH IN BUTTON
     const launchBtn = new PIXI.Sprite(bossScoreBtnBg);
-    launchBtn.width = boardWidth * 30 / 100;
-    launchBtn.height = boardHeight * 7 / 100;
+    launchBtn.width = (boardWidth * 30) / 100;
+    launchBtn.height = (boardHeight * 7) / 100;
     launchBtn.anchor.set(0.5);
     launchBtn.x = boardWidth / 2;
-    launchBtn.y = boardHeight * 81 / 100;
+    launchBtn.y = (boardHeight * 81) / 100;
     launchBtn.interactive = true;
-    launchBtn.cursor = 'pointer';
+    launchBtn.cursor = "pointer";
     launchBtn
-      .on('pointerover', () => {
+      .on("pointerover", () => {
         launchBtnText.scale.x = 1.1;
         launchBtnText.scale.y = 1.1;
       })
-      .on('pointerout', () => {
+      .on("pointerout", () => {
         launchBtnText.scale.x = 1.0;
         launchBtnText.scale.y = 1.0;
       })
-      .on('pointerdown', () => {
-        TweenMax.to(board, 1, {ease: Back.easeIn.config(1.7), y: -(boardHeight + 200)})
+      .on("pointerdown", () => {
+        TweenMax.to(board, 1, {
+          ease: Back.easeIn.config(1.7),
+          y: -(boardHeight + 200),
+        });
         setTimeout(() => {
           app.stage.removeChild(bossModeInfoContainer);
-          loadBossModeUI(app, 2);
-        }, 1200)
-      })
+          loadBossModeUI(app, 1);
+        }, 1200);
+      });
     board.addChild(launchBtn);
     board.addChild(launchBtnText);
     bossModeInfoContainer.addChild(board);
   });
 
   setTimeout(() => {
-    TweenMax.to(board, 1, {ease: Back.easeOut.config(1.7), y: -((boardHeight * 21) / 100)})
-  }, 500)
+    TweenMax.to(board, 1, {
+      ease: Back.easeOut.config(1.7),
+      y: -((boardHeight * 21) / 100),
+    });
+  }, 500);
 
   app.stage.addChild(bossModeInfoContainer);
 }

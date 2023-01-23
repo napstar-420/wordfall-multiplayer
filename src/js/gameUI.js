@@ -346,3 +346,78 @@ export function getPauseMenu() {
 
   return pauseMenu;
 }
+
+export function getRulesBoard(texture, btnTexture,rulesInfo) {
+  const board = new PIXI.Container();
+  const boardWidth = app.view.width * 60 / 100;
+  const boardHeight = app.view.height * 80 / 100;
+  board.width = boardWidth;
+  board.height = boardHeight;
+  board.y = -(boardHeight + 100);
+  board.x = app.view.width / 2 - boardWidth / 2;
+
+  // Background
+  const bg = new PIXI.Sprite(texture);
+  bg.width = boardWidth;
+  bg.height = boardHeight;
+  board.addChild(bg);
+
+  // Rules Heading;
+  const rulesHeading = new PIXI.Text('Rules', {
+    fontSize: (boardWidth * 9) / 100,
+    fontWeight: 500,
+    fontFamily: "Boogaloo",
+    fill: "#ff8316",
+  })
+  rulesHeading.anchor.set(0.5);
+  rulesHeading.x = boardWidth / 2;
+  rulesHeading.y = boardHeight * 28 / 100;
+  board.addChild(rulesHeading);
+
+  // Rules Text
+  const rules = new PIXI.Text(rulesInfo, {
+    fontSize: (boardWidth * 4) / 100,
+    fontWeight: 500,
+    fontFamily: "Boogaloo",
+    fill: "#303030",
+    wordWrap: true,
+    wordWrapWidth: boardWidth * 64 / 100,
+  })
+  rules.x = boardWidth * 15 / 100;
+  rules.y = boardHeight * 40 / 100;
+  board.addChild(rules);
+
+  // Adding StartGame Button
+  const startGameBtn = new PIXI.Sprite(btnTexture);
+  startGameBtn.anchor.set(0.5);
+  startGameBtn.x = boardWidth / 2;
+  startGameBtn.y = boardHeight * 78 / 100;
+  startGameBtn.width = boardWidth * 25 / 100;
+  startGameBtn.height = boardHeight * 12 / 100;
+  board.addChild(startGameBtn);
+
+  const startText= new PIXI.Text('START GAME', {
+    fontSize: (boardWidth * 4) / 100,
+    fontWeight: 500,
+    fontFamily: "Boogaloo",
+    fill: "#ffffff",
+  })
+  startText.anchor.set(0.5);
+  startText.x = boardWidth / 2;
+  startText.y = boardHeight * 78 / 100;
+  board.addChild(startText);
+
+  startGameBtn.interactive = true;
+  startGameBtn.cursor = 'pointer';
+  startGameBtn
+  .on('pointerover', () => {
+    startText.scale.x = 1.1;
+    startText.scale.y = 1.1;
+  })
+  .on('pointerout', () => {
+    startText.scale.x = 1;
+    startText.scale.y = 1;
+  })
+
+  return board;
+}

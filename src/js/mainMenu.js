@@ -4,6 +4,8 @@ import { getBackground, getMenuBoard } from "./gameUI.js";
 import loadBossModeInfo from "./boss mode/info.js";
 
 export default function loadMainMenu() {
+  document.getElementById("game-container")
+    .style.backgroundImage = "url('/src/assets/images/download (1).jpeg')";
   const hoverSound = new Audio(
     "/src/assets/music and sound effects/hoverSound.mp3"
   );

@@ -9,10 +9,17 @@ import {
   getNormalClouds,
   getPauseMenu,
   getClockFrame,
+  getRulesBoard
 } from "../gameUI.js";
 
 import loadBossScoreBoard from "./scoreBoard.js";
 import {startGame} from '../gameLogic.js'
+
+const rules = {
+  1: "  Type every letter carefully. One mistake and you're out. If the word touches the ground or hit the lives game over cause you need 100% accuracy to complete this level. (Pumpkins are the life and time is 60 seconds)",
+  2: "  Get your fingers ready cause you need a speed of 45 words per minute to complete this level. If you lose all of your lives (pumpkins are lives) game over. You don't reach a 45 words per minute level failed.",
+  3: "  FINAL LEVEL! To beat this level you need a speed of 45 words per minute with 100 percent accuracy. There is no room for mistakes.",
+}
 
 export default function loadBossModeUI(app, level) {
   const BossModeContainer = new PIXI.Container();
@@ -28,6 +35,8 @@ export default function loadBossModeUI(app, level) {
     "jackOLantern2",
     "jackOLantern3",
     "bossModeClouds",
+    "bossScoreBoard",
+    "bossScoreBtnBg"
   ])
     .then((textures) => {
       const {
@@ -41,7 +50,9 @@ export default function loadBossModeUI(app, level) {
         jackOLantern2,
         jackOLantern3,
         bossModeClouds,
-        clockFrame
+        clockFrame,
+        bossScoreBoard,
+        bossScoreBtnBg
       } = textures;
       switch (level) {
         case 1:
@@ -65,6 +76,7 @@ export default function loadBossModeUI(app, level) {
       BossModeContainer.addChild(getMultiplier());
       BossModeContainer.addChild(getClockFrame(clockFrame))
       BossModeContainer.addChild(getPauseMenu());
+      BossModeContainer.addChild(getRulesBoard(bossScoreBoard, bossScoreBtnBg ,rules[level]))
     })
     .then(() => {
       startGame(BossModeContainer, loadBossScoreBoard, level);

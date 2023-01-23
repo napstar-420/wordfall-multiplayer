@@ -52,7 +52,7 @@ PIXI.Assets.add('bossModeBg2', '/src/assets/images/boss mode back 2.png');
 PIXI.Assets.add('bossModeBg3', '/src/assets/images/boss mode back 3.png');
 PIXI.Assets.add("bossModeClouds", "/src/assets/images/clouds group dark.png");
 PIXI.Assets.add("bossModeFg", "/src/assets/images/boss mode foreground.png");
-PIXI.Assets.add("jackOLantern1", "/src/assets/images/jack-O-lantern 1.png");
+PIXI.Assets.add("jackOLantern1", "/src/assets/images/Jack-O-Lantern 1.png");
 PIXI.Assets.add("jackOLantern2", "/src/assets/images/Jack-O-Lantern 2.png");
 PIXI.Assets.add(
   "jackOLantern3",
@@ -93,7 +93,7 @@ PIXI.Assets.add(
 
 // loadNormalModeUI(app);
 loadMainMenu(app);
-// loadBossModeUI(app, 'ACCURACY');
+// loadBossModeUI(app, 1);
 // const endScore = {
 //   accuracy: 56,
 //   wpm: 40,

@@ -116,13 +116,15 @@ export function startGame(container, loadScoreBoard, level) {
   }
   clockFrame.children[1].text = 60;
   const pauseMenu = container.children[9];
+  let rulesBoard = null;
+  let startGameBtn
 
   const brickBreakSound = new Audio(
     "/src/assets/music and sound effects/brickSound.wav"
   );
   
   // Variables to use in the game
-  let gamePaused = false;
+  let gamePaused = true;
   let wordFromApi = "";
   let wordsOnScreen = [];
   let activeWord = null;
@@ -182,14 +184,40 @@ export function startGame(container, loadScoreBoard, level) {
         break;
     }
     if (time === 0) {
-      activeWord = null;
-      activeWordIndex = null;
-      counter = 1;
-      activeWord = null;
-      activeWordIndex = null;
-      counter = 1;
-      endGame("COMPLETED");
+      switch (level) {
+        case 1:
+          endGame("COMPLETED");
+          break;
+        case 2:
+          if (getWpm(completedWords, time) > 45) {
+            endGame("COMPLETED");
+          } else {
+            endGame("FAILED");
+          }
+          break;
+        case 3:
+          if (getWpm(completedWords, time) > 45) {
+            endGame("COMPLETED");
+          } else {
+            endGame("FAILED");
+          }
+          break;
+      }
     }
+  }
+
+  if (level) {
+    clearInterval(timeInterval);
+    rulesBoard = container.children[10];
+    startGameBtn = rulesBoard.children[3];
+    startGameBtn.on('pointerdown', () => {
+      TweenMax.to(rulesBoard, 1, { ease: Expo.easeIn, y: -(app.view.height * 90 / 100) });
+      setTimeout(() => {
+        gamePaused = false;
+        setInterval(updateTime, 1000);
+      }, 1000)
+    })
+    TweenMax.to(rulesBoard, 1, { ease: Expo.easeOut, y: 0 });
   }
 
   // This Code adds resume functionality to pause menu
@@ -333,6 +361,25 @@ export function startGame(container, loadScoreBoard, level) {
         }
       } else {
         // if user mistypes
+          // reset streak
+          streak = 0;
+          // decrement multiplier
+          multiplier -= multiplier > 1 ? 1 : 0;
+          // update multiplier on ui
+          container.children[7].text = `x${multiplier}`;
+          // adding word to troubled array
+          let troubledWord = "";
+          // changing style from type to regular
+          wordsOnScreen[activeWordIndex].children.forEach((letter, index) => {
+            if (index > 0) {
+              letter.style = letterStyling;
+              troubledWord = troubledWord.concat(letter.text);
+            }
+          });
+          troubledWords.unshift(troubledWord);
+          activeWord = null;
+          activeWordIndex = null;
+          counter = 1;
         switch (level) {
           case 1:
             endGame("FAILED");
@@ -340,25 +387,7 @@ export function startGame(container, loadScoreBoard, level) {
           case 3:
             endGame("FAILED");
             break;
-          default: // reset streak
-          // decrement multiplier
-            streak = 0;
-            multiplier -= multiplier > 1 ? 1 : 0;
-            // update multiplier on ui
-            container.children[7].text = `x${multiplier}`;
-            // adding word to troubled array
-            let troubledWord = "";
-            // changing style from type to regular
-            wordsOnScreen[activeWordIndex].children.forEach((letter, index) => {
-              if (index > 0) {
-                letter.style = letterStyling;
-                troubledWord = troubledWord.concat(letter.text);
-              }
-            });
-            troubledWords.unshift(troubledWord);
-            activeWord = null;
-            activeWordIndex = null;
-            counter = 1;
+          default: 
             break;
         }
       }
@@ -379,103 +408,125 @@ export function startGame(container, loadScoreBoard, level) {
 
   // This function update words on screen
   function updateWords() {
-    wordsOnScreen.forEach((word, index) => {
+    wordsOnScreen.forEach((word,index) => {
+      // Descend words on screen
       if (word) {
         word.y += wordSpeed;
-        if (word.y > app.view.height - 300) {
-          // this will be collision check
-          livesContainer.children.forEach((pumpkin) => {
-            const collision = testForCollision(word, pumpkin);
-            if (collision) {
-              switch (level) {
-                case 1:
-                  endGame("FAILED");
-                  break;
-                case 3:
-                  endGame("FAILED");
-                  break;
-                default:
-                  livesContainer.children.forEach((life) => {
-                    const collision = testForCollision(word, life);
-                    if (collision) {
-                      livesContainer.removeChild(life);
-                      if (livesContainer.children.length === 0) {
-                        endGame("FAILED");
-                      }
-                    }
-                  });
-                  break;
-              }
-            }
-          });
-        }
-        // If word reached the ground
-        if (word.y > app.view.height - 130) {
-          switch (level) {
-            case 1:
-              endGame("FAILED");
-              break;
-            case 3:
-              endGame("FAILED");
-              break;
-            default:
-              // if the active word is touching the ground
-              if (word.active === true) {
-                // changing style from type to regular
-                word.children.forEach((letter, index) => {
-                  if (index > 0) {
-                    letter.style = letterStyling;
-                  }
-                });
-                activeWord = null;
-                activeWordIndex = null;
-                counter = 1;
-              }
-              // reset streak
-              streak = 0;
-              // decrement multiplier
-              multiplier -= multiplier > 1 ? 1 : 0;
-              // update multiplier on ui
-              container.children[7].text = `x${multiplier}`;
-              let troubledWord = "";
-              // Reset Styling
+      } else {
+        return;
+      }
+      // collision check
+      if (word.y > app.view.height - 300) {
+        livesContainer.children.forEach((life) => {
+          const collision = testForCollision(word, life);
+          if (collision) {
+            if (word.active === true) {
+              // changing style from type to regular
               word.children.forEach((letter, index) => {
                 if (index > 0) {
-                  troubledWord = troubledWord.concat(letter.text);
+                  letter.style = letterStyling;
                 }
               });
-              // adding word to troubled array
-              troubledWords.push(troubledWord);
-              // updating words on screen
-              wordsOnScreen.splice(index, 1);
-              // updating active word index
-              if (activeWord && activeWordIndex > index) {
-                activeWordIndex = activeWordIndex - 1;
+              activeWord = null;
+              activeWordIndex = null;
+              counter = 1;
+            }
+            // reset streak
+            streak = 0;
+            // decrement multiplier
+            multiplier -= multiplier > 1 ? 1 : 0;
+            // update multiplier on ui
+            container.children[7].text = `x${multiplier}`;
+            let troubledWord = "";
+            // Reset Styling
+            word.children.forEach((letter, index) => {
+              if (index > 0) {
+                troubledWord = troubledWord.concat(letter.text);
               }
-              // animation
-              TweenMax.to(word, 2.5, { ease: Power4.easeOut, alpha: 0 });
-              // removing word from screen
-              setTimeout(() => {
-                container.children[4].removeChild(word);
-              }, 1000);
-              break;
+            });
+            // adding word to troubled array
+            troubledWords.push(troubledWord);
+            livesContainer.removeChild(life);
+            if (livesContainer.children.length === 0) {
+              endGame("FAILED");
+            }
+            switch (level) {
+              case 1:
+                endGame("FAILED");
+                break;
+              case 3:
+                endGame("FAILED");
+                break;
+              default:
+                break;
+            }
           }
+        });
+      }
+      // If word reached the ground
+      if (word.y > app.view.height - 130) {
+        resetStats(word, index);
+        switch (level) {
+          case 1:
+            endGame("FAILED");
+            break;
+          case 3:
+            endGame("FAILED");
+            break;
+          default:
+            // animation
+            TweenMax.to(word, 2.5, { ease: Power4.easeOut, alpha: 0 });
+            // removing word from screen
+            setTimeout(() => {
+              container.children[4].removeChild(word);
+            }, 1000);
+            break;
         }
       }
     });
   }
 
+  function resetStats(word, index) {
+    // if active word is touching the ground
+    if (word.active === true) {
+      // changing style from type to regular
+      word.children.forEach((letter, index) => {
+        if (index > 0) {
+          letter.style = letterStyling;
+        }
+      });
+      activeWord = null;
+      activeWordIndex = null;
+      counter = 1;
+    }
+    // reset streak
+    streak = 0;
+    // decrement multiplier
+    multiplier -= multiplier > 1 ? 1 : 0;
+    // update multiplier on ui
+    container.children[7].text = `x${multiplier}`;
+    let troubledWord = "";
+    // Reset Styling
+    word.children.forEach((letter, index) => {
+      if (index > 0) {
+        troubledWord = troubledWord.concat(letter.text);
+      }
+    });
+    // adding word to troubled array
+    troubledWords.push(troubledWord);
+    // updating words on screen
+    wordsOnScreen.splice(index, 1);
+    // updating active word index
+    if (activeWord && activeWordIndex > index) {
+      activeWordIndex = activeWordIndex - 1;
+    }
+  }
+
   function endGame(type) {
     const setOfTroubledWords = [...new Set(troubledWords)];
-    const accuracy = Math.round(
-      (typedWords === 0
-        ? 0
-        : typedWords / (setOfTroubledWords.length + typedWords)) * 100
-    );
-    const wpm = Math.round((completedWords / time !== 0 ? time : 60) * 60);
     const endScore = {
-      accuracy,
-      wpm,
+      accuracy: getAccuracy(completedWords, setOfTroubledWords.length),
+      wpm: getWpm(completedWords, time),
       score,
       level,
       troubledWords: setOfTroubledWords,
@@ -498,4 +549,22 @@ function testForCollision(word, flower) {
     bounds1.y < bounds2.y + bounds2.height &&
     bounds1.y + bounds1.height > bounds2.y
   );
+}
+
+function getWpm(words, time) {
+  if (time) {
+    return words;
+  } else {
+    return (words / time) * 60;
+  }
+}
+
+function getAccuracy(words, troubledWords) {
+  if (words === 0) {
+    return 0;
+  } else if (troubledWords === 0) {
+    return 100;
+  } else {
+    return Math.floor(words / (troubledWords + words) * 100);
+  }
 }
