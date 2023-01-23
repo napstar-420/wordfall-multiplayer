@@ -165,7 +165,7 @@ export function startGame(container, loadScoreBoard, level) {
   }
 
   // This Interval updates time and launch speed
-  const timeInterval = setInterval(updateTime, 1000);
+  let timeInterval = setInterval(updateTime, 1000);
   function updateTime() {
     clockFrame.children[1].text = time;
     switch (level) {
@@ -219,7 +219,7 @@ export function startGame(container, loadScoreBoard, level) {
       TweenMax.to(rulesBoard, 1, { ease: Expo.easeIn, y: -(app.view.height * 90 / 100) });
       setTimeout(() => {
         gamePaused = false;
-        setInterval(updateTime, 1000);
+        timeInterval = setInterval(updateTime, 1000);
       }, 1000)
     })
     TweenMax.to(rulesBoard, 1, { ease: Expo.easeOut, y: 0 });
@@ -227,7 +227,7 @@ export function startGame(container, loadScoreBoard, level) {
 
   // This Code adds resume functionality to pause menu
   pauseMenu.children[pauseMenu.children.length - 1].on("pointerdown", () => {
-    setInterval(updateTime, 1000);
+    timeInterval = setInterval(updateTime, 1000);
     TweenMax.to(pauseMenu, 1, {
       ease: Expo.easeIn,
       y: -(pauseMenu.height + 100),
