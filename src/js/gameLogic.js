@@ -281,7 +281,7 @@ export function startGame(container, loadScoreBoard, level) {
     if (word.length > 7) {
       return createWord();
     }
-    const texture = PIXI.Texture.from("/src/assets/images/letters tile 1.png");
+    const texture = PIXI.Texture.from("/src/assets/images/gameUI/letters tile 1.png");
     const sprite = new PIXI.Sprite(texture);
     sprite.width = 0;
     sprite.height = 0;
