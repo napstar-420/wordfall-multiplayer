@@ -335,6 +335,23 @@ export function startGame(container, loadScoreBoard, level) {
             typedWords++;
             wordsOnScreen[i].children[1].style = typedLetterStyling;
             return;
+          } else if (i === wordsOnScreen.length - 1) {
+            // reset streak
+            streak = 0;
+            // decrement multiplier
+            multiplier -= multiplier > 1 ? 1 : 0;
+            // update multiplier on ui
+            container.children[7].text = `x${multiplier}`;
+          switch (level) {
+            case 1:
+              endGame("FAILED");
+              break;
+            case 3:
+              endGame("FAILED");
+              break;
+            default: 
+              break;
+          }
           }
         }
         return;
