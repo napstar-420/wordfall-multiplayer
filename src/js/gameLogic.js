@@ -1,82 +1,83 @@
 import { getRandomNumber } from "./gameUI.js";
 import { app } from "./app.js";
 import { tapSound, brickBreakSound } from "./music and sounds/index.js";
+import {words as wordsList} from './words.js';
 
-const wordsList = [
-  "dispensable",
-  "romantic",
-  "squirrel",
-  "bolt",
-  "fixed",
-  "winter",
-  "many",
-  "poke",
-  "rhetorical",
-  "linen",
-  "tempt",
-  "sassy",
-  "hushed",
-  "pathetic",
-  "harm",
-  "misty",
-  "ready",
-  "belong",
-  "children",
-  "quartz",
-  "annoyed",
-  "puzzled",
-  "ritzy",
-  "grotesque",
-  "acidic",
-  "evanescent",
-  "name",
-  "ruin",
-  "questionable",
-  "dear",
-  "retire",
-  "crabby",
-  "shallow",
-  "attach",
-  "doll",
-  "raise",
-  "fog",
-  "rural",
-  "ambitious",
-  "nine",
-  "crook",
-  "lavish",
-  "prefer",
-  "bare",
-  "bashful",
-  "stupendous",
-  "neighborly",
-  "elegant",
-  "title",
-  "assorted",
-  "sound",
-  "frequent",
-  "part",
-  "compete",
-  "unequaled",
-  "grass",
-  "strengthen",
-  "blink",
-  "tiresome",
-  "club",
-  "divergent",
-  "kill",
-  "sugar",
-  "scribble",
-  "rabbit",
-  "average",
-  "faulty",
-  "leather",
-  "polish",
-  "offbeat",
-  "stormy",
-  "song",
-  "racial",
-];
+// const wordsList = [
+//   "dispensable",
+//   "romantic",
+//   "squirrel",
+//   "bolt",
+//   "fixed",
+//   "winter",
+//   "many",
+//   "poke",
+//   "rhetorical",
+//   "linen",
+//   "tempt",
+//   "sassy",
+//   "hushed",
+//   "pathetic",
+//   "harm",
+//   "misty",
+//   "ready",
+//   "belong",
+//   "children",
+//   "quartz",
+//   "annoyed",
+//   "puzzled",
+//   "ritzy",
+//   "grotesque",
+//   "acidic",
+//   "evanescent",
+//   "name",
+//   "ruin",
+//   "questionable",
+//   "dear",
+//   "retire",
+//   "crabby",
+//   "shallow",
+//   "attach",
+//   "doll",
+//   "raise",
+//   "fog",
+//   "rural",
+//   "ambitious",
+//   "nine",
+//   "crook",
+//   "lavish",
+//   "prefer",
+//   "bare",
+//   "bashful",
+//   "stupendous",
+//   "neighborly",
+//   "elegant",
+//   "title",
+//   "assorted",
+//   "sound",
+//   "frequent",
+//   "part",
+//   "compete",
+//   "unequaled",
+//   "grass",
+//   "strengthen",
+//   "blink",
+//   "tiresome",
+//   "club",
+//   "divergent",
+//   "kill",
+//   "sugar",
+//   "scribble",
+//   "rabbit",
+//   "average",
+//   "faulty",
+//   "leather",
+//   "polish",
+//   "offbeat",
+//   "stormy",
+//   "song",
+//   "racial",
+// ];
 
 const letterStyling = new PIXI.TextStyle({
   fontFamily: "Barlow",
@@ -90,7 +91,7 @@ const typedLetterStyling = new PIXI.TextStyle({
   fill: "yellow",
 });
 
-export function startGame(container, loadScoreBoard, level) {
+export function startGame(container, loadScoreBoard, level, data) {
 
   const normalClouds = container.children[1];
   const livesContainer = container.children[2];
@@ -145,9 +146,12 @@ export function startGame(container, loadScoreBoard, level) {
     case 3:
       time = 60;
       break;
+    default:
+      time = 0;
+      break;
   }
-  let launchSpeed = 2000;
 
+  let launchSpeed = 2000;
   switch (level) {
     case 1:
       launchSpeed = 2000;
@@ -158,7 +162,12 @@ export function startGame(container, loadScoreBoard, level) {
     case 3:
       launchSpeed = 1500;
       break;
+    case "PRACTICE":
+      launchSpeed = (60 / data.wpm) * 1000
+      break;
   }
+
+  console.log(launchSpeed)
 
   // This Interval updates time and launch speed
   let timeInterval = setInterval(updateTime, 1000);
@@ -174,6 +183,9 @@ export function startGame(container, loadScoreBoard, level) {
         break;
       case 3:
         time--;
+        break;
+      case 'PRACTICE':
+        time++;
         break;
       default:
         time++;
@@ -203,7 +215,7 @@ export function startGame(container, loadScoreBoard, level) {
     }
   }
 
-  if (level) {
+  if (level && level !== 'PRACTICE') {
     gamePaused = true;
     clearInterval(timeInterval);
     rulesBoard = container.children[10];
@@ -278,7 +290,21 @@ export function startGame(container, loadScoreBoard, level) {
     const wordContainer = new PIXI.Container();
     // const word = wordFromApi; // uncomment this line when want to use Api
     const word = wordsList[getRandomNumber(wordsList.length - 1, 0)];
-    if (word.length > 7) {
+    if (level && level === 'PRACTICE') {
+      if (data.selectedDifficulty === 'EASY') {
+        if (word.length > 5) {
+          return createWord();
+        }
+      } else if (data.selectedDifficulty === 'MEDIUM') {
+        if (word.length > 9 && word.length < 5) {
+          return createWord();
+        }
+      } else if (data.selectedDifficulty === 'HARD') {
+        if (word.length < 10) {
+          return createWord();
+        }
+      }
+    } else if (word.length > 7) {
       return createWord();
     }
     const texture = PIXI.Texture.from("/src/assets/images/gameUI/letters tile 1.png");

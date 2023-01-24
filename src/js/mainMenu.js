@@ -2,6 +2,7 @@ import { app } from "./app.js";
 import loadNormalModeUI from "./normalMode/ui.js";
 import { getBackground, getMenuBoard } from "./gameUI.js";
 import loadBossModeInfo from "./boss mode/info.js";
+import loadPracticeModeInfo from './practiceMode/practiceModeInfo.js'
 import { hoverSound, tapSound, homeBackMusic } from "./music and sounds/index.js";
 
 export default function loadMainMenu() {
@@ -107,7 +108,7 @@ export default function loadMainMenu() {
         {
           mode: "PRACTICE",
           height: (BoardContainer.height * 57) / 100,
-          event: () => alert("have not added yet"),
+          callback: loadPracticeModeInfo,
         },
         {
           mode: "MULTIPLAYER",

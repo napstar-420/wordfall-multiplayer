@@ -14,7 +14,7 @@ import {
 import loadScoreBoard from "./scoreBoard.js";
 import { normalModeBackMusic } from "../music and sounds/index.js";
 
-export default function loadNormalModeUI(app) {
+export default function loadNormalModeUI(app, level, data = {wpm: null, selectedDifficulty: null}) {
   // NORMAL MODE
   const NormalModeContainer = new PIXI.Container();
   NormalModeContainer.width = app.view.width;
@@ -63,7 +63,7 @@ export default function loadNormalModeUI(app) {
     })
     .then(() => {
         normalModeBackMusic.play();
-        startGame(NormalModeContainer, loadScoreBoard);
+        startGame(NormalModeContainer, loadScoreBoard, level, data);
     });
 
   app.stage.addChild(NormalModeContainer);

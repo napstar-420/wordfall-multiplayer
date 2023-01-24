@@ -1,4 +1,5 @@
 import loadMainMenu from "./mainMenu.js";
+import loadPracticeModeInfo from "./practiceMode/practiceModeInfo.js";
 
 // PIXI APPLICATION
 export const app = new PIXI.Application({
@@ -58,7 +59,7 @@ PIXI.Assets.add(
   "/src/assets/images/normalMode/longboard without button 1.png"
 );
 PIXI.Assets.add("scoreBoardExtras", "/src/assets/images/normalMode/Rectangle 27.png");
-PIXI.Assets.add("troubledWordBg", "/src/assets/images/normalMode/Rectangle 24.png");
+PIXI.Assets.add("troubledWordBg", "/src/assets/images/Rectangle 24.png");
 PIXI.Assets.add(
   "normalCrossBtn",
   "/src/assets/images/normalMode/normalScoreBoardCrossBtn.png"
@@ -83,4 +84,9 @@ PIXI.Assets.add(
   "/src/assets/images/bossMode/boss mode button.png"
 );
 
-loadMainMenu(app);
+// Practice Mode
+PIXI.Assets.add('incrementWpmBtnTexture', '/src/assets/images/practiceMode/rightArrow.png');
+PIXI.Assets.add('decrementWpmBtnTexture', '/src/assets/images/practiceMode/leftArrow.png');
+
+// loadMainMenu(app);
+loadPracticeModeInfo(app);

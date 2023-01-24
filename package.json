@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/msh4izee/WordFall-Multiplayer/issues"
   },
-  "homepage": "https://github.com/msh4izee/WordFall-Multiplayer#readme"
+  "homepage": "https://github.com/msh4izee/WordFall-Multiplayer#readme",
+  "dependencies": {
+    "an-array-of-english-words": "^2.0.0"
+  }
 }
