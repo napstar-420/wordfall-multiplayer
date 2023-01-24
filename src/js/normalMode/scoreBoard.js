@@ -1,7 +1,7 @@
 import loadNormalModeUI from "./ui.js";
 import loadMainMenu from "../mainMenu.js";
 import { getBackground } from "../gameUI.js";
-import { hoverSound, tapSound } from "../music and sounds/index.js";
+import { hoverSound, normalModeBackMusic, tapSound } from "../music and sounds/index.js";
 
 export default function loadScoreBoard(app, endScore) {
   const { accuracy, wpm, troubledWords, score } = endScore;
@@ -236,6 +236,7 @@ export default function loadScoreBoard(app, endScore) {
         y: -(boardHeight + 100),
       });
       setTimeout(() => {
+        normalModeBackMusic.pause();
         app.stage.removeChild(scoreBoard);
         callback(app);
       }, 1000);

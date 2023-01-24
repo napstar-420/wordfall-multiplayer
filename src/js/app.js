@@ -1,11 +1,4 @@
-import loadBossModeUI from "./boss mode/ui.js";
-import loadBossScoreBoard from "./boss mode/scoreBoard.js";
-import loadBossModeInfo from "./boss mode/info.js";
 import loadMainMenu from "./mainMenu.js";
-import loadNormalModeUI from "./normalMode/ui.js";
-import createNormalModeUI from "./normalMode/ui.js";
-import loadScoreBoard from "./normalMode/scoreBoard.js";
-import createScoreBoard from "./normalMode/scoreBoard.js";
 
 // PIXI APPLICATION
 export const app = new PIXI.Application({
@@ -91,15 +84,4 @@ PIXI.Assets.add(
   "/src/assets/images/boss mode button.png"
 );
 
-// loadNormalModeUI(app);
 loadMainMenu(app);
-loadBossModeUI(app, 1);
-const endScore = {
-  accuracy: 56,
-  wpm: 40,
-  level: 3,
-  score: 1245,
-};
-loadScoreBoard(app, endScore);
-loadBossScoreBoard(app, endScore, 'FAILED');
-// loadBossModeInfo(app);

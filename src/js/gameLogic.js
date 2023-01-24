@@ -1,6 +1,6 @@
 import { getRandomNumber } from "./gameUI.js";
 import { app } from "./app.js";
-import { tapSound } from "./music and sounds/index.js";
+import { tapSound, brickBreakSound } from "./music and sounds/index.js";
 
 const wordsList = [
   "dispensable",
@@ -119,10 +119,6 @@ export function startGame(container, loadScoreBoard, level) {
   const pauseMenu = container.children[9];
   let rulesBoard = null;
   let startGameBtn
-
-  const brickBreakSound = new Audio(
-    "/src/assets/music and sound effects/brickSound.wav"
-  );
   
   // Variables to use in the game
   let gamePaused = false;

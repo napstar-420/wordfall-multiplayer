@@ -1,7 +1,7 @@
 import loadBossModeUI from "./ui.js";
 import { getBackground } from "../gameUI.js";
 import loadMainMenu from "../mainMenu.js";
-import { hoverSound, tapSound } from "../music and sounds/index.js";
+import { bossModeBackMusic, hoverSound, tapSound } from "../music and sounds/index.js";
 
 export default function loadBossScoreBoard(app, endScore, type) {
   const { accuracy, wpm, score, level } = endScore;
@@ -163,6 +163,7 @@ export default function loadBossScoreBoard(app, endScore, type) {
           y: -(boardHeight + 100),
         });
         setTimeout(() => {
+          bossModeBackMusic.pause();
           app.stage.removeChild(boardContainer);
           loadMainMenu();
         }, 1500);
@@ -204,6 +205,7 @@ export default function loadBossScoreBoard(app, endScore, type) {
           y: -(boardHeight + 100),
         });
         setTimeout(() => {
+          bossModeBackMusic.pause();
           app.stage.removeChild(BossScoreBoard);
           switch (type) {
             case 'COMPLETED':

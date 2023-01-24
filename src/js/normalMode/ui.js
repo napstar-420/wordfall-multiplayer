@@ -12,6 +12,7 @@ import {
   getClockFrame,
 } from "../gameUI.js";
 import loadScoreBoard from "./scoreBoard.js";
+import { normalModeBackMusic } from "../music and sounds/index.js";
 
 export default function loadNormalModeUI(app) {
   // NORMAL MODE
@@ -61,6 +62,7 @@ export default function loadNormalModeUI(app) {
       NormalModeContainer.addChild(getPauseMenu());
     })
     .then(() => {
+        normalModeBackMusic.play();
         startGame(NormalModeContainer, loadScoreBoard);
     });
 

@@ -1,7 +1,7 @@
 import { app } from "./app.js";
 import loadMainMenu from "./mainMenu.js";
 import loadNormalModeUI from "./normalMode/ui.js";
-import { hoverSound, tapSound } from "./music and sounds/index.js";
+import { hoverSound, tapSound, normalModeBackMusic, brickBreakSound, turnMusicOff, turnMusicOn, turnSfxOff, turnSfxOn, bossModeBackMusic } from "./music and sounds/index.js";
 
 export function getMenuBoard(texture) {
   const menuBoardSprite = new PIXI.Sprite(texture);
@@ -164,8 +164,9 @@ export async function getWordBg() {
 }
 
 export function getPauseMenu() {
-  let isMusicOn = true;
-  let isSfxOn = true;
+
+  let isMusicOn = JSON.parse(localStorage.getItem('isMusicOn'));
+  let isSfxOn = JSON.parse(localStorage.getItem('isSfxOn'));
 
   // Container
   const pauseMenu = new PIXI.Container();
@@ -235,14 +236,19 @@ export function getPauseMenu() {
     tapSound.play();
     if (isMusicOn) {
       isMusicOn = false;
+      turnMusicOff();
       pauseMenu.removeChild(musicCheckFill);
     } else {
+      turnMusicOn();
       isMusicOn = true;
       pauseMenu.addChild(musicCheckFill);
     }
   });
+
   pauseMenu.addChild(musicCheckBox);
-  pauseMenu.addChild(musicCheckFill);
+  if (isMusicOn) {
+    pauseMenu.addChild(musicCheckFill);
+  }
 
   // SFX Text
   const sfxText = new PIXI.Text("SFX", {
@@ -282,15 +288,25 @@ export function getPauseMenu() {
     tapSound.currentTime = 0;
     tapSound.play();
     if (isSfxOn) {
+      hoverSound.volume = 0;
+      tapSound.volume = 0;
+      brickBreakSound.volume = 0;
       isSfxOn = false;
+      turnSfxOff();
       pauseMenu.removeChild(sfxCheckFill);
     } else {
+      turnSfxOn();
+      brickBreakSound.volume = 1;
+      hoverSound.volume = 0.5;
+      tapSound.volume = 1;
       isSfxOn = true;
       pauseMenu.addChild(sfxCheckFill);
     }
   });
   pauseMenu.addChild(sfxBox);
-  pauseMenu.addChild(sfxCheckFill);
+  if (isSfxOn) {
+    pauseMenu.addChild(sfxCheckFill);
+  }
 
   const pauseButtons = [
     {
@@ -350,10 +366,14 @@ export function getPauseMenu() {
     tapSound.play();
     switch (type) {
       case "RESTART":
+        normalModeBackMusic.pause();
+        bossModeBackMusic.pause();
         app.stage.removeChild(app.stage.children[0]);
         loadNormalModeUI(app);
         break;
-      case "MAIN MENU":
+        case "MAIN MENU":
+        bossModeBackMusic.pause();
+        normalModeBackMusic.pause();
         app.stage.removeChild(app.stage.children[0]);
         loadMainMenu(app);
         break;

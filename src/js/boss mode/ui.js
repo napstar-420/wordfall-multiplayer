@@ -14,6 +14,7 @@ import {
 
 import loadBossScoreBoard from "./scoreBoard.js";
 import {startGame} from '../gameLogic.js'
+import { bossModeBackMusic } from "../music and sounds/index.js";
 
 const rules = {
   1: "  Type every letter carefully. One mistake and you're out. If the word touches the ground or hit the lives game over cause you need 100% accuracy to complete this level. (Pumpkins are the life and time is 60 seconds)",
@@ -79,6 +80,7 @@ export default function loadBossModeUI(app, level) {
       BossModeContainer.addChild(getRulesBoard(bossScoreBoard, bossScoreBtnBg ,rules[level]))
     })
     .then(() => {
+      bossModeBackMusic.play();
       startGame(BossModeContainer, loadBossScoreBoard, level);
     });
 

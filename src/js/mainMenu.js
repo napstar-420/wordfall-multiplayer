@@ -2,11 +2,29 @@ import { app } from "./app.js";
 import loadNormalModeUI from "./normalMode/ui.js";
 import { getBackground, getMenuBoard } from "./gameUI.js";
 import loadBossModeInfo from "./boss mode/info.js";
-import { hoverSound, tapSound } from "./music and sounds/index.js";
+import { hoverSound, tapSound, homeBackMusic } from "./music and sounds/index.js";
 
 export default function loadMainMenu() {
+  // Adding backrgound to div
   document.getElementById("game-container")
-    .style.backgroundImage = "url('/src/assets/images/download (1).jpeg')";
+  .style.backgroundImage = "url('/src/assets/images/download (1).jpeg')";
+  // PLaying Background Music
+  homeBackMusic.pause();
+  homeBackMusic.currentTime = 0;
+  let isMusicOn = JSON.parse(localStorage.getItem('isMusicOn'));
+  const playBackMusicPromise = homeBackMusic.play();
+  playBackMusicPromise.then(() => {
+    isMusicOn = true;
+  }).catch((err) => {
+      isMusicOn = false;
+      document.getElementById("game-container")
+        .addEventListener('click', playHomeMusic);
+  })
+
+  function playHomeMusic() {
+    homeBackMusic.play();
+  }
+  
   // MAIN MENU
   const MAIN_MENU = new PIXI.Container();
   MAIN_MENU.width = app.view.width;
@@ -65,12 +83,15 @@ export default function loadMainMenu() {
         hoverSound.currentTime = 0;
       }
       function startMode(callback) {
+        document.getElementById("game-container")
+        .removeEventListener('click', playHomeMusic);
         tapSound.play();
         TweenMax.to(BoardContainer, 1, {
           ease: Back.easeIn.config(1.7),
           y: -height - 200,
         });
         setTimeout(() => {
+          homeBackMusic.pause();
           callback(app);
           app.stage.removeChild(MAIN_MENU);
         }, 1500);
@@ -81,17 +102,7 @@ export default function loadMainMenu() {
         {
           mode: "BOSS MODE",
           height: (BoardContainer.height * 45) / 100,
-          event: () => {
-            tapSound.play();
-            TweenMax.to(BoardContainer, 1, {
-              ease: Back.easeIn.config(1.7),
-              y: -height - 200,
-            });
-            setTimeout(() => {
-              loadBossModeInfo(app);
-              app.stage.removeChild(MAIN_MENU);
-            }, 1500);
-          },
+          callback: loadBossModeInfo,
         },
         {
           mode: "PRACTICE",
@@ -132,7 +143,7 @@ export default function loadMainMenu() {
         modeBtn
           .on("pointerover", () => cursorOver(modeBtn, modeBtnScale))
           .on("pointerout", () => cursorOut(modeBtn, modeBtnScale))
-          .on("click", modeObj.event);
+          .on("click", () => startMode(modeObj.callback));
         BoardContainer.addChild(modeBtn);
       });
       MAIN_MENU.addChild(BoardContainer);
