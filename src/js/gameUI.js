@@ -417,7 +417,7 @@ export function getRulesBoard(texture, btnTexture, rulesInfo, level) {
     wordWrap: true,
     wordWrapWidth: boardWidth * 64 / 100,
   })
-  rules.x = boardWidth * 15 / 100;
+  rules.x = boardWidth * 17 / 100;
   rules.y = boardHeight * 40 / 100;
   board.addChild(rules);
 

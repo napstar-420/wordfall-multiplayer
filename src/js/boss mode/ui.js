@@ -17,9 +17,9 @@ import {startGame} from '../gameLogic.js'
 import { bossModeBackMusic } from "../music and sounds/index.js";
 
 const rules = {
-  1: "  Type every letter carefully. One mistake and you're out. If the word touches the ground or hit the lives game over cause you need 100% accuracy to complete this level. (Pumpkins are the life and time is 60 seconds)",
-  2: "  Get your fingers ready cause you need a speed of 45 words per minute to complete this level. If you lose all of your lives (pumpkins are lives) game over. You don't reach a 45 words per minute level failed.",
-  3: "  FINAL LEVEL! To beat this level you need a speed of 45 words per minute with 100 percent accuracy. There is no room for mistakes.",
+  1: "Type every letter carefully. One mistake and you're out. If the word touches the ground or hit the lives game over cause you need 100% accuracy to complete this level. (Pumpkins are the life and time is 60 seconds)",
+  2: "Get your fingers ready cause you need a speed of 45 words per minute to complete this level. If you lose all of your lives (pumpkins are lives) game over. You don't reach a 45 words per minute level failed.",
+  3: "FINAL LEVEL! To beat this level you need a speed of 45 words per minute with 100 percent accuracy. There is no room for mistakes.",
 }
 
 export default function loadBossModeUI(app, level) {
