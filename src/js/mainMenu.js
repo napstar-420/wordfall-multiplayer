@@ -2,30 +2,42 @@ import { app } from "./app.js";
 import loadNormalModeUI from "./normalMode/ui.js";
 import { getBackground, getMenuBoard } from "./gameUI.js";
 import loadBossModeInfo from "./boss mode/info.js";
-import loadPracticeModeInfo from './practiceMode/practiceModeInfo.js'
-import { hoverSound, tapSound, homeBackMusic } from "./music and sounds/index.js";
+import loadPracticeModeInfo from "./practiceMode/practiceModeInfo.js";
+import {
+  hoverSound,
+  tapSound,
+  homeBackMusic,
+  turnMusicOff,
+  turnMusicOn,
+  turnSfxOn,
+  turnSfxOff,
+} from "./music and sounds/index.js";
 
 export default function loadMainMenu() {
   // Adding backrgound to div
-  document.getElementById("game-container")
-  .style.backgroundImage = "url('/src/assets/images/download (1).jpeg')";
+  document.getElementById("game-container").style.backgroundImage =
+    "url('/src/assets/images/download (1).jpeg')";
   // PLaying Background Music
   homeBackMusic.pause();
   homeBackMusic.currentTime = 0;
-  let isMusicOn = JSON.parse(localStorage.getItem('isMusicOn'));
+  let isMusicOn = JSON.parse(localStorage.getItem("isMusicOn"));
+  let isSfxOn = JSON.parse(localStorage.getItem('isSfxOn'));
   const playBackMusicPromise = homeBackMusic.play();
-  playBackMusicPromise.then(() => {
-    isMusicOn = true;
-  }).catch((err) => {
+  playBackMusicPromise
+    .then(() => {
+      isMusicOn = true;
+    })
+    .catch((err) => {
       isMusicOn = false;
-      document.getElementById("game-container")
-        .addEventListener('click', playHomeMusic);
-  })
+      document
+        .getElementById("game-container")
+        .addEventListener("click", playHomeMusic);
+    });
 
   function playHomeMusic() {
     homeBackMusic.play();
   }
-  
+
   // MAIN MENU
   const MAIN_MENU = new PIXI.Container();
   MAIN_MENU.width = app.view.width;
@@ -41,115 +53,190 @@ export default function loadMainMenu() {
   BoardContainer.y = -height - 200;
 
   // LOADING ASSETS
-  PIXI.Assets.load(["mainMenuBackground", "menuBoard", "menuBtnBack"]).then(
-    (textures) => {
-      // DESTRUCTURING
-      const { mainMenuBackground, menuBoard, menuBtnBack } = textures;
+  PIXI.Assets.load([
+    "mainMenuBackground",
+    "menuBoard",
+    "menuBtnBack",
+    "sfxOn",
+    "sfxOff",
+    "musicOn",
+    "musicOff",
+  ]).then((textures) => {
+    // DESTRUCTURING
+    const {
+      mainMenuBackground,
+      menuBoard,
+      menuBtnBack,
+      sfxOn,
+      sfxOff,
+      musicOn,
+      musicOff,
+    } = textures;
 
-      // ADD BACKGROUND AND BOARD SPRITE
-      MAIN_MENU.addChild(getBackground(mainMenuBackground));
-      BoardContainer.addChild(getMenuBoard(menuBoard));
+    // ADD BACKGROUND AND BOARD SPRITE
+    MAIN_MENU.addChild(getBackground(mainMenuBackground));
+    BoardContainer.addChild(getMenuBoard(menuBoard));
 
-      // PLAY NOW BTN
-      const playNowButton = new PIXI.Text("PLAY NOW", {
-        fontSize: (BoardContainer.height * 10) / 100,
-        fill: 0xffffff,
-        align: "left",
-        fontFamily: "Boogaloo",
-        fontWeight: "500",
-      });
-      playNowButton.y = (BoardContainer.height * 29) / 100;
-      playNowButton.anchor.x = 0.56;
-      playNowButton.anchor.y = 0.5;
-      playNowButton.scale.x = 0.8;
-      playNowButton.scale.y = 0.8;
-      playNowButton.interactive = true;
-      playNowButton.cursor = "pointer";
-      playNowButton
-        .on("pointerover", () => cursorOver(playNowButton, 0.8))
-        .on("pointerout", () => cursorOut(playNowButton, 0.8))
-        .on("pointerdown", () => startMode(loadNormalModeUI));
-      BoardContainer.addChild(playNowButton);
+    // PLAY NOW BTN
+    const playNowButton = new PIXI.Text("PLAY NOW", {
+      fontSize: (BoardContainer.height * 10) / 100,
+      fill: 0xffffff,
+      align: "left",
+      fontFamily: "Boogaloo",
+      fontWeight: "500",
+    });
+    playNowButton.y = (BoardContainer.height * 29) / 100;
+    playNowButton.anchor.x = 0.56;
+    playNowButton.anchor.y = 0.5;
+    playNowButton.scale.x = 0.8;
+    playNowButton.scale.y = 0.8;
+    playNowButton.interactive = true;
+    playNowButton.cursor = "pointer";
+    playNowButton
+      .on("pointerover", () => cursorOver(playNowButton, 0.8))
+      .on("pointerout", () => cursorOut(playNowButton, 0.8))
+      .on("pointerdown", () => startMode(loadNormalModeUI));
+    BoardContainer.addChild(playNowButton);
 
-      // CURSOR INTERACTIONS
-      function cursorOver(button, scale) {
-        button.scale.x = scale + 0.05;
-        button.scale.y = scale + 0.05;
-        hoverSound.play();
-      }
-      function cursorOut(button, scale) {
-        button.scale.x = scale;
-        button.scale.y = scale;
-        hoverSound.pause();
-        hoverSound.currentTime = 0;
-      }
-      function startMode(callback) {
-        document.getElementById("game-container")
-        .removeEventListener('click', playHomeMusic);
-        tapSound.play();
-        TweenMax.to(BoardContainer, 1, {
-          ease: Back.easeIn.config(1.7),
-          y: -height - 200,
-        });
-        setTimeout(() => {
-          homeBackMusic.pause();
-          callback(app);
-          app.stage.removeChild(MAIN_MENU);
-        }, 1500);
-      }
-
-      // ADDING MAIN MENU BUTTONS
-      const modeBtns = [
-        {
-          mode: "BOSS MODE",
-          height: (BoardContainer.height * 45) / 100,
-          callback: loadBossModeInfo,
-        },
-        {
-          mode: "PRACTICE",
-          height: (BoardContainer.height * 57) / 100,
-          callback: loadPracticeModeInfo,
-        },
-        {
-          mode: "MULTIPLAYER",
-          height: (BoardContainer.height * 69) / 100,
-          event: () => alert("have not added yet"),
-        },
-        {
-          mode: "LEADERBOARD",
-          height: (BoardContainer.height * 81) / 100,
-          event: () => alert("have not added yet"),
-        },
-      ];
-
-      modeBtns.map((modeObj) => {
-        const modeBtn = new PIXI.Sprite(menuBtnBack);
-        const modeBtnScale = (BoardContainer.height * 1.35) / 100 / 10;
-        modeBtn.scale.x = modeBtnScale;
-        modeBtn.scale.y = modeBtnScale;
-        modeBtn.x = 0;
-        modeBtn.anchor.x = 0.55;
-        modeBtn.anchor.y = 0.5;
-        modeBtn.y = modeObj.height;
-        const modeBtnText = new PIXI.Text(modeObj.mode, {
-          fontFamily: "Boogaloo",
-          fontSize: 35,
-          fontWeight: "500",
-          fill: "0xffffff",
-        });
-        modeBtnText.anchor.set(0.6);
-        modeBtn.addChild(modeBtnText);
-        modeBtn.interactive = true;
-        modeBtn.cursor = "pointer";
-        modeBtn
-          .on("pointerover", () => cursorOver(modeBtn, modeBtnScale))
-          .on("pointerout", () => cursorOut(modeBtn, modeBtnScale))
-          .on("click", () => startMode(modeObj.callback));
-        BoardContainer.addChild(modeBtn);
-      });
-      MAIN_MENU.addChild(BoardContainer);
+    // CURSOR INTERACTIONS
+    function cursorOver(button, scale) {
+      button.scale.x = scale + 0.05;
+      button.scale.y = scale + 0.05;
+      hoverSound.play();
     }
-  );
+    function cursorOut(button, scale) {
+      button.scale.x = scale;
+      button.scale.y = scale;
+      hoverSound.pause();
+      hoverSound.currentTime = 0;
+    }
+    function startMode(callback) {
+      document
+        .getElementById("game-container")
+        .removeEventListener("click", playHomeMusic);
+      tapSound.play();
+      TweenMax.to(BoardContainer, 1, {
+        ease: Back.easeIn.config(1.7),
+        y: -height - 200,
+      });
+      setTimeout(() => {
+        homeBackMusic.pause();
+        callback(app);
+        app.stage.removeChild(MAIN_MENU);
+      }, 1500);
+    }
+
+    // ADDING MAIN MENU BUTTONS
+    const modeBtns = [
+      {
+        mode: "BOSS MODE",
+        height: (BoardContainer.height * 45) / 100,
+        callback: loadBossModeInfo,
+      },
+      {
+        mode: "PRACTICE",
+        height: (BoardContainer.height * 57) / 100,
+        callback: loadPracticeModeInfo,
+      },
+      {
+        mode: "MULTIPLAYER",
+        height: (BoardContainer.height * 69) / 100,
+        event: () => alert("have not added yet"),
+      },
+      {
+        mode: "LEADERBOARD",
+        height: (BoardContainer.height * 81) / 100,
+        event: () => alert("have not added yet"),
+      },
+    ];
+
+    modeBtns.map((modeObj) => {
+      const modeBtn = new PIXI.Sprite(menuBtnBack);
+      const modeBtnScale = (BoardContainer.height * 1.35) / 100 / 10;
+      modeBtn.scale.x = modeBtnScale;
+      modeBtn.scale.y = modeBtnScale;
+      modeBtn.x = 0;
+      modeBtn.anchor.x = 0.55;
+      modeBtn.anchor.y = 0.5;
+      modeBtn.y = modeObj.height;
+      const modeBtnText = new PIXI.Text(modeObj.mode, {
+        fontFamily: "Boogaloo",
+        fontSize: 35,
+        fontWeight: "500",
+        fill: "0xffffff",
+      });
+      modeBtnText.anchor.set(0.6);
+      modeBtn.addChild(modeBtnText);
+      modeBtn.interactive = true;
+      modeBtn.cursor = "pointer";
+      modeBtn
+        .on("pointerover", () => cursorOver(modeBtn, modeBtnScale))
+        .on("pointerout", () => cursorOut(modeBtn, modeBtnScale))
+        .on("click", () => startMode(modeObj.callback));
+      BoardContainer.addChild(modeBtn);
+    });
+    MAIN_MENU.addChild(BoardContainer);
+
+    const musicBtn = new PIXI.Sprite(isMusicOn === true ? musicOn : musicOff);
+    musicBtn.scale.x = (app.view.width * 0.04) / 100;
+    musicBtn.scale.y = (app.view.width * 0.04) / 100;
+    musicBtn.anchor.set(0.5);
+    musicBtn.x = (app.view.width * 97) / 100;
+    musicBtn.y = (app.view.height * 95) / 100;
+    musicBtn.interactive = true;
+    musicBtn.cursor = 'pointer';
+    musicBtn
+      .on('pointerover', () => {
+        musicBtn.scale.x = (app.view.width * 0.045) / 100;
+        musicBtn.scale.y = (app.view.width * 0.045) / 100;
+      })
+      .on('pointerout', () => {
+        musicBtn.scale.x = (app.view.width * 0.04) / 100;
+        musicBtn.scale.y = (app.view.width * 0.04) / 100;
+      })
+      .on('pointerdown', () => {
+        if (isMusicOn === true) {
+          isMusicOn = false;
+          musicBtn.texture = musicOff;
+          turnMusicOff();
+        } else {
+          isMusicOn = true;
+          musicBtn.texture = musicOn;
+          turnMusicOn();
+        }
+      })
+    MAIN_MENU.addChild(musicBtn);
+
+    const sfxBtn = new PIXI.Sprite(isSfxOn === true ? sfxOn : sfxOff);
+    sfxBtn.scale.x = (app.view.width * 0.04) / 100;
+    sfxBtn.scale.y = (app.view.width * 0.04) / 100;
+    sfxBtn.anchor.set(0.5);
+    sfxBtn.x = (app.view.width * 91.5) / 100;
+    sfxBtn.y = (app.view.height * 95) / 100;
+    sfxBtn.interactive = true;
+    sfxBtn.cursor = 'pointer';
+    sfxBtn
+      .on('pointerover', () => {
+        sfxBtn.scale.x = (app.view.width * 0.045) / 100;
+        sfxBtn.scale.y = (app.view.width * 0.045) / 100;
+      })
+      .on('pointerout', () => {
+        sfxBtn.scale.x = (app.view.width * 0.04) / 100;
+        sfxBtn.scale.y = (app.view.width * 0.04) / 100;
+      })
+      .on('pointerdown', () => {
+        if (isSfxOn === true) {
+          isSfxOn = false;
+          sfxBtn.texture = sfxOff;
+          turnSfxOff();
+        } else {
+          isSfxOn = true;
+          sfxBtn.texture = sfxOn;
+          turnSfxOn();
+        }
+      })
+    MAIN_MENU.addChild(sfxBtn);
+  });
 
   setTimeout(() => {
     TweenMax.to(BoardContainer, 1, {

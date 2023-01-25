@@ -37,7 +37,13 @@ export default function loadBossModeUI(app, level) {
     "jackOLantern3",
     "bossModeClouds",
     "bossScoreBoard",
-    "bossScoreBtnBg"
+    "bossScoreBtnBg",
+    "bossPauseMenuBg",
+    "bossResumeBtn",
+    "bossRestartBtn",
+    "bossMainMenuBtn",
+    "bossCheckBox",
+    "bossCheckFill"
   ])
     .then((textures) => {
       const {
@@ -53,7 +59,13 @@ export default function loadBossModeUI(app, level) {
         bossModeClouds,
         clockFrame,
         bossScoreBoard,
-        bossScoreBtnBg
+        bossScoreBtnBg,
+        bossPauseMenuBg,
+        bossResumeBtn,
+        bossRestartBtn,
+        bossMainMenuBtn,
+        bossCheckBox,
+        bossCheckFill
       } = textures;
       switch (level) {
         case 1:
@@ -76,7 +88,7 @@ export default function loadBossModeUI(app, level) {
       BossModeContainer.addChild(getMenuBtn(menuBtn));
       BossModeContainer.addChild(getMultiplier());
       BossModeContainer.addChild(getClockFrame(clockFrame))
-      BossModeContainer.addChild(getPauseMenu());
+      BossModeContainer.addChild(getPauseMenu(bossPauseMenuBg, bossResumeBtn, bossRestartBtn, bossMainMenuBtn, bossCheckBox, bossCheckFill));
       BossModeContainer.addChild(getRulesBoard(bossScoreBoard, bossScoreBtnBg ,rules[level]))
     })
     .then(() => {

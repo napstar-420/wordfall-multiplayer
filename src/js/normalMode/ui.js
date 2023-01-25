@@ -32,7 +32,13 @@ export default function loadNormalModeUI(app, level, data = {wpm: null, selected
     "normalModeClouds",
     "normalModeBg1",
     "pauseMenuBg",
-    "clockFrame"
+    "clockFrame",
+    "pauseMenuBg",
+    "resumeBtn",
+    "restartBtn",
+    "mainMenuBtn",
+    "checkBox",
+    "checkFill"
   ])
     .then((textures) => {
       const {
@@ -44,7 +50,13 @@ export default function loadNormalModeUI(app, level, data = {wpm: null, selected
         twinFlower2,
         normalModeBg1,
         normalModeClouds,
-        clockFrame
+        clockFrame,
+        pauseMenuBg,
+        resumeBtn,
+        restartBtn,
+        mainMenuBtn,
+        checkBox,
+        checkFill,
       } = textures;
 
       // ADDING BACKGROUND AND FOREGROUND
@@ -59,7 +71,7 @@ export default function loadNormalModeUI(app, level, data = {wpm: null, selected
       NormalModeContainer.addChild(getMenuBtn(menuBtn));
       NormalModeContainer.addChild(getMultiplier());
       NormalModeContainer.addChild(getClockFrame(clockFrame))
-      NormalModeContainer.addChild(getPauseMenu());
+      NormalModeContainer.addChild(getPauseMenu(pauseMenuBg, resumeBtn, restartBtn, mainMenuBtn, checkBox, checkFill));
     })
     .then(() => {
         normalModeBackMusic.play();

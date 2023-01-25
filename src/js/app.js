@@ -22,6 +22,10 @@ PIXI.Assets.add(
 );
 PIXI.Assets.add("menuBoard", "/src/assets/images/mainMenu/frame withouth button 1.png");
 PIXI.Assets.add("menuBtnBack", "/src/assets/images/mainMenu/menu tile v1.png");
+PIXI.Assets.add('sfxOn', '/src/assets/images/mainMenu/icon sfx.png');
+PIXI.Assets.add('sfxOff', '/src/assets/images/mainMenu/icon sfx muted.png');
+PIXI.Assets.add('musicOn', '/src/assets/images/mainMenu/music_on.png');
+PIXI.Assets.add('musicOff', '/src/assets/images/mainMenu/music_off.png');
 PIXI.Assets.add(
   "normalModeBg1",
   "/src/assets/images/normalMode/back only for tiling light.png"
@@ -88,5 +92,21 @@ PIXI.Assets.add(
 PIXI.Assets.add('incrementWpmBtnTexture', '/src/assets/images/practiceMode/rightArrow.png');
 PIXI.Assets.add('decrementWpmBtnTexture', '/src/assets/images/practiceMode/leftArrow.png');
 
-// loadMainMenu(app);
-loadPracticeModeInfo(app);
+// Normal Mode Pause Menu
+PIXI.Assets.add('pauseMenuBg', '/src/assets/options menu assets/mini options baord.png');
+PIXI.Assets.add('resumeBtn', '/src/assets/options menu assets/resume_play button.png');
+PIXI.Assets.add('restartBtn', '/src/assets/options menu assets/reset button.png');
+PIXI.Assets.add('mainMenuBtn', '/src/assets/options menu assets/Main menu button.png');
+PIXI.Assets.add('checkBox', '/src/assets/options menu assets/check box.png');
+PIXI.Assets.add('checkFill', '/src/assets/options menu assets/check box indicator.png');
+
+// Boss Mode Pause menu 
+PIXI.Assets.add('bossPauseMenuBg', '/src/assets/boss mode options menu assets/bossmod menu board v1.5.png');
+PIXI.Assets.add('bossResumeBtn', '/src/assets/boss mode options menu assets/boss_resume_btn.png');
+PIXI.Assets.add('bossRestartBtn', '/src/assets/boss mode options menu assets/boss_restart_btn.png');
+PIXI.Assets.add('bossMainMenuBtn', '/src/assets/boss mode options menu assets/boss_mainMenu_btn.png');
+PIXI.Assets.add('bossCheckBox', '/src/assets/boss mode options menu assets/boss_check_box.png');
+PIXI.Assets.add('bossCheckFill', '/src/assets/boss mode options menu assets/boss_check_fill.png');
+
+loadMainMenu(app);
+// loadPracticeModeInfo(app);

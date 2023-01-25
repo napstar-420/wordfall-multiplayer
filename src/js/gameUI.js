@@ -163,7 +163,7 @@ export async function getWordBg() {
   return letterTileSprite;
 }
 
-export function getPauseMenu() {
+export function getPauseMenu(bgTexture, resumeBtnTexture, restartBtnTexture, mainMenuBtnTexture, checkBoxTexture, checkFillTexture) {
 
   let isMusicOn = JSON.parse(localStorage.getItem('isMusicOn'));
   let isSfxOn = JSON.parse(localStorage.getItem('isSfxOn'));
@@ -178,10 +178,7 @@ export function getPauseMenu() {
   pauseMenu.y = -(height + 100);
 
   // background
-  const texture = PIXI.Texture.from(
-    "/src/assets/options menu assets/mini options baord.png"
-  );
-  const pauseMenuBgSprite = new PIXI.Sprite(texture);
+  const pauseMenuBgSprite = new PIXI.Sprite(bgTexture);
   pauseMenuBgSprite.width = width;
   pauseMenuBgSprite.height = height;
   pauseMenu.addChild(pauseMenuBgSprite);
@@ -200,19 +197,19 @@ export function getPauseMenu() {
 
   const pauseButtons = [
     {
-      spriteSrc: "/src/assets/options menu assets/reset button.png",
+      texture: restartBtnTexture,
       anchor: 0,
       xPos: (width * 20) / 100,
       type: "WILL BE HANDLED BY GAME LOGIC",
     },
     {
-      spriteSrc: "/src/assets/options menu assets/Main menu button.png",
+      texture: mainMenuBtnTexture,
       anchor: 0.5,
       xPos: width / 2,
       type: "MAIN MENU",
     },
     {
-      spriteSrc: "/src/assets/options menu assets/resume_play button.png",
+      texture: resumeBtnTexture,
       anchor: 1,
       xPos: width - (width * 20) / 100,
       type: "WILL BE HANDLED BY GAME LOGIC",
@@ -220,7 +217,7 @@ export function getPauseMenu() {
   ];
 
   pauseButtons.map((button) => {
-    const btn = PIXI.Sprite.from(button.spriteSrc);
+    const btn = new PIXI.Sprite(button.texture);
     btn.width = (width * 15) / 100;
     btn.height = (width * 15) / 100;
     btn.anchor.x = button.anchor;
@@ -278,9 +275,7 @@ export function getPauseMenu() {
   pauseMenu.addChild(musicText);
 
   //MUSIC CHECK FILL
-  const musicCheckFill = PIXI.Sprite.from(
-    "/src/assets/options menu assets/check box indicator.png"
-  );
+  const musicCheckFill = new PIXI.Sprite(checkFillTexture);
   musicCheckFill.width = (height * 6) / 100;
   musicCheckFill.height = (height * 6) / 100;
   musicCheckFill.anchor.x = 1;
@@ -288,9 +283,7 @@ export function getPauseMenu() {
   musicCheckFill.y = ((height * 28) / 100) * 1.84;
 
   //Music on or off btn
-  const musicCheckBox = PIXI.Sprite.from(
-    "/src/assets/options menu assets/check box.png"
-  );
+  const musicCheckBox = new PIXI.Sprite(checkBoxTexture)
   musicCheckBox.anchor.x = 1;
   musicCheckBox.width = (height * 9) / 100;
   musicCheckBox.height = (height * 9) / 100;
@@ -330,9 +323,7 @@ export function getPauseMenu() {
   pauseMenu.addChild(sfxText);
 
   // SFX CHECK FILL
-  const sfxCheckFill = PIXI.Sprite.from(
-    "/src/assets/options menu assets/check box indicator.png"
-  );
+  const sfxCheckFill = new PIXI.Sprite(checkFillTexture);
   sfxCheckFill.width = (height * 6) / 100;
   sfxCheckFill.height = (height * 6) / 100;
   sfxCheckFill.anchor.x = 1;
@@ -340,9 +331,7 @@ export function getPauseMenu() {
   sfxCheckFill.y = ((height * 28) / 100) * 2.24;
 
   //SFX on or off btn
-  const sfxBox = PIXI.Sprite.from(
-    "/src/assets/options menu assets/check box.png"
-  );
+  const sfxBox = new PIXI.Sprite(checkBoxTexture);
   const sfxDimension = (height * 9) / 100;
   sfxBox.anchor.x = 1;
   sfxBox.width = sfxDimension;
