@@ -465,9 +465,11 @@ export function startGame(container, loadScoreBoard, level, data) {
           completedWords++;
           streak++;
           if (streak % 5 === 0) {
-            multiplier = streak / 5 + 1;
+            if (multiplier < 3) {
+              multiplier = streak / 5 + 1;
+              multiplierText.text = `x${multiplier}`;
+            }
           }
-          multiplierText.text = `x${multiplier}`;
         }
       } else {
         // if user mistypes

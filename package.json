@@ -18,6 +18,5 @@
   },
   "homepage": "https://github.com/msh4izee/WordFall-Multiplayer#readme",
   "dependencies": {
-    "an-array-of-english-words": "^2.0.0"
   }
 }
