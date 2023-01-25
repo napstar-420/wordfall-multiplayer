@@ -131,12 +131,14 @@ PIXI.Assets.add(
 // Practice Mode
 PIXI.Assets.add(
   "incrementWpmBtnTexture",
-  "/src/assets/images/practiceMode/rightArrow.png"
+  "/src/assets/images/practiceMode/right_arrow.png"
 );
 PIXI.Assets.add(
   "decrementWpmBtnTexture",
-  "/src/assets/images/practiceMode/leftArrow.png"
+  "/src/assets/images/practiceMode/left_arrow.png"
 );
+PIXI.Assets.add('wpmBack', '/src/assets/images/practiceMode/Rectangle 27.png');
+PIXI.Assets.add('difficultyBack', '/src/assets/images/practiceMode/Rectangle 45.png');
 
 // Normal Mode Pause Menu
 PIXI.Assets.add(

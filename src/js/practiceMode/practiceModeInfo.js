@@ -11,40 +11,44 @@ export default function loadPracticeModeInfo(app) {
   let selectedDifficulty = "MEDIUM";
 
   PIXI.Assets.load([
-    "scoreBoardBg",
-    "scoreBoard",
+    "mainMenuBackground",
+    "menuBoard",
     "incrementWpmBtnTexture",
     "decrementWpmBtnTexture",
     "scoreBoardExtras",
     "menuBtnBack",
     "normalCrossBtn",
+    "wpmBack",
+    "difficultyBack"
   ]).then((textures) => {
     const {
-      scoreBoardBg,
-      scoreBoard,
+      mainMenuBackground,
+      menuBoard,
       incrementWpmBtnTexture,
       decrementWpmBtnTexture,
       scoreBoardExtras,
       menuBtnBack,
-      normalCrossBtn
+      normalCrossBtn,
+      wpmBack,
+      difficultyBack
     } = textures;
 
     // Background
-    const background = new PIXI.Sprite(scoreBoardBg);
+    const background = new PIXI.Sprite(mainMenuBackground);
     background.width = app.view.width;
     background.height = app.view.height;
     Container.addChild(background);
 
     const Board = new PIXI.Container();
-    const boardWidth = (app.view.height * 90) / 100;
-    const boardHeight = (app.view.height * 105) / 100;
+    const boardWidth = (app.view.height * 100) / 100;
+    const boardHeight = (app.view.height * 110) / 100;
     Board.width = boardWidth;
     Board.heigh = boardHeight;
     Board.y = -(boardHeight + 100);
     Board.x = app.view.width / 2 - boardWidth / 2;
 
     // Board Background
-    const boardBg = new PIXI.Sprite(scoreBoard);
+    const boardBg = new PIXI.Sprite(menuBoard);
     boardBg.width = boardWidth;
     boardBg.height = boardHeight;
     Board.addChild(boardBg);
@@ -52,8 +56,8 @@ export default function loadPracticeModeInfo(app) {
     // Cross Board Button
     const crossBtn = new PIXI.Sprite(normalCrossBtn);
     crossBtn.anchor.set(0.5);
-    crossBtn.x = (boardWidth * 84) / 100;
-    crossBtn.y = (boardHeight * 29) / 100;
+    crossBtn.x = (boardWidth * 78) / 100;
+    crossBtn.y = (boardHeight * 35) / 100;
     let crossBtnScale = (boardHeight * 0.9) / 100 / 10;
     crossBtn.scale.x = crossBtnScale;
     crossBtn.scale.y = crossBtnScale;
@@ -86,41 +90,51 @@ export default function loadPracticeModeInfo(app) {
     Board.addChild(crossBtn);
 
     // Heading Text
-    const headingText = new PIXI.Text("Setting for Practice ", {
-      fontSize: (boardHeight * 6) / 100,
+    const headingText = new PIXI.Text("Practice Mode ", {
+      fontSize: (boardHeight * 7) / 100,
       fill: 0xffffff,
       align: "left",
       fontFamily: "Boogaloo",
       fontWeight: "500",
     });
     headingText.anchor.set(0.51);
-    headingText.y = (boardHeight * 30) / 100;
+    headingText.y = (boardHeight * 38) / 100;
     headingText.x = boardWidth / 2;
     Board.addChild(headingText);
 
     // Words per Minute Text
     const wordsPerMinText = new PIXI.Text("WORDS PER MINUTE", {
-      fontSize: (boardHeight * 5.5) / 100,
-      fill: "#be6618",
-      fontFamily: "Boogaloo",
-      fontWeight: "500",
+      fontSize: (boardHeight * 4) / 100,
+      fill: "#722603",
+      fontFamily: "Luckiest Guy",
+      fontWeight: 400,
     });
     wordsPerMinText.anchor.y = 0.5;
-    wordsPerMinText.anchor.x = 0.53;
-    wordsPerMinText.y = (boardHeight * 42) / 100;
+    wordsPerMinText.anchor.x = 0.56;
+    wordsPerMinText.y = (boardHeight * 50) / 100;
     wordsPerMinText.x = boardWidth / 2;
     Board.addChild(wordsPerMinText);
 
+    // WPM BORDER
+    const wpmBorder = new PIXI.Sprite(wpmBack);
+    wpmBorder.anchor.x = 0.6;
+    wpmBorder.anchor.y = 0.5;
+    wpmBorder.x = boardWidth / 2;
+    wpmBorder.y = (boardHeight * 58) / 100;
+    wpmBorder.scale.x = boardWidth * 0.15 / 100;
+    wpmBorder.scale.y = boardWidth * 0.14 / 100;
+    Board.addChild(wpmBorder);
+
     // WPM NUMBER
     const wpmNumber = new PIXI.Text(wpm, {
-      fontSize: (boardHeight * 10) / 100,
-      fill: "#7D3B01",
+      fontSize: (boardHeight * 6) / 100,
+      fill: "#b15718",
       fontFamily: "Boogaloo",
-      fontWeight: "500",
+      fontWeight: 400,
     });
     wpmNumber.anchor.y = 0.5;
-    wpmNumber.anchor.x = 0.6;
-    wpmNumber.y = (boardHeight * 52) / 100;
+    wpmNumber.anchor.x = 0.9;
+    wpmNumber.y = (boardHeight * 57.5) / 100;
     wpmNumber.x = boardWidth / 2;
     Board.addChild(wpmNumber);
 
@@ -144,20 +158,20 @@ export default function loadPracticeModeInfo(app) {
     const incrementWpmBtn = new PIXI.Sprite(incrementWpmBtnTexture);
     incrementWpmBtn.anchor.x = 0.5;
     incrementWpmBtn.anchor.y = 0.5;
-    incrementWpmBtn.scale.x = (boardWidth * 0.08) / 100;
-    incrementWpmBtn.scale.y = (boardWidth * 0.08) / 100;
-    incrementWpmBtn.y = (boardHeight * 52) / 100;
-    incrementWpmBtn.x = (boardWidth * 68) / 100;
+    incrementWpmBtn.scale.x = (boardWidth * 0.13) / 100;
+    incrementWpmBtn.scale.y = (boardWidth * 0.13) / 100;
+    incrementWpmBtn.y = (boardHeight * 57.5) / 100;
+    incrementWpmBtn.x = (boardWidth * 61) / 100;
     incrementWpmBtn.interactive = true;
     incrementWpmBtn.cursor = "pointer";
     incrementWpmBtn
       .on("pointerover", () => {
-        incrementWpmBtn.scale.x = (boardWidth * 0.09) / 100;
-        incrementWpmBtn.scale.y = (boardWidth * 0.09) / 100;
+        incrementWpmBtn.scale.x = (boardWidth * 0.14) / 100;
+        incrementWpmBtn.scale.y = (boardWidth * 0.14) / 100;
       })
       .on("pointerout", () => {
-        incrementWpmBtn.scale.x = (boardWidth * 0.08) / 100;
-        incrementWpmBtn.scale.y = (boardWidth * 0.08) / 100;
+        incrementWpmBtn.scale.x = (boardWidth * 0.13) / 100;
+        incrementWpmBtn.scale.y = (boardWidth * 0.13) / 100;
       })
       .on("pointerdown", incrementWpm);
     Board.addChild(incrementWpmBtn);
@@ -166,65 +180,66 @@ export default function loadPracticeModeInfo(app) {
     const decrementWpmBtn = new PIXI.Sprite(decrementWpmBtnTexture);
     decrementWpmBtn.anchor.x = 0.5;
     decrementWpmBtn.anchor.y = 0.5;
-    decrementWpmBtn.scale.x = (boardWidth * 0.08) / 100;
-    decrementWpmBtn.scale.y = (boardWidth * 0.08) / 100;
-    decrementWpmBtn.y = (boardHeight * 52) / 100;
-    decrementWpmBtn.x = (boardWidth * 30) / 100;
+    decrementWpmBtn.scale.x = (boardWidth * 0.13) / 100;
+    decrementWpmBtn.scale.y = (boardWidth * 0.13) / 100;
+    decrementWpmBtn.y = (boardHeight * 57.5) / 100;
+    decrementWpmBtn.x = (boardWidth * 33.5) / 100;
     decrementWpmBtn.interactive = true;
     decrementWpmBtn.cursor = "pointer";
     decrementWpmBtn
       .on("pointerover", () => {
-        decrementWpmBtn.scale.x = (boardWidth * 0.09) / 100;
-        decrementWpmBtn.scale.y = (boardWidth * 0.09) / 100;
+        decrementWpmBtn.scale.x = (boardWidth * 0.14) / 100;
+        decrementWpmBtn.scale.y = (boardWidth * 0.14) / 100;
       })
       .on("pointerout", () => {
-        decrementWpmBtn.scale.x = (boardWidth * 0.08) / 100;
-        decrementWpmBtn.scale.y = (boardWidth * 0.08) / 100;
+        decrementWpmBtn.scale.x = (boardWidth * 0.13) / 100;
+        decrementWpmBtn.scale.y = (boardWidth * 0.13) / 100;
       })
       .on("pointerdown", decrementWpm);
     Board.addChild(decrementWpmBtn);
 
     // WORDS DIFFICULTY TEXT
     const wordDifficultyText = new PIXI.Text("WORDS DIFFICULTY", {
-      fontSize: (boardHeight * 5.5) / 100,
-      fill: "#be6618",
-      fontFamily: "Boogaloo",
-      fontWeight: "500",
+      fontSize: (boardHeight * 4) / 100,
+      fill: "#722603",
+      fontFamily: "Luckiest Guy",
+      fontWeight: 400,
     });
-    wordDifficultyText.anchor.x = 0.53;
+    wordDifficultyText.anchor.x = 0.57;
     wordDifficultyText.anchor.y = 0.5;
     wordDifficultyText.x = boardWidth / 2;
-    wordDifficultyText.y = (boardHeight * 67) / 100;
+    wordDifficultyText.y = (boardHeight * 70) / 100;
     Board.addChild(wordDifficultyText);
 
     // SPRITE SHOWING ACTIVE DIFFICULTY
-    const activeDifficultySprite = new PIXI.Sprite(scoreBoardExtras);
+    const activeDifficultySprite = new PIXI.Sprite(difficultyBack);
     activeDifficultySprite.scale.x = (boardWidth * 0.17) / 100;
-    activeDifficultySprite.scale.y = (boardWidth * 0.1) / 100;
-    activeDifficultySprite.anchor.set(0.5);
-    activeDifficultySprite.y = (boardHeight * 77) / 100;
+    activeDifficultySprite.scale.y = (boardWidth * 0.15) / 100;
+    activeDifficultySprite.anchor.x = 0.6;
+    activeDifficultySprite.anchor.y = 0.5;
+    activeDifficultySprite.y = (boardHeight * 77.25) / 100;
     activeDifficultySprite.x = boardWidth / 2;
     Board.addChild(activeDifficultySprite);
 
     const selectedDifficultyStyle = new PIXI.TextStyle({
-      fontSize: (boardHeight * 5) / 100,
+      fontSize: (boardHeight * 4) / 100,
       fill: "#ffffff",
       fontFamily: "Boogaloo",
-      fontWeight: "500",
+      fontWeight: 400,
     });
 
     const difficultyStyle = new PIXI.TextStyle({
-      fontSize: (boardHeight * 5) / 100,
-      fill: "#7D3B01",
+      fontSize: (boardHeight * 4) / 100,
+      fill: "#b15718",
       fontFamily: "Boogaloo",
-      fontWeight: "500",
+      fontWeight: 400,
     });
 
     // EASY DIFFICULTY BUTTON
     const easyBtn = new PIXI.Text("EASY", difficultyStyle);
     easyBtn.anchor.x = 0.53;
     easyBtn.anchor.y = 0.5;
-    easyBtn.x = (boardWidth * 26) / 100;
+    easyBtn.x = (boardWidth * 29.5) / 100;
     easyBtn.y = (boardHeight * 77) / 100;
     easyBtn.interactive = true;
     easyBtn.cursor = "pointer";
@@ -233,7 +248,7 @@ export default function loadPracticeModeInfo(app) {
 
     // MEDIUM DIFFICULTY BUTTON
     const mediumBtn = new PIXI.Text("MEDIUM", selectedDifficultyStyle);
-    mediumBtn.anchor.x = 0.5;
+    mediumBtn.anchor.x = 0.7;
     mediumBtn.anchor.y = 0.5;
     mediumBtn.x = boardWidth / 2;
     mediumBtn.y = (boardHeight * 77) / 100;
@@ -246,7 +261,7 @@ export default function loadPracticeModeInfo(app) {
     const hardBtn = new PIXI.Text("HARD", difficultyStyle);
     hardBtn.anchor.x = 0.53;
     hardBtn.anchor.y = 0.5;
-    hardBtn.x = (boardWidth * 72) / 100;
+    hardBtn.x = (boardWidth * 66) / 100;
     hardBtn.y = (boardHeight * 77) / 100;
     hardBtn.interactive = true;
     hardBtn.cursor = "pointer";
@@ -264,24 +279,28 @@ export default function loadPracticeModeInfo(app) {
       switch (difficulty) {
         case "EASY":
           easyBtn.style = selectedDifficultyStyle;
-          activeDifficultySprite.x = (boardWidth * 26) / 100;
-          activeDifficultySprite.scale.x = (boardWidth * 0.12) / 100;
+          activeDifficultySprite.x = (boardWidth * 31.5) / 100;
+          activeDifficultySprite.scale.x = (boardWidth * 0.15) / 100;
+          activeDifficultySprite.scale.y = (boardWidth * 0.15) / 100;
           break;
         case "MEDIUM":
           mediumBtn.style = selectedDifficultyStyle;
           activeDifficultySprite.x = boardWidth / 2;
           activeDifficultySprite.scale.x = (boardWidth * 0.17) / 100;
+          activeDifficultySprite.scale.y = (boardWidth * 0.15) / 100;
           break;
         case "HARD":
           hardBtn.style = selectedDifficultyStyle;
-          activeDifficultySprite.scale.x = (boardWidth * 0.12) / 100;
-          activeDifficultySprite.x = (boardWidth * 71.5) / 100;
+          activeDifficultySprite.x = (boardWidth * 68) / 100;
+          activeDifficultySprite.scale.x = (boardWidth * 0.15) / 100;
+          activeDifficultySprite.scale.y = (boardWidth * 0.15) / 100;
           break;
       }
     }
 
     const startGameBtn = new PIXI.Sprite(menuBtnBack);
-    startGameBtn.anchor.set(0.5);
+    startGameBtn.anchor.x = 0.57;
+    startGameBtn.anchor.y = 0.5;
     startGameBtn.width = (boardWidth * 40) / 100;
     startGameBtn.height = (boardWidth * 10) / 100;
     startGameBtn.x = boardWidth / 2;
@@ -296,7 +315,8 @@ export default function loadPracticeModeInfo(app) {
       fontFamily: "Boogaloo",
       fontWeight: "500",
     });
-    startGameText.anchor.set(0.5);
+    startGameText.anchor.x = 0.64;
+    startGameText.anchor.y = 0.55;
     startGameText.x = boardWidth / 2;
     startGameText.y = (boardHeight * 90) / 100;
     Board.addChild(startGameText);
