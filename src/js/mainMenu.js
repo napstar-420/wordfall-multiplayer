@@ -25,10 +25,9 @@ export default function loadMainMenu() {
   const playBackMusicPromise = homeBackMusic.play();
   playBackMusicPromise
     .then(() => {
-      isMusicOn = true;
+      console.log('music playing')
     })
     .catch((err) => {
-      isMusicOn = false;
       document
         .getElementById("game-container")
         .addEventListener("pointerdown", playHomeMusic);
@@ -121,8 +120,8 @@ export default function loadMainMenu() {
       });
       setTimeout(() => {
         homeBackMusic.pause();
-        callback(app);
         app.stage.removeChild(MAIN_MENU);
+        callback(app);
       }, 1500);
     }
 

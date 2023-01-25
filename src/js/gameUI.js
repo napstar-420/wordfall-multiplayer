@@ -124,14 +124,15 @@ export function getMenuBtn(texture) {
 
 export function getLivesContainer(textures, type) {
   const livesContainer = new PIXI.Container();
-  const width = app.view.width - (app.view.width * 10 / 100);
+  const width = app.view.width;
   livesContainer.width = width;
   livesContainer.height = 80;
-  livesContainer.x = (app.view.width * 4.5 / 100);
+  livesContainer.x = app.view.width * 3 / 100
+  if (type === 'PUMPKIN') livesContainer.x = (app.view.width * 6 / 100);
   livesContainer.y = app.view.height - 80;
   let numbersOfLife = 9;
   if (type === 'FLOWER') numbersOfLife = 16;
-  const distanceBetweenLife = width / numbersOfLife + app.view.width * 1.4 / 100;
+  const distanceBetweenLife = width / numbersOfLife;
   for (let i = 0; i < numbersOfLife; i++) {
     const lifeSprite = new PIXI.Sprite(
       textures[getRandomNumber(textures.length - 1, 0)]

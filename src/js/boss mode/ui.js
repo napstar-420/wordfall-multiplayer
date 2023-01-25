@@ -69,7 +69,7 @@ export default function loadBossModeUI(app, level) {
       BossModeContainer.addChild(getBackground(bossModeBg));
       BossModeContainer.addChild(getNormalClouds(bossModeClouds));
       BossModeContainer.addChild(
-        getLivesContainer([jackOLantern1, jackOLantern2, jackOLantern3], 'PUMPKINS')
+        getLivesContainer([jackOLantern1, jackOLantern2, jackOLantern3], 'PUMPKIN')
       );
       BossModeContainer.addChild(getForeground(bossModeFg));
       BossModeContainer.addChild(getWordsContainer());
