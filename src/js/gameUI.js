@@ -122,20 +122,22 @@ export function getMenuBtn(texture) {
   return menuBtn;
 }
 
-export function getLivesContainer(textures) {
+export function getLivesContainer(textures, type) {
   const livesContainer = new PIXI.Container();
-  const width = app.view.width - 80;
+  const width = app.view.width - (app.view.width * 10 / 100);
   livesContainer.width = width;
   livesContainer.height = 80;
-  livesContainer.x = 20;
+  livesContainer.x = (app.view.width * 4.5 / 100);
   livesContainer.y = app.view.height - 80;
-  const distanceBetweenLife = width / 7 + (app.view.width * 2) / 100;
-  for (let i = 0; i < 7; i++) {
+  let numbersOfLife = 9;
+  if (type === 'FLOWER') numbersOfLife = 16;
+  const distanceBetweenLife = width / numbersOfLife + app.view.width * 1.4 / 100;
+  for (let i = 0; i < numbersOfLife; i++) {
     const lifeSprite = new PIXI.Sprite(
       textures[getRandomNumber(textures.length - 1, 0)]
     );
     lifeSprite.anchor.y = 1;
-    lifeSprite.anchor.x = 0;
+    lifeSprite.anchor.x = 0.5;
     lifeSprite.scale.x = (app.view.height * 0.15) / 100;
     lifeSprite.scale.y = (app.view.height * 0.15) / 100;
     lifeSprite.y = 0;
@@ -163,7 +165,7 @@ export async function getWordBg() {
   return letterTileSprite;
 }
 
-export function getPauseMenu(bgTexture, resumeBtnTexture, restartBtnTexture, mainMenuBtnTexture, checkBoxTexture, checkFillTexture) {
+export function getPauseMenu(bgTexture, resumeBtnTexture, restartBtnTexture, mainMenuBtnTexture, checkBoxTexture, checkFillTexture, type = 'NORMAL') {
 
   let isMusicOn = JSON.parse(localStorage.getItem('isMusicOn'));
   let isSfxOn = JSON.parse(localStorage.getItem('isSfxOn'));
@@ -191,6 +193,9 @@ export function getPauseMenu(bgTexture, resumeBtnTexture, restartBtnTexture, mai
     fill: "#ffffff",
   });
   optionText.y = (height * 28) / 100;
+  if (type === 'BOSS') {
+    optionText.y = (height * 29.5) / 100;
+  }
   optionText.anchor.x = 0.5;
   optionText.x = width / 2;
   pauseMenu.addChild(optionText);
@@ -222,6 +227,7 @@ export function getPauseMenu(bgTexture, resumeBtnTexture, restartBtnTexture, mai
     btn.height = (width * 15) / 100;
     btn.anchor.x = button.anchor;
     btn.y = ((height * 28) / 100) * 2.9;
+    if (type === 'BOSS') btn.y = ((height * 25) / 100) * 2.9
     btn.x = button.xPos;
     btn.interactive = true;
     btn.cursor = "pointer";
@@ -271,6 +277,7 @@ export function getPauseMenu(bgTexture, resumeBtnTexture, restartBtnTexture, mai
     fill: "#56210c",
   });
   musicText.y = ((height * 28) / 100) * 1.8;
+  if (type === 'BOSS') musicText.y = ((height * 25) / 100) * 1.8;
   musicText.x = (width * 15) / 100;
   pauseMenu.addChild(musicText);
 
@@ -281,6 +288,7 @@ export function getPauseMenu(bgTexture, resumeBtnTexture, restartBtnTexture, mai
   musicCheckFill.anchor.x = 1;
   musicCheckFill.x = width - (width * 17) / 100;
   musicCheckFill.y = ((height * 28) / 100) * 1.84;
+  if (type === 'BOSS') musicCheckFill.y = ((height * 25) / 100) * 1.84;
 
   //Music on or off btn
   const musicCheckBox = new PIXI.Sprite(checkBoxTexture)
@@ -288,6 +296,7 @@ export function getPauseMenu(bgTexture, resumeBtnTexture, restartBtnTexture, mai
   musicCheckBox.width = (height * 9) / 100;
   musicCheckBox.height = (height * 9) / 100;
   musicCheckBox.y = ((height * 28) / 100) * 1.8;
+  if (type === 'BOSS') musicCheckBox.y = ((height * 25) / 100) * 1.8;
   musicCheckBox.x = width - (width * 15) / 100;
   musicCheckBox.interactive = true;
   musicCheckBox.cursor = "pointer";
@@ -319,6 +328,7 @@ export function getPauseMenu(bgTexture, resumeBtnTexture, restartBtnTexture, mai
     fill: "#56210c",
   });
   sfxText.y = ((height * 28) / 100) * 2.2;
+  if (type === 'BOSS') sfxText.y = ((height * 25) / 100) * 2.2;
   sfxText.x = (width * 15) / 100;
   pauseMenu.addChild(sfxText);
 
@@ -329,6 +339,7 @@ export function getPauseMenu(bgTexture, resumeBtnTexture, restartBtnTexture, mai
   sfxCheckFill.anchor.x = 1;
   sfxCheckFill.x = width - (width * 17) / 100;
   sfxCheckFill.y = ((height * 28) / 100) * 2.24;
+  if (type === 'BOSS') sfxCheckFill.y = ((height * 25) / 100) * 2.24;
 
   //SFX on or off btn
   const sfxBox = new PIXI.Sprite(checkBoxTexture);
@@ -337,6 +348,7 @@ export function getPauseMenu(bgTexture, resumeBtnTexture, restartBtnTexture, mai
   sfxBox.width = sfxDimension;
   sfxBox.height = sfxDimension;
   sfxBox.y = ((height * 28) / 100) * 2.2;
+  if (type === 'BOSS') sfxBox.y = ((height * 25) / 100) * 2.2;
   sfxBox.x = width - (width * 15) / 100;
   sfxBox.interactive = true;
   sfxBox.cursor = "pointer";
@@ -368,7 +380,7 @@ export function getPauseMenu(bgTexture, resumeBtnTexture, restartBtnTexture, mai
   return pauseMenu;
 }
 
-export function getRulesBoard(texture, btnTexture,rulesInfo) {
+export function getRulesBoard(texture, btnTexture, rulesInfo, level) {
   const board = new PIXI.Container();
   const boardWidth = app.view.width * 60 / 100;
   const boardHeight = app.view.height * 80 / 100;
@@ -384,7 +396,7 @@ export function getRulesBoard(texture, btnTexture,rulesInfo) {
   board.addChild(bg);
 
   // Rules Heading;
-  const rulesHeading = new PIXI.Text('Rules', {
+  const rulesHeading = new PIXI.Text(`Level ${level}`, {
     fontSize: (boardWidth * 9) / 100,
     fontWeight: 500,
     fontFamily: "Boogaloo",

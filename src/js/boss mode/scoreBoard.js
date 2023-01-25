@@ -29,7 +29,7 @@ export default function loadBossScoreBoard(app, endScore, type) {
     boardContainer.width = boardWidth;
     boardContainer.height = boardHeight;
     boardContainer.x = app.view.width / 2;
-    boardContainer.y = -(boardHeight + 50);
+    boardContainer.y = -boardHeight;
 
     const bossBoardSprite = new PIXI.Sprite(textures.bossScoreBoard);
     bossBoardSprite.width = boardWidth;
@@ -42,26 +42,26 @@ export default function loadBossScoreBoard(app, endScore, type) {
 
     if (type === "COMPLETED") {
       // Adding Player Rank Text
-      const levelStatus = new PIXI.Text(`Phase ${level} Completed`, {
+      const levelStatus = new PIXI.Text(`Level ${level} Completed`, {
         fontSize: (boardHeight * 5) / 100,
         fill: '#27ff00',
         align: "left",
         fontFamily: "Boogaloo",
         fontWeight: "500",
       });
-      levelStatus.y = (boardHeight * 22) / 100;
+      levelStatus.y = boardHeight > 900 ? (boardHeight * 25) / 100 : (boardHeight * 23.5) / 100;
       levelStatus.anchor.x = 0.56;
       levelStatus.anchor.y = 0.5;
       boardContainer.addChild(levelStatus);
     } else {
-      const levelStatus = new PIXI.Text("Phase Failed", {
+      const levelStatus = new PIXI.Text("Level Failed", {
         fontSize: (boardHeight * 7) / 100,
         fill: '#ffffff',
         align: "left",
         fontFamily: "Boogaloo",
         fontWeight: "500",
       });
-      levelStatus.y = (boardHeight * 22) / 100;
+      levelStatus.y = boardHeight > 900 ? (boardHeight * 25) / 100 : (boardHeight * 23.5) / 100;
       levelStatus.anchor.x = 0.56;
       levelStatus.anchor.y = 0.5;
       boardContainer.addChild(levelStatus);

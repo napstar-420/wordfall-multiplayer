@@ -31,7 +31,7 @@ export default function loadMainMenu() {
       isMusicOn = false;
       document
         .getElementById("game-container")
-        .addEventListener("click", playHomeMusic);
+        .addEventListener("pointerdown", playHomeMusic);
     });
 
   function playHomeMusic() {
@@ -113,7 +113,7 @@ export default function loadMainMenu() {
     function startMode(callback) {
       document
         .getElementById("game-container")
-        .removeEventListener("click", playHomeMusic);
+        .removeEventListener("pointerdown", playHomeMusic);
       tapSound.play();
       TweenMax.to(BoardContainer, 1, {
         ease: Back.easeIn.config(1.7),

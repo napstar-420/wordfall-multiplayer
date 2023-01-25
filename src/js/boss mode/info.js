@@ -79,17 +79,18 @@ export default function loadBossModeInfo(app) {
     board.addChild(crossBtn);
 
     // Phases Text
-    const phasesText = new PIXI.Text("PHASES", {
+    const levelsText = new PIXI.Text("LEVELS", {
       fontSize: (boardHeight * 8) / 100,
       fill: "#ff8316",
       fontWeight: "600",
       fontFamily: "Boogaloo",
     });
-    phasesText.anchor.set(0.5);
-    phasesText.x = boardWidth / 2 - (boardWidth * 1) / 100;
-    phasesText.y = (boardHeight * 28) / 100;
+    levelsText.anchor.x = 0.56;
+    levelsText.anchor.y = 0.5;
+    levelsText.x = boardWidth / 2;
+    levelsText.y = (boardHeight * 28) / 100;
 
-    board.addChild(phasesText);
+    board.addChild(levelsText);
 
     const phases = [
       {
@@ -107,7 +108,7 @@ export default function loadBossModeInfo(app) {
         paraY: (boardHeight * 55) / 100,
       },
       {
-        name: "SKILL CRUSHER",
+        name: "SKULL CRUSHER",
         nameColor: "#cf0c12",
         info: "Race against the clock to type every word with accuracy.\nYou won't be able to feel your fingers after this.",
         nameY: (boardHeight * 66) / 100,

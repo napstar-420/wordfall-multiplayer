@@ -94,6 +94,8 @@ const typedLetterStyling = new PIXI.TextStyle({
   fill: "yellow",
 });
 
+const brickTexture = PIXI.Texture.from("/src/assets/images/gameUI/letters tile 1.png");
+
 export function startGame(container, loadScoreBoard, level, data) {
 
   const normalClouds = container.children[1];
@@ -354,23 +356,23 @@ export function startGame(container, loadScoreBoard, level, data) {
     const word = wordsList[getRandomNumber(wordsList.length - 1, 0)];
     if (level && level === 'PRACTICE') {
       if (data.selectedDifficulty === 'EASY') {
-        if (word.length > 5) {
+        if (word.length > 3) {
           return createWord();
         }
       } else if (data.selectedDifficulty === 'MEDIUM') {
-        if (word.length > 7 || word.length < 5) {
+        if (word.length > 5 || word.length < 3) {
           return createWord();
         }
       } else if (data.selectedDifficulty === 'HARD') {
-        if (word.length < 7 || word.length > 9) {
+        if (word.length > 7 || word.length < 5) {
           return createWord();
         }
       }
     } else if (word.length > 7) {
       return createWord();
     }
-    const texture = PIXI.Texture.from("/src/assets/images/gameUI/letters tile 1.png");
-    const sprite = new PIXI.Sprite(texture);
+    
+    const sprite = new PIXI.Sprite(brickTexture);
     sprite.width = 0;
     sprite.height = 0;
     wordContainer.addChild(sprite);
@@ -388,6 +390,8 @@ export function startGame(container, loadScoreBoard, level, data) {
     sprite.height = wordContainer.height + 10;
     wordContainer.x = getRandomNumber(app.view.width - sprite.width, 0);
     wordContainer.y = -20;
+    wordContainer.scale.x = app.view.width * 0.1 / 100;
+    wordContainer.scale.y = app.view.width * 0.1 / 100;
     wordsContainer.addChild(wordContainer);
     return wordContainer;
   }

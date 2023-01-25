@@ -27,7 +27,7 @@ export default function loadBossModeUI(app, level) {
   BossModeContainer.width = app.view.width;
   BossModeContainer.height = app.view.height;
   PIXI.Assets.load([
-    `bossModeBg${level}`,
+    `bossModeBg`,
     "bossModeFg",
     "scoreFrame",
     "clockFrame",
@@ -47,9 +47,7 @@ export default function loadBossModeUI(app, level) {
   ])
     .then((textures) => {
       const {
-        bossModeBg1,
-        bossModeBg2,
-        bossModeBg3,
+        bossModeBg,
         bossModeFg,
         scoreFrame,
         menuBtn,
@@ -67,20 +65,11 @@ export default function loadBossModeUI(app, level) {
         bossCheckBox,
         bossCheckFill
       } = textures;
-      switch (level) {
-        case 1:
-          BossModeContainer.addChild(getBackground(bossModeBg1));
-          break;
-          case 2:
-          BossModeContainer.addChild(getBackground(bossModeBg2));
-          break;
-          case 3:
-          BossModeContainer.addChild(getBackground(bossModeBg3));
-          break;
-      }
+      
+      BossModeContainer.addChild(getBackground(bossModeBg));
       BossModeContainer.addChild(getNormalClouds(bossModeClouds));
       BossModeContainer.addChild(
-        getLivesContainer([jackOLantern1, jackOLantern2, jackOLantern3])
+        getLivesContainer([jackOLantern1, jackOLantern2, jackOLantern3], 'PUMPKINS')
       );
       BossModeContainer.addChild(getForeground(bossModeFg));
       BossModeContainer.addChild(getWordsContainer());
@@ -88,8 +77,8 @@ export default function loadBossModeUI(app, level) {
       BossModeContainer.addChild(getMenuBtn(menuBtn));
       BossModeContainer.addChild(getMultiplier());
       BossModeContainer.addChild(getClockFrame(clockFrame))
-      BossModeContainer.addChild(getPauseMenu(bossPauseMenuBg, bossResumeBtn, bossRestartBtn, bossMainMenuBtn, bossCheckBox, bossCheckFill));
-      BossModeContainer.addChild(getRulesBoard(bossScoreBoard, bossScoreBtnBg ,rules[level]))
+      BossModeContainer.addChild(getPauseMenu(bossPauseMenuBg, bossResumeBtn, bossRestartBtn, bossMainMenuBtn, bossCheckBox, bossCheckFill, 'BOSS'));
+      BossModeContainer.addChild(getRulesBoard(bossScoreBoard, bossScoreBtnBg ,rules[level], level))
     })
     .then(() => {
       bossModeBackMusic.play();

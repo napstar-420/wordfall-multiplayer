@@ -127,7 +127,7 @@ export default function loadPracticeModeInfo(app) {
     function incrementWpm() {
       tapSound.currentTime = 0;
       tapSound.play();
-      if (wpm < 70) {
+      if (wpm < 150) {
         wpm = wpm + 5;
       }
     }
@@ -135,7 +135,7 @@ export default function loadPracticeModeInfo(app) {
     function decrementWpm() {
       tapSound.currentTime = 0;
       tapSound.play();
-      if (wpm > 25) {
+      if (wpm > 5) {
         wpm = wpm - 5;
       }
     }
@@ -334,7 +334,7 @@ export default function loadPracticeModeInfo(app) {
     setTimeout(() => {
         TweenMax.to(Board, 1, {
           ease: Elastic.easeOut.config(1, 0.99),
-          y: -60,
+          y: -(boardHeight * 12 / 100),
         });
       }, 750);
   });

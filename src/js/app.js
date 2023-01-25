@@ -1,3 +1,4 @@
+import loadBossScoreBoard from "./boss mode/scoreBoard.js";
 import loadMainMenu from "./mainMenu.js";
 import loadPracticeModeInfo from "./practiceMode/practiceModeInfo.js";
 
@@ -44,9 +45,7 @@ PIXI.Assets.add("menuBtn", "/src/assets/images/gameUI/hamburger menu b.png");
 PIXI.Assets.add("flower", "/src/assets/images/normalMode/flower without glow 1.png");
 PIXI.Assets.add("twinFlower1", "/src/assets/images/normalMode/flower without glow 2.png");
 PIXI.Assets.add("twinFlower2", "/src/assets/images/normalMode/flower without glow 3.png");
-PIXI.Assets.add('bossModeBg1', '/src/assets/images/bossMode/boss mode back 1.png');
-PIXI.Assets.add('bossModeBg2', '/src/assets/images/bossMode/boss mode back 2.png');
-PIXI.Assets.add('bossModeBg3', '/src/assets/images/bossMode/boss mode back 3.png');
+PIXI.Assets.add('bossModeBg', '/src/assets/images/bossMode/boss_background.png');
 PIXI.Assets.add("bossModeClouds", "/src/assets/images/bossMode/clouds group dark.png");
 PIXI.Assets.add("bossModeFg", "/src/assets/images/bossMode/boss mode foreground.png");
 PIXI.Assets.add("jackOLantern1", "/src/assets/images/bossMode/Jack-O-Lantern 1.png");
@@ -101,7 +100,7 @@ PIXI.Assets.add('checkBox', '/src/assets/options menu assets/check box.png');
 PIXI.Assets.add('checkFill', '/src/assets/options menu assets/check box indicator.png');
 
 // Boss Mode Pause menu 
-PIXI.Assets.add('bossPauseMenuBg', '/src/assets/boss mode options menu assets/bossmod menu board v1.5.png');
+PIXI.Assets.add('bossPauseMenuBg', '/src/assets/boss mode options menu assets/mini options baord.png');
 PIXI.Assets.add('bossResumeBtn', '/src/assets/boss mode options menu assets/boss_resume_btn.png');
 PIXI.Assets.add('bossRestartBtn', '/src/assets/boss mode options menu assets/boss_restart_btn.png');
 PIXI.Assets.add('bossMainMenuBtn', '/src/assets/boss mode options menu assets/boss_mainMenu_btn.png');
@@ -110,3 +109,4 @@ PIXI.Assets.add('bossCheckFill', '/src/assets/boss mode options menu assets/boss
 
 loadMainMenu(app);
 // loadPracticeModeInfo(app);
+// loadBossScoreBoard(app, {accuracy: 85, wpm: 40, score: 5476, level: 1}, 'COMPLETED')

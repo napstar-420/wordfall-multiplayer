@@ -63,7 +63,7 @@ export default function loadNormalModeUI(app, level, data = {wpm: null, selected
       NormalModeContainer.addChild(getBackground(normalModeBg1));
       NormalModeContainer.addChild(getNormalClouds(normalModeClouds));
       NormalModeContainer.addChild(
-        getLivesContainer([flower, twinFlower1, twinFlower2])
+        getLivesContainer([flower, twinFlower1, twinFlower2], 'FLOWER')
       );
       NormalModeContainer.addChild(getForeground(normalModeFg));
       NormalModeContainer.addChild(getWordsContainer());
