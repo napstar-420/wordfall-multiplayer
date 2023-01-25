@@ -198,6 +198,74 @@ export function getPauseMenu() {
   optionText.x = width / 2;
   pauseMenu.addChild(optionText);
 
+  const pauseButtons = [
+    {
+      spriteSrc: "/src/assets/options menu assets/reset button.png",
+      anchor: 0,
+      xPos: (width * 20) / 100,
+      type: "WILL BE HANDLED BY GAME LOGIC",
+    },
+    {
+      spriteSrc: "/src/assets/options menu assets/Main menu button.png",
+      anchor: 0.5,
+      xPos: width / 2,
+      type: "MAIN MENU",
+    },
+    {
+      spriteSrc: "/src/assets/options menu assets/resume_play button.png",
+      anchor: 1,
+      xPos: width - (width * 20) / 100,
+      type: "WILL BE HANDLED BY GAME LOGIC",
+    },
+  ];
+
+  pauseButtons.map((button) => {
+    const btn = PIXI.Sprite.from(button.spriteSrc);
+    btn.width = (width * 15) / 100;
+    btn.height = (width * 15) / 100;
+    btn.anchor.x = button.anchor;
+    btn.y = ((height * 28) / 100) * 2.9;
+    btn.x = button.xPos;
+    btn.interactive = true;
+    btn.cursor = "pointer";
+    btn.on("pointerover", () => cursorOver(btn));
+    btn.on("pointerout", () => cursorOut(btn));
+    if (button.type !== 'WILL BE HANDLED BY GAME LOGIC') {
+      btn.on("pointerdown", () => handleClick(button.type));
+    }
+    pauseMenu.addChild(btn);
+  });
+
+  function cursorOver(button) {
+    hoverSound.pause();
+    hoverSound.currentTime = 0;
+    hoverSound.play();
+    button.width = (width * 16) / 100;
+    button.height = (width * 16) / 100;
+  }
+
+  function cursorOut(button) {
+    hoverSound.pause();
+    hoverSound.currentTime = 0;
+    hoverSound.play();
+    button.width = (width * 15) / 100;
+    button.height = (width * 15) / 100;
+  }
+
+  function handleClick(type) {
+    tapSound.pause();
+    tapSound.currentTime = 0;
+    tapSound.play();
+    switch (type) {
+        case "MAIN MENU":
+        bossModeBackMusic.pause();
+        normalModeBackMusic.pause();
+        app.stage.removeChild(app.stage.children[0]);
+        loadMainMenu(app);
+        break;
+    }
+  }
+
   // Music text
   const musicText = new PIXI.Text("MUSIC", {
     fontSize: (height * 7) / 100,
@@ -306,78 +374,6 @@ export function getPauseMenu() {
   pauseMenu.addChild(sfxBox);
   if (isSfxOn) {
     pauseMenu.addChild(sfxCheckFill);
-  }
-
-  const pauseButtons = [
-    {
-      spriteSrc: "/src/assets/options menu assets/reset button.png",
-      anchor: 0,
-      xPos: (width * 20) / 100,
-      type: "RESTART",
-    },
-    {
-      spriteSrc: "/src/assets/options menu assets/Main menu button.png",
-      anchor: 0.5,
-      xPos: width / 2,
-      type: "MAIN MENU",
-    },
-    {
-      spriteSrc: "/src/assets/options menu assets/resume_play button.png",
-      anchor: 1,
-      xPos: width - (width * 20) / 100,
-      type: "WILL BE HANDLED BY GAME LOGIC",
-    },
-  ];
-
-  pauseButtons.map((button) => {
-    const btn = PIXI.Sprite.from(button.spriteSrc);
-    btn.width = (width * 15) / 100;
-    btn.height = (width * 15) / 100;
-    btn.anchor.x = button.anchor;
-    btn.y = ((height * 28) / 100) * 2.9;
-    btn.x = button.xPos;
-    btn.interactive = true;
-    btn.cursor = "pointer";
-    btn.on("pointerover", () => cursorOver(btn));
-    btn.on("pointerout", () => cursorOut(btn));
-    btn.on("pointerdown", () => handleClick(button.type));
-    pauseMenu.addChild(btn);
-  });
-
-  function cursorOver(button) {
-    hoverSound.pause();
-    hoverSound.currentTime = 0;
-    hoverSound.play();
-    button.width = (width * 16) / 100;
-    button.height = (width * 16) / 100;
-  }
-
-  function cursorOut(button) {
-    hoverSound.pause();
-    hoverSound.currentTime = 0;
-    hoverSound.play();
-    button.width = (width * 15) / 100;
-    button.height = (width * 15) / 100;
-  }
-
-  function handleClick(type) {
-    tapSound.pause();
-    tapSound.currentTime = 0;
-    tapSound.play();
-    switch (type) {
-      case "RESTART":
-        normalModeBackMusic.pause();
-        bossModeBackMusic.pause();
-        app.stage.removeChild(app.stage.children[0]);
-        loadNormalModeUI(app);
-        break;
-        case "MAIN MENU":
-        bossModeBackMusic.pause();
-        normalModeBackMusic.pause();
-        app.stage.removeChild(app.stage.children[0]);
-        loadMainMenu(app);
-        break;
-    }
   }
 
   return pauseMenu;

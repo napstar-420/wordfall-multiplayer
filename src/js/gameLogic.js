@@ -1,7 +1,10 @@
 import { getRandomNumber } from "./gameUI.js";
 import { app } from "./app.js";
-import { tapSound, brickBreakSound } from "./music and sounds/index.js";
+import { tapSound, brickBreakSound, normalModeBackMusic, bossModeBackMusic } from "./music and sounds/index.js";
 import {words as wordsList} from './words.js';
+import loadBossModeUI from "./boss mode/ui.js";
+import loadPracticeModeInfo from "./practiceMode/practiceModeInfo.js";
+import loadNormalModeUI from "./normalMode/ui.js";
 
 // const wordsList = [
 //   "dispensable",
@@ -118,6 +121,67 @@ export function startGame(container, loadScoreBoard, level, data) {
   }
   clockFrame.children[1].text = 60;
   const pauseMenu = container.children[9];
+
+  const restartBtn = pauseMenu.children[2];
+
+  switch (level) {
+    case 1:
+      restartBtn.on('pointerdown', () => {
+        tapSound.pause();
+        tapSound.currentTime = 0;
+        tapSound.play();
+        bossModeBackMusic.pause();
+        normalModeBackMusic.pause();
+        app.stage.removeChild(container);
+        loadBossModeUI(app, level);
+      })
+      break;
+    case 2:
+      restartBtn.on('pointerdown', () => {
+        tapSound.pause();
+        tapSound.currentTime = 0;
+        tapSound.play();
+        bossModeBackMusic.pause();
+        normalModeBackMusic.pause();
+        app.stage.removeChild(container);
+        loadBossModeUI(app, level);
+      })
+      break;
+    case 3:
+      restartBtn.on('pointerdown', () => {
+        tapSound.pause();
+        tapSound.currentTime = 0;
+        tapSound.play();
+        bossModeBackMusic.pause();
+        normalModeBackMusic.pause();
+        app.stage.removeChild(container);
+        loadBossModeUI(app, level);
+      })
+      break;
+    case 'PRACTICE':
+      restartBtn.on('pointerdown', () => {
+        tapSound.pause();
+        tapSound.currentTime = 0;
+        tapSound.play();
+        bossModeBackMusic.pause();
+        normalModeBackMusic.pause();
+        app.stage.removeChild(container);
+        loadPracticeModeInfo(app);
+      })
+      break;
+    default:
+      restartBtn.on('pointerdown', () => {
+        tapSound.pause();
+        tapSound.currentTime = 0;
+        tapSound.play();
+        bossModeBackMusic.pause();
+        normalModeBackMusic.pause();
+        app.stage.removeChild(container);
+        loadNormalModeUI(app, 'NORMAL')
+      })
+      break;
+  }
+
   let rulesBoard = null;
   let startGameBtn
   
@@ -167,8 +231,6 @@ export function startGame(container, loadScoreBoard, level, data) {
       break;
   }
 
-  console.log(launchSpeed)
-
   // This Interval updates time and launch speed
   let timeInterval = setInterval(updateTime, 1000);
   function updateTime() {
@@ -215,7 +277,7 @@ export function startGame(container, loadScoreBoard, level, data) {
     }
   }
 
-  if (level && level !== 'PRACTICE') {
+  if (level && level !== 'PRACTICE' && level !== 'NORMAL') {
     gamePaused = true;
     clearInterval(timeInterval);
     rulesBoard = container.children[10];
@@ -234,7 +296,7 @@ export function startGame(container, loadScoreBoard, level, data) {
   }
 
   // This Code adds resume functionality to pause menu
-  pauseMenu.children[pauseMenu.children.length - 1].on("pointerdown", () => {
+  pauseMenu.children[4].on("pointerdown", () => {
     timeInterval = setInterval(updateTime, 1000);
     TweenMax.to(pauseMenu, 1, {
       ease: Expo.easeIn,
@@ -296,11 +358,11 @@ export function startGame(container, loadScoreBoard, level, data) {
           return createWord();
         }
       } else if (data.selectedDifficulty === 'MEDIUM') {
-        if (word.length > 9 && word.length < 5) {
+        if (word.length > 7 || word.length < 5) {
           return createWord();
         }
       } else if (data.selectedDifficulty === 'HARD') {
-        if (word.length < 10) {
+        if (word.length < 7 || word.length > 9) {
           return createWord();
         }
       }
