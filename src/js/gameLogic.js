@@ -294,7 +294,7 @@ export function startGame(container, loadScoreBoard, level, data) {
   // This Code adds pausing game functionality
   menuBtn.interactive = true;
   menuBtn.cursor = "pointer";
-  if (level === 'PRACTICE' || level === 'NORMAL' ) {
+  if (level !== 1 && level !== 2 && level !== 3) {
     menuBtn
       .on("pointerover", () => {
         menuBtn.scale.x = (app.view.height * 0.16) / 100;
