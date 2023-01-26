@@ -1,7 +1,7 @@
 import loadBossModeUI from "./ui.js";
 import { getBackground } from "../gameUI.js";
 import loadMainMenu from "../mainMenu.js";
-import { bossModeBackMusic, hoverSound, tapSound } from "../music and sounds/index.js";
+import { bossModeBackMusic, failureSound, hoverSound, successSound, tapSound } from "../music and sounds/index.js";
 
 export default function loadBossScoreBoard(app, endScore, type) {
   const { accuracy, wpm, score, level } = endScore;
@@ -200,10 +200,7 @@ export default function loadBossScoreBoard(app, endScore, type) {
         tapSound.pause();
         tapSound.currentTime = 0;
         tapSound.play();
-        TweenMax.to(boardContainer, 1, {
-          ease: Bounce.easeIn,
-          y: -(boardHeight + 100),
-        });
+        TweenMax.to(boardContainer, 1, { ease: Expo.easeIn, y: -(boardHeight + 100)})
         setTimeout(() => {
           bossModeBackMusic.pause();
           app.stage.removeChild(BossScoreBoard);
@@ -235,6 +232,11 @@ export default function loadBossScoreBoard(app, endScore, type) {
     }
 
     setTimeout(() => {
+      if (type === 'COMPLETED') {
+        successSound.play();
+      } else if (type === 'FAILED') {
+        failureSound.play();
+      }
       TweenMax.to(boardContainer, 1, { ease: Bounce.easeOut, y: 0 });
     }, 750);
 

@@ -1,7 +1,7 @@
 import loadNormalModeUI from "./ui.js";
 import loadMainMenu from "../mainMenu.js";
 import { getBackground } from "../gameUI.js";
-import { hoverSound, normalModeBackMusic, tapSound } from "../music and sounds/index.js";
+import { hoverSound, normalModeBackMusic, normalScoreBoardMusic, tapSound } from "../music and sounds/index.js";
 
 export default function loadScoreBoard(app, endScore) {
   const { accuracy, wpm, troubledWords, score } = endScore;
@@ -246,6 +246,8 @@ export default function loadScoreBoard(app, endScore) {
         ease: Elastic.easeOut.config(1, 0.99),
         y: -60,
       });
+      normalScoreBoardMusic.currentTime = 0;
+      normalScoreBoardMusic.play();
     }, 750);
     app.stage.addChild(scoreBoard);
   });

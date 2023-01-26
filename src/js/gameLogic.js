@@ -1,6 +1,6 @@
 import { getRandomNumber } from "./gameUI.js";
 import { app } from "./app.js";
-import { tapSound, brickBreakSound, normalModeBackMusic, bossModeBackMusic } from "./music and sounds/index.js";
+import { tapSound, brickBreakSound, normalModeBackMusic, bossModeBackMusic, gameOverSound } from "./music and sounds/index.js";
 import {words as wordsList} from './words.js';
 import loadBossModeUI from "./boss mode/ui.js";
 import loadPracticeModeInfo from "./practiceMode/practiceModeInfo.js";
@@ -279,24 +279,6 @@ export function startGame(container, loadScoreBoard, level, data) {
     }
   }
 
-  if (level && level !== 'PRACTICE' && level !== 'NORMAL') {
-    gamePaused = true;
-    clearInterval(timeInterval);
-    rulesBoard = container.children[10];
-    startGameBtn = rulesBoard.children[3];
-    startGameBtn.on('pointerdown', () => {
-      tapSound.pause();
-      tapSound.currentTime = 0;
-      tapSound.play();
-      TweenMax.to(rulesBoard, 1, { ease: Expo.easeIn, y: -(app.view.height * 90 / 100) });
-      setTimeout(() => {
-        gamePaused = false;
-        timeInterval = setInterval(updateTime, 1000);
-      }, 1000)
-    })
-    TweenMax.to(rulesBoard, 1, { ease: Expo.easeOut, y: 0 });
-  }
-
   // This Code adds resume functionality to pause menu
   pauseMenu.children[4].on("pointerdown", () => {
     timeInterval = setInterval(updateTime, 1000);
@@ -312,20 +294,55 @@ export function startGame(container, loadScoreBoard, level, data) {
   // This Code adds pausing game functionality
   menuBtn.interactive = true;
   menuBtn.cursor = "pointer";
-  menuBtn
-    .on("pointerover", () => {
-      menuBtn.scale.x = (app.view.height * 0.16) / 100;
-      menuBtn.scale.y = (app.view.height * 0.16) / 100;
+  if (level === 'PRACTICE' || level === 'NORMAL' ) {
+    menuBtn
+      .on("pointerover", () => {
+        menuBtn.scale.x = (app.view.height * 0.16) / 100;
+        menuBtn.scale.y = (app.view.height * 0.16) / 100;
+      })
+      .on("pointerout", () => {
+        menuBtn.scale.x = (app.view.height * 0.15) / 100;
+        menuBtn.scale.y = (app.view.height * 0.15) / 100;
+      })
+      .on("pointerdown", () => {
+        clearInterval(timeInterval);
+        gamePaused = true;
+        TweenMax.to(pauseMenu, 1, { ease: Expo.easeOut, y: 0 });
+      });
+  }
+
+  if (level && level !== 'PRACTICE' && level !== 'NORMAL') {
+    gamePaused = true;
+    clearInterval(timeInterval);
+    rulesBoard = container.children[10];
+    startGameBtn = rulesBoard.children[3];
+    startGameBtn.on('pointerdown', () => {
+      tapSound.pause();
+      tapSound.currentTime = 0;
+      tapSound.play();
+      menuBtn
+      .on("pointerover", () => {
+        menuBtn.scale.x = (app.view.height * 0.16) / 100;
+        menuBtn.scale.y = (app.view.height * 0.16) / 100;
+      })
+      .on("pointerout", () => {
+        menuBtn.scale.x = (app.view.height * 0.15) / 100;
+        menuBtn.scale.y = (app.view.height * 0.15) / 100;
+      })
+      .on("pointerdown", () => {
+        clearInterval(timeInterval);
+        gamePaused = true;
+        TweenMax.to(pauseMenu, 1, { ease: Expo.easeOut, y: 0 });
+      });
+      TweenMax.to(rulesBoard, 1, { ease: Expo.easeIn, y: -(app.view.height * 90 / 100) });
+      setTimeout(() => {
+        gamePaused = false;
+        timeInterval = setInterval(updateTime, 1000);
+      }, 1000)
     })
-    .on("pointerout", () => {
-      menuBtn.scale.x = (app.view.height * 0.15) / 100;
-      menuBtn.scale.y = (app.view.height * 0.15) / 100;
-    })
-    .on("pointerdown", () => {
-      clearInterval(timeInterval);
-      gamePaused = true;
-      TweenMax.to(pauseMenu, 1, { ease: Expo.easeOut, y: 0 });
-    });
+    
+    TweenMax.to(rulesBoard, 1, { ease: Expo.easeOut, y: 0 });
+  }
 
   // Adding Event Listener for typing
   document.addEventListener("keyup", handleGame);
@@ -635,6 +652,12 @@ export function startGame(container, loadScoreBoard, level, data) {
   }
 
   function endGame(type) {
+    gamePaused = true;
+    normalModeBackMusic.pause();
+    normalModeBackMusic.currentTime = 0;
+    bossModeBackMusic.pause();
+    bossModeBackMusic.currentTime = 0;
+    gameOverSound.play();
     const setOfTroubledWords = [...new Set(troubledWords)];
     const endScore = {
       accuracy: getAccuracy(completedWords, setOfTroubledWords.length),
@@ -646,8 +669,10 @@ export function startGame(container, loadScoreBoard, level, data) {
     clearInterval(timeInterval);
     app.ticker.remove(gameLoop);
     document.removeEventListener('keyup', handleGame);
-    app.stage.removeChild(container);
-    loadScoreBoard(app, endScore, type);
+    setTimeout(() => {
+      app.stage.removeChild(container);
+      loadScoreBoard(app, endScore, type);
+    }, 3000)
   }
 }
 

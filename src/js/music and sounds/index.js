@@ -36,6 +36,13 @@ export const bossModeBackMusic = new Audio('/src/assets/music and sound effects/
 bossModeBackMusic.volume = 0.5;
 bossModeBackMusic.loop = true; 
 
+export const gameOverSound = new Audio('/src/assets/music and sound effects/gameover.mp3');
+
+export const normalScoreBoardMusic = new Audio('/src/assets/music and sound effects/normalScoreboardSound.mp3');
+
+export const successSound = new Audio('/src/assets/music and sound effects/successSound.mp3');
+export const failureSound = new Audio('/src/assets/music and sound effects/failureSound.mp3');
+
 isMusicOn ? turnMusicOn() : turnMusicOff();
 isSfxOn ? turnSfxOn() : turnSfxOff();
 
@@ -58,6 +65,7 @@ export function turnSfxOn() {
     hoverSound.volume = 0.5;
     tapSound.volume = 1;
     brickBreakSound.volume = 1;
+    gameOverSound.volume = 1;
 }
 
 export function turnSfxOff() {
@@ -65,4 +73,5 @@ export function turnSfxOff() {
     hoverSound.volume = 0;
     tapSound.volume = 0;
     brickBreakSound.volume = 0;
+    gameOverSound.volume = 0;
 }
