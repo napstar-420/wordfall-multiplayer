@@ -12,6 +12,7 @@ import {
   turnSfxOn,
   turnSfxOff,
 } from "./music and sounds/index.js";
+import loadLeaderBoard from "./leaderboard/ui.js";
 
 export default function loadMainMenu() {
   // Adding backrgound to div
@@ -140,12 +141,12 @@ export default function loadMainMenu() {
       {
         mode: "MULTIPLAYER",
         height: (BoardContainer.height * 69) / 100,
-        event: () => alert("have not added yet"),
+        callback: loadLeaderBoard,
       },
       {
         mode: "LEADERBOARD",
         height: (BoardContainer.height * 81) / 100,
-        event: () => alert("have not added yet"),
+        callback: loadLeaderBoard,
       },
     ];
 
