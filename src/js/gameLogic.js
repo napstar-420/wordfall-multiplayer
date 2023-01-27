@@ -1,86 +1,10 @@
-import { getRandomNumber } from "./gameUI.js";
+import { getBrickAnimation, getRandomNumber } from "./gameUI.js";
 import { app } from "./app.js";
 import { tapSound, brickBreakSound, normalModeBackMusic, bossModeBackMusic, gameOverSound } from "./music and sounds/index.js";
 import {words as wordsList} from './words.js';
 import loadBossModeUI from "./boss mode/ui.js";
 import loadPracticeModeInfo from "./practiceMode/practiceModeInfo.js";
 import loadNormalModeUI from "./normalMode/ui.js";
-
-// const wordsList = [
-//   "dispensable",
-//   "romantic",
-//   "squirrel",
-//   "bolt",
-//   "fixed",
-//   "winter",
-//   "many",
-//   "poke",
-//   "rhetorical",
-//   "linen",
-//   "tempt",
-//   "sassy",
-//   "hushed",
-//   "pathetic",
-//   "harm",
-//   "misty",
-//   "ready",
-//   "belong",
-//   "children",
-//   "quartz",
-//   "annoyed",
-//   "puzzled",
-//   "ritzy",
-//   "grotesque",
-//   "acidic",
-//   "evanescent",
-//   "name",
-//   "ruin",
-//   "questionable",
-//   "dear",
-//   "retire",
-//   "crabby",
-//   "shallow",
-//   "attach",
-//   "doll",
-//   "raise",
-//   "fog",
-//   "rural",
-//   "ambitious",
-//   "nine",
-//   "crook",
-//   "lavish",
-//   "prefer",
-//   "bare",
-//   "bashful",
-//   "stupendous",
-//   "neighborly",
-//   "elegant",
-//   "title",
-//   "assorted",
-//   "sound",
-//   "frequent",
-//   "part",
-//   "compete",
-//   "unequaled",
-//   "grass",
-//   "strengthen",
-//   "blink",
-//   "tiresome",
-//   "club",
-//   "divergent",
-//   "kill",
-//   "sugar",
-//   "scribble",
-//   "rabbit",
-//   "average",
-//   "faulty",
-//   "leather",
-//   "polish",
-//   "offbeat",
-//   "stormy",
-//   "song",
-//   "racial",
-// ];
 
 const letterStyling = new PIXI.TextStyle({
   fontFamily: "Barlow",
@@ -96,8 +20,7 @@ const typedLetterStyling = new PIXI.TextStyle({
 
 const brickTexture = PIXI.Texture.from("/src/assets/images/gameUI/letters tile 1.png");
 
-export function startGame(container, loadScoreBoard, level, data) {
-
+export function startGame(container, loadScoreBoard, level, data) {  
   const normalClouds = container.children[1];
   const livesContainer = container.children[2];
   const wordsContainer = container.children[4];
@@ -471,11 +394,28 @@ export function startGame(container, loadScoreBoard, level, data) {
         counter++;
         // if users types the entire word correctly
         if (activeWord.children.length === counter) {
+          console.log({w: activeWord.width, h: activeWord.height})
           brickBreakSound.play();
           score += (activeWord.children.length - 1) * multiplier;
           scoreFrame.children[1].text = score;
           wordsContainer.removeChild(activeWord);
           wordsOnScreen.splice(activeWordIndex, 1);
+          const width = activeWord.width;
+          const height = activeWord.height;
+          const x = activeWord.x;
+          const y = activeWord.y;
+          (async () => {
+            const brickAnim = await getBrickAnimation();
+            brickAnim.width =  width + (app.view.width * 2.5 / 100);
+            brickAnim.height = height + (app.view.height * 22 / 100);
+            brickAnim.play();
+            brickAnim.x = x - (app.view.width * 1.3 / 100);
+            brickAnim.y = y - (app.view.height * 11 / 100);
+            container.addChild(brickAnim);
+            setTimeout(() => {
+              container.removeChild(brickAnim);
+            }, 800)
+          })()
           activeWord = null;
           activeWordIndex = null;
           counter = 1;
@@ -537,7 +477,7 @@ export function startGame(container, loadScoreBoard, level, data) {
 
   // This function update words on screen
   function updateWords() {
-    wordsOnScreen.forEach((word,index) => {
+    wordsOnScreen.forEach((word, index) => {
       // Descend words on screen
       if (word) {
         word.y += wordSpeed;
@@ -549,36 +489,6 @@ export function startGame(container, loadScoreBoard, level, data) {
         livesContainer.children.forEach((life) => {
           const collision = testForCollision(word, life);
           if (collision) {
-            if (word.active === true) {
-              // changing style from type to regular
-              word.children.forEach((letter, index) => {
-                if (index > 0) {
-                  letter.style = letterStyling;
-                }
-              });
-              activeWord = null;
-              activeWordIndex = null;
-              counter = 1;
-            }
-            // reset streak
-            streak = 0;
-            // decrement multiplier
-            multiplier -= multiplier > 1 ? 1 : 0;
-            // update multiplier on ui
-            container.children[7].text = `x${multiplier}`;
-            let troubledWord = "";
-            // Reset Styling
-            word.children.forEach((letter, index) => {
-              if (index > 0) {
-                troubledWord = troubledWord.concat(letter.text);
-              }
-            });
-            // adding word to troubled array
-            troubledWords.push(troubledWord);
-            livesContainer.removeChild(life);
-            if (livesContainer.children.length === 0) {
-              endGame("FAILED");
-            }
             switch (level) {
               case 1:
                 endGame("FAILED");
@@ -587,7 +497,30 @@ export function startGame(container, loadScoreBoard, level, data) {
                 endGame("FAILED");
                 break;
               default:
-                break;
+                // if (word.active === true) {
+                //   // changing style from type to regular
+                //   word.children.forEach((letter, letterIndex) => {
+                //     if (letterIndex > 0) {
+                //       letter.style = letterStyling;
+                //     }
+                //   });
+                //   activeWord = null;
+                //   activeWordIndex = null;
+                //   counter = 1;
+                // }
+                // // reset streak
+                // streak = 0;
+                // // decrement multiplier
+                // multiplier -= multiplier > 1 ? 1 : 0;
+                // // update multiplier on ui
+                // container.children[7].text = `x${multiplier}`;
+                // let troubledWord = "";
+                // // adding word to troubled array
+                // troubledWords.push(troubledWord);
+                livesContainer.removeChild(life);
+                if (livesContainer.children.length === 0) {
+                  endGame("FAILED");
+                }
             }
           }
         });
@@ -627,6 +560,8 @@ export function startGame(container, loadScoreBoard, level, data) {
       activeWord = null;
       activeWordIndex = null;
       counter = 1;
+    } else if (activeWord && activeWordIndex > index) {
+        activeWordIndex = activeWordIndex - 1;
     }
     // reset streak
     streak = 0;
@@ -636,8 +571,8 @@ export function startGame(container, loadScoreBoard, level, data) {
     container.children[7].text = `x${multiplier}`;
     let troubledWord = "";
     // Reset Styling
-    word.children.forEach((letter, index) => {
-      if (index > 0) {
+    word.children.forEach((letter, letterIndex) => {
+      if (letterIndex > 0) {
         troubledWord = troubledWord.concat(letter.text);
       }
     });
@@ -645,10 +580,6 @@ export function startGame(container, loadScoreBoard, level, data) {
     troubledWords.push(troubledWord);
     // updating words on screen
     wordsOnScreen.splice(index, 1);
-    // updating active word index
-    if (activeWord && activeWordIndex > index) {
-      activeWordIndex = activeWordIndex - 1;
-    }
   }
 
   function endGame(type) {

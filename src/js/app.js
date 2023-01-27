@@ -1,4 +1,5 @@
 import loadBossScoreBoard from "./boss mode/scoreBoard.js";
+import { getBrickAnimation } from "./gameUI.js";
 import loadLeaderBoard from "./leaderboard/ui.js";
 import loadMainMenu from "./mainMenu.js";
 import loadPracticeModeInfo from "./practiceMode/practiceModeInfo.js";
@@ -196,7 +197,9 @@ PIXI.Assets.add('leaderScoreBg', '/src/assets/images/leaderboard/Rectangle 32.pn
 PIXI.Assets.add('leaderNameBg', '/src/assets/images/leaderboard/Rectangle 31.png');
 PIXI.Assets.add('scoreTrophy', '/src/assets/images/leaderboard/Group 64.png')
 
-// loadMainMenu(app);
-loadLeaderBoard(app);
+
+
+loadMainMenu(app);
+// loadLeaderBoard(app);
 // loadPracticeModeInfo(app);
 // loadBossScoreBoard(app, {accuracy: 85, wpm: 40, score: 5476, level: 1}, 'COMPLETED')

@@ -1,7 +1,7 @@
 import { app } from "./app.js";
 import loadMainMenu from "./mainMenu.js";
-import loadNormalModeUI from "./normalMode/ui.js";
 import { hoverSound, tapSound, normalModeBackMusic, brickBreakSound, turnMusicOff, turnMusicOn, turnSfxOff, turnSfxOn, bossModeBackMusic } from "./music and sounds/index.js";
+import {brickJson} from '../assets/images/gameUI/brickAnim.js'
 
 export function getMenuBoard(texture) {
   const menuBoardSprite = new PIXI.Sprite(texture);
@@ -457,4 +457,21 @@ export function getRulesBoard(texture, btnTexture, rulesInfo, level) {
   })
 
   return board;
+}
+
+export async function getBrickAnimation() {
+  const spritesheet = new PIXI.Spritesheet(
+    PIXI.BaseTexture.from(brickJson.meta.image),
+    brickJson
+  );
+  spritesheet.parse();
+  const texturesArray = [];
+  Object.keys(spritesheet.textures).map((key) => {
+    texturesArray.push(spritesheet.textures[key]);
+  });
+  const anim = new PIXI.AnimatedSprite(texturesArray);
+  anim.animationSpeed = 0.1666;
+  anim.x = app.view.width / 2;
+  anim.y = app.view.height / 2;
+  return anim;
 }

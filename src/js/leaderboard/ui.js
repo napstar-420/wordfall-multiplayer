@@ -28,7 +28,6 @@ export default function loadLeaderBoard(app) {
         board.height = boardHeight;
         board.x = app.view.width / 2 - (boardWidth / 2) + 25;
         board.y = -(boardHeight + 100);
-        console.log(scoreBoard)
         // Board BG
         const boardBg = new PIXI.Sprite(scoreBoard);
         boardBg.width = boardWidth;

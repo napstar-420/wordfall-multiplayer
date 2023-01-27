@@ -16,8 +16,9 @@ export const tapSound = new Audio(
 tapSound.volume = 1;
 
 export const brickBreakSound = new Audio (
-  "/src/assets/music and sound effects/brickSound.wav"
+  "/src/assets/music and sound effects/explosion.mp3"
 );
+brickBreakSound.volume = 0.4;
 
 export const homeBackMusic = new Audio(
   "/src/assets/music and sound effects/background-music.mp3"
@@ -64,8 +65,10 @@ export function turnSfxOn() {
     localStorage.setItem('isSfxOn', true);
     hoverSound.volume = 0.5;
     tapSound.volume = 1;
-    brickBreakSound.volume = 1;
+    brickBreakSound.volume = 0.4;
     gameOverSound.volume = 1;
+    successSound.volume = 1;
+    failureSound.volume = 1;
 }
 
 export function turnSfxOff() {
@@ -74,4 +77,6 @@ export function turnSfxOff() {
     tapSound.volume = 0;
     brickBreakSound.volume = 0;
     gameOverSound.volume = 0;
+    successSound.volume = 0;
+    failureSound.volume = 0;
 }
