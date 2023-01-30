@@ -1,24 +1,28 @@
+import { Sprite, Text, TextStyle, Texture, Container } from "pixi.js";
 import { getBrickAnimation, getRandomNumber } from "./gameUI.js";
 import { app } from "./app.js";
 import { tapSound, brickBreakSound, normalModeBackMusic, bossModeBackMusic, gameOverSound } from "./music and sounds/index.js";
-import {words as wordsList} from './words.js';
 import loadBossModeUI from "./boss mode/ui.js";
 import loadPracticeModeInfo from "./practiceMode/practiceModeInfo.js";
 import loadNormalModeUI from "./normalMode/ui.js";
+import words from 'an-array-of-english-words';
+import { TweenMax } from "gsap/gsap-core.js";
+import { Expo, Power4 } from "gsap";
+import brickImage from './assets/images/gameUI/letters tile 1.png';
 
-const letterStyling = new PIXI.TextStyle({
+const letterStyling = new TextStyle({
   fontFamily: "Barlow",
   fontSize: 24,
   fill: "#ffffff",
 });
 
-const typedLetterStyling = new PIXI.TextStyle({
+const typedLetterStyling = new TextStyle({
   fontFamily: "Barlow",
   fontSize: 24,
   fill: "yellow",
 });
 
-const brickTexture = PIXI.Texture.from("/src/assets/images/gameUI/letters tile 1.png");
+const brickTexture = Texture.from(brickImage);
 
 export function startGame(container, loadScoreBoard, level, data) {  
   const normalClouds = container.children[1];
@@ -291,9 +295,9 @@ export function startGame(container, loadScoreBoard, level, data) {
 
   // This function create new word
   function createWord() {
-    const wordContainer = new PIXI.Container();
+    const wordContainer = new Container();
     // const word = wordFromApi; // uncomment this line when want to use Api
-    const word = wordsList[getRandomNumber(wordsList.length - 1, 0)];
+    const word = words[getRandomNumber(words.length - 1, 0)];
     if (level && level === 'PRACTICE') {
       if (data.selectedDifficulty === 'EASY') {
         if (word.length > 3) {
@@ -312,14 +316,14 @@ export function startGame(container, loadScoreBoard, level, data) {
       return createWord();
     }
     
-    const sprite = new PIXI.Sprite(brickTexture);
+    const sprite = new Sprite(brickTexture);
     sprite.width = 0;
     sprite.height = 0;
     wordContainer.addChild(sprite);
     let letterWidth = 15;
     // looping letters
     [...word].forEach((l) => {
-      let letter = new PIXI.Text(l);
+      let letter = new Text(l);
       letter.style = letterStyling;
       letter.x = letterWidth;
       letter.y = 5;
@@ -407,6 +411,7 @@ export function startGame(container, loadScoreBoard, level, data) {
             const brickAnim = await getBrickAnimation();
             brickAnim.width =  width + (app.view.width * 2.5 / 100);
             brickAnim.height = height + (app.view.height * 22 / 100);
+            brickBreakSound.pause();
             brickBreakSound.currentTime = 0;
             brickBreakSound.play();
             brickAnim.play();

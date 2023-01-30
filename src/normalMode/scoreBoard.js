@@ -1,16 +1,19 @@
+import { Sprite, Container, Text, Assets } from "pixi.js";
 import loadNormalModeUI from "./ui.js";
 import loadMainMenu from "../mainMenu.js";
 import { getBackground } from "../gameUI.js";
+import { TweenMax } from "gsap/gsap-core.js";
 import { hoverSound, normalModeBackMusic, normalScoreBoardMusic, tapSound } from "../music and sounds/index.js";
+import { Back, Elastic } from "gsap";
 
 export default function loadScoreBoard(app, endScore) {
   const { accuracy, wpm, troubledWords, score } = endScore;
 
-  const scoreBoard = new PIXI.Container();
+  const scoreBoard = new Container();
   scoreBoard.width = app.view.width;
   scoreBoard.height = app.view.height;
 
-  const assetsPromise = PIXI.Assets.load([
+  const assetsPromise = Assets.load([
     "menuBtnBack",
     "scoreBoardBg",
     "scoreBoard",
@@ -23,7 +26,7 @@ export default function loadScoreBoard(app, endScore) {
     scoreBoard.addChild(getBackground(textures.scoreBoardBg));
 
     // Adding score board
-    const boardContainer = new PIXI.Container();
+    const boardContainer = new Container();
     const boardWidth = (app.view.height * 90) / 100;
     const boardHeight = (app.view.height * 105) / 100;
     boardContainer.width = boardWidth;
@@ -31,7 +34,7 @@ export default function loadScoreBoard(app, endScore) {
     boardContainer.x = app.view.width / 2;
     boardContainer.y = -(boardHeight + 50);
 
-    const scoreBoardSprite = new PIXI.Sprite(textures.scoreBoard);
+    const scoreBoardSprite = new Sprite(textures.scoreBoard);
     scoreBoardSprite.width = boardWidth;
     scoreBoardSprite.height = boardHeight;
     scoreBoardSprite.anchor.x = 0.5;
@@ -41,7 +44,7 @@ export default function loadScoreBoard(app, endScore) {
     boardContainer.addChild(scoreBoardSprite);
 
     // Adding closing scoreboard button
-    const crossBtn = new PIXI.Sprite(textures.normalCrossBtn);
+    const crossBtn = new Sprite(textures.normalCrossBtn);
     crossBtn.anchor.set(0.5);
     crossBtn.x = (boardWidth * 34) / 100;
     crossBtn.y = (boardHeight * 29) / 100;
@@ -66,7 +69,7 @@ export default function loadScoreBoard(app, endScore) {
     boardContainer.addChild(crossBtn);
 
     // Adding Player Rank Text
-    const playerRankText = new PIXI.Text("Game Over", {
+    const playerRankText = new Text("Game Over", {
       fontSize: (boardHeight * 7) / 100,
       fill: 0xffffff,
       align: "left",
@@ -79,7 +82,7 @@ export default function loadScoreBoard(app, endScore) {
     boardContainer.addChild(playerRankText);
 
     // Adding Player Score Text
-    const playerScoreText = new PIXI.Text(`SCORE: ${score}`, {
+    const playerScoreText = new Text(`SCORE: ${score}`, {
       fontSize: (boardHeight * 8) / 100,
       fill: "#be6618",
       align: "left",
@@ -104,19 +107,19 @@ export default function loadScoreBoard(app, endScore) {
         extraWidth: (boardWidth * 25) / 100,
       },
     ];
-    const extrasContainer = new PIXI.Container();
+    const extrasContainer = new Container();
     extrasContainer.width = boardWidth;
     extrasContainer.x = -((boardWidth * 14) / 100);
     extrasContainer.y = (boardHeight * 54) / 100;
 
     extras.forEach((extraObj) => {
-      const extra = new PIXI.Sprite(textures.scoreBoardExtras);
+      const extra = new Sprite(textures.scoreBoardExtras);
       extra.width = (boardWidth * 30) / 100;
       extra.height = (boardWidth * 25) / 100;
       extra.x = extraObj.extraWidth;
       extra.anchor.x = 0.5;
       extra.anchor.y = 0.5;
-      const extraValueText = new PIXI.Text(extraObj.extraValue, {
+      const extraValueText = new Text(extraObj.extraValue, {
         fontFamily: "Boogaloo",
         fontSize: 50,
         fontWeight: "500",
@@ -125,7 +128,7 @@ export default function loadScoreBoard(app, endScore) {
       extraValueText.anchor.set(0.5);
       extraValueText.y -= 15;
       extra.addChild(extraValueText);
-      const extraNameText = new PIXI.Text(extraObj.extraName, {
+      const extraNameText = new Text(extraObj.extraName, {
         fontFamily: "Boogaloo",
         fontSize: 20,
         fontWeight: "500",
@@ -139,15 +142,15 @@ export default function loadScoreBoard(app, endScore) {
     boardContainer.addChild(extrasContainer);
 
     //Adding Troubled Word to scoreboard
-    const troubledWordContainer = new PIXI.Container();
+    const troubledWordContainer = new Container();
     troubledWordContainer.width = (boardWidth * 90) / 100;
     troubledWordContainer.y = (boardHeight * 73) / 100;
-    const troubledWordBgSprite = new PIXI.Sprite(textures.troubledWordBg);
+    const troubledWordBgSprite = new Sprite(textures.troubledWordBg);
     troubledWordBgSprite.anchor.x = 0.535;
     troubledWordBgSprite.anchor.y = 0.48;
     troubledWordBgSprite.height = (boardHeight * 20) / 100;
     troubledWordBgSprite.width = (boardWidth * 65) / 100;
-    const troubledWordText = new PIXI.Text("TROUBLED WORDS", {
+    const troubledWordText = new Text("TROUBLED WORDS", {
       fontFamily: "Boogaloo",
       fontSize: (boardHeight * 4) / 100,
       fontWeight: "800",
@@ -164,7 +167,7 @@ export default function loadScoreBoard(app, endScore) {
     let counter = 1;
     troubledWords.forEach((word, index) => {
       if (index < 16) {
-        let wordText = new PIXI.Text(`${word}`, {
+        let wordText = new Text(`${word}`, {
           fontFamily: "Barlow",
           fontSize: (boardHeight * 2.5) / 100,
           fontWeight: "600",
@@ -184,7 +187,7 @@ export default function loadScoreBoard(app, endScore) {
       }
     });
     // adding play again btn
-    const playAgainBtn = new PIXI.Container();
+    const playAgainBtn = new Container();
     playAgainBtn.y = (boardHeight * 90) / 100;
 
     playAgainBtn.interactive = true;
@@ -194,12 +197,12 @@ export default function loadScoreBoard(app, endScore) {
       .on("pointerout", () => cursorOut(playAgainBtnText))
       .on("pointerdown", () => handleClick(loadNormalModeUI));
 
-    const playAgainBtnBgSprite = new PIXI.Sprite(textures.menuBtnBack);
+    const playAgainBtnBgSprite = new Sprite(textures.menuBtnBack);
     playAgainBtnBgSprite.width = (boardWidth * 45) / 100;
     playAgainBtnBgSprite.height = (boardHeight * 10) / 100;
     playAgainBtnBgSprite.anchor.set(0.5);
 
-    const playAgainBtnText = new PIXI.Text("PLAY AGAIN", {
+    const playAgainBtnText = new Text("PLAY AGAIN", {
       fontFamily: "Boogaloo",
       fontSize: (boardHeight * 5) / 100,
       fontWeight: "500",

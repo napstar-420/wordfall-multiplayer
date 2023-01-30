@@ -1,10 +1,21 @@
+import { Sprite, TilingSprite, Container, Text, Assets, Spritesheet, BaseTexture, AnimatedSprite } from "pixi.js";
 import { app } from "./app.js";
 import loadMainMenu from "./mainMenu.js";
-import { hoverSound, tapSound, normalModeBackMusic, brickBreakSound, turnMusicOff, turnMusicOn, turnSfxOff, turnSfxOn, bossModeBackMusic } from "./music and sounds/index.js";
-import {brickJson} from '../assets/images/gameUI/brickAnim.js'
+import {brickJson} from './assets/images/gameUI/brickAnim.js'
+import {
+  hoverSound,
+  tapSound,
+  normalModeBackMusic,
+  brickBreakSound,
+  turnMusicOff,
+  turnMusicOn,
+  turnSfxOff,
+  turnSfxOn,
+  bossModeBackMusic,
+} from "./music and sounds/index.js";
 
 export function getMenuBoard(texture) {
-  const menuBoardSprite = new PIXI.Sprite(texture);
+  const menuBoardSprite = new Sprite(texture);
   menuBoardSprite.width = (app.view.height * 90) / 100;
   menuBoardSprite.height = (app.view.height * 100) / 100;
   menuBoardSprite.anchor.x = 0.5;
@@ -13,14 +24,14 @@ export function getMenuBoard(texture) {
 }
 
 export function getBackground(texture) {
-  const bgSprite = new PIXI.Sprite(texture);
+  const bgSprite = new Sprite(texture);
   bgSprite.width = app.view.width;
   bgSprite.height = app.view.height;
   return bgSprite;
 }
 
 export function getNormalClouds(texture) {
-  const clouds = new PIXI.TilingSprite(texture, app.screen.width);
+  const clouds = new TilingSprite(texture, app.screen.width);
   clouds.width = app.view.width;
   clouds.height = app.view.height;
   clouds.alpha = 0.6;
@@ -28,25 +39,25 @@ export function getNormalClouds(texture) {
 }
 
 export function getForeground(texture) {
-  const fgSprite = new PIXI.Sprite(texture);
+  const fgSprite = new Sprite(texture);
   fgSprite.width = app.view.width;
   fgSprite.y = app.view.height - 140;
   return fgSprite;
 }
 
 export function getScoreFrame(texture) {
-  const scoreFrame = new PIXI.Container();
+  const scoreFrame = new Container();
   scoreFrame.x = app.view.width / 2;
   scoreFrame.y = (app.view.height * 6) / 100;
   scoreFrame.scale.x = (app.view.height * 0.15) / 100;
   scoreFrame.scale.y = (app.view.height * 0.15) / 100;
 
-  const scoreFrameSprite = new PIXI.Sprite(texture);
+  const scoreFrameSprite = new Sprite(texture);
   scoreFrameSprite.width = 200;
   scoreFrameSprite.height = 120;
   scoreFrameSprite.anchor.set(0.5);
 
-  const score = new PIXI.Text("0", {
+  const score = new Text("0", {
     fontWeight: "bold",
     fill: "#303030",
     fontFamily: "Barlow",
@@ -64,7 +75,7 @@ export function getScoreFrame(texture) {
 
 export function getMultiplier() {
   // Multiplier
-  const multiplier = new PIXI.Text("x1", {
+  const multiplier = new Text("x1", {
     fontWeight: "normal",
     fill: "#f3ba22",
     fontFamily: "Luckiest Guy",
@@ -80,20 +91,19 @@ export function getMultiplier() {
 }
 
 export function getClockFrame(texture) {
-  const clockFrame = new PIXI.Container();
+  const clockFrame = new Container();
   clockFrame.x = 30;
   clockFrame.y = 5;
   clockFrame.scale.x = (app.view.height * 0.15) / 100;
   clockFrame.scale.y = (app.view.height * 0.15) / 100;
 
-  const clockFrameSprite = new PIXI.Sprite(texture);
+  const clockFrameSprite = new Sprite(texture);
   clockFrameSprite.width = 200;
   clockFrameSprite.height = 120;
   clockFrameSprite.anchor.y = 0.25;
   clockFrameSprite.anchor.x = 0.27;
-  
 
-  const time = new PIXI.Text("0", {
+  const time = new Text("0", {
     fontWeight: "bold",
     fill: "#303030",
     fontFamily: "Barlow",
@@ -110,7 +120,7 @@ export function getClockFrame(texture) {
 }
 
 export function getMenuBtn(texture) {
-  const menuBtn = new PIXI.Sprite(texture);
+  const menuBtn = new Sprite(texture);
   menuBtn.width = 130;
   menuBtn.height = 130;
   menuBtn.anchor.x = 0.9;
@@ -123,18 +133,18 @@ export function getMenuBtn(texture) {
 }
 
 export function getLivesContainer(textures, type) {
-  const livesContainer = new PIXI.Container();
+  const livesContainer = new Container();
   const width = app.view.width;
   livesContainer.width = width;
   livesContainer.height = 80;
-  livesContainer.x = app.view.width * 3 / 100
-  if (type === 'PUMPKIN') livesContainer.x = (app.view.width * 6 / 100);
+  livesContainer.x = (app.view.width * 3) / 100;
+  if (type === "PUMPKIN") livesContainer.x = (app.view.width * 6) / 100;
   livesContainer.y = app.view.height - 80;
   let numbersOfLife = 9;
-  if (type === 'FLOWER') numbersOfLife = 16;
+  if (type === "FLOWER") numbersOfLife = 16;
   const distanceBetweenLife = width / numbersOfLife;
   for (let i = 0; i < numbersOfLife; i++) {
-    const lifeSprite = new PIXI.Sprite(
+    const lifeSprite = new Sprite(
       textures[getRandomNumber(textures.length - 1, 0)]
     );
     lifeSprite.anchor.y = 1;
@@ -149,7 +159,7 @@ export function getLivesContainer(textures, type) {
 }
 
 export function getWordsContainer() {
-  const container = new PIXI.Container();
+  const container = new Container();
   const width = app.view.width;
   container.width = width;
   container.height = app.view.height - 140;
@@ -161,18 +171,25 @@ export function getRandomNumber(max, min) {
 }
 
 export async function getWordBg() {
-  const textures = await PIXI.Assets.load(["letterTile"]);
-  const letterTileSprite = new PIXI.Sprite(textures.letterTile);
+  const textures = await Assets.load(["letterTile"]);
+  const letterTileSprite = new Sprite(textures.letterTile);
   return letterTileSprite;
 }
 
-export function getPauseMenu(bgTexture, resumeBtnTexture, restartBtnTexture, mainMenuBtnTexture, checkBoxTexture, checkFillTexture, type = 'NORMAL') {
-
-  let isMusicOn = JSON.parse(localStorage.getItem('isMusicOn'));
-  let isSfxOn = JSON.parse(localStorage.getItem('isSfxOn'));
+export function getPauseMenu(
+  bgTexture,
+  resumeBtnTexture,
+  restartBtnTexture,
+  mainMenuBtnTexture,
+  checkBoxTexture,
+  checkFillTexture,
+  type = "NORMAL"
+) {
+  let isMusicOn = JSON.parse(localStorage.getItem("isMusicOn"));
+  let isSfxOn = JSON.parse(localStorage.getItem("isSfxOn"));
 
   // Container
-  const pauseMenu = new PIXI.Container();
+  const pauseMenu = new Container();
   const width = (app.view.height * 60) / 100;
   const height = (app.view.height * 80) / 100;
   pauseMenu.height = height;
@@ -181,20 +198,20 @@ export function getPauseMenu(bgTexture, resumeBtnTexture, restartBtnTexture, mai
   pauseMenu.y = -(height + 100);
 
   // background
-  const pauseMenuBgSprite = new PIXI.Sprite(bgTexture);
+  const pauseMenuBgSprite = new Sprite(bgTexture);
   pauseMenuBgSprite.width = width;
   pauseMenuBgSprite.height = height;
   pauseMenu.addChild(pauseMenuBgSprite);
 
   // Options Text
-  const optionText = new PIXI.Text("OPTIONS", {
+  const optionText = new Text("OPTIONS", {
     fontSize: (height * 9) / 100,
     fontWeight: "500",
     fontFamily: "Boogaloo",
     fill: "#ffffff",
   });
   optionText.y = (height * 28) / 100;
-  if (type === 'BOSS') {
+  if (type === "BOSS") {
     optionText.y = (height * 29.5) / 100;
   }
   optionText.anchor.x = 0.5;
@@ -223,18 +240,18 @@ export function getPauseMenu(bgTexture, resumeBtnTexture, restartBtnTexture, mai
   ];
 
   pauseButtons.map((button) => {
-    const btn = new PIXI.Sprite(button.texture);
+    const btn = new Sprite(button.texture);
     btn.width = (width * 15) / 100;
     btn.height = (width * 15) / 100;
     btn.anchor.x = button.anchor;
     btn.y = ((height * 28) / 100) * 2.9;
-    if (type === 'BOSS') btn.y = ((height * 25) / 100) * 2.9
+    if (type === "BOSS") btn.y = ((height * 25) / 100) * 2.9;
     btn.x = button.xPos;
     btn.interactive = true;
     btn.cursor = "pointer";
     btn.on("pointerover", () => cursorOver(btn));
     btn.on("pointerout", () => cursorOut(btn));
-    if (button.type !== 'WILL BE HANDLED BY GAME LOGIC') {
+    if (button.type !== "WILL BE HANDLED BY GAME LOGIC") {
       btn.on("pointerdown", () => handleClick(button.type));
     }
     pauseMenu.addChild(btn);
@@ -261,7 +278,7 @@ export function getPauseMenu(bgTexture, resumeBtnTexture, restartBtnTexture, mai
     tapSound.currentTime = 0;
     tapSound.play();
     switch (type) {
-        case "MAIN MENU":
+      case "MAIN MENU":
         bossModeBackMusic.pause();
         normalModeBackMusic.pause();
         app.stage.removeChild(app.stage.children[0]);
@@ -271,33 +288,33 @@ export function getPauseMenu(bgTexture, resumeBtnTexture, restartBtnTexture, mai
   }
 
   // Music text
-  const musicText = new PIXI.Text("MUSIC", {
+  const musicText = new Text("MUSIC", {
     fontSize: (height * 7) / 100,
     fontWeight: "600",
     fontFamily: "Boogaloo",
     fill: "#56210c",
   });
   musicText.y = ((height * 28) / 100) * 1.8;
-  if (type === 'BOSS') musicText.y = ((height * 25) / 100) * 1.8;
+  if (type === "BOSS") musicText.y = ((height * 25) / 100) * 1.8;
   musicText.x = (width * 15) / 100;
   pauseMenu.addChild(musicText);
 
   //MUSIC CHECK FILL
-  const musicCheckFill = new PIXI.Sprite(checkFillTexture);
+  const musicCheckFill = new Sprite(checkFillTexture);
   musicCheckFill.width = (height * 6) / 100;
   musicCheckFill.height = (height * 6) / 100;
   musicCheckFill.anchor.x = 1;
   musicCheckFill.x = width - (width * 17) / 100;
   musicCheckFill.y = ((height * 28) / 100) * 1.84;
-  if (type === 'BOSS') musicCheckFill.y = ((height * 25) / 100) * 1.84;
+  if (type === "BOSS") musicCheckFill.y = ((height * 25) / 100) * 1.84;
 
   //Music on or off btn
-  const musicCheckBox = new PIXI.Sprite(checkBoxTexture)
+  const musicCheckBox = new Sprite(checkBoxTexture);
   musicCheckBox.anchor.x = 1;
   musicCheckBox.width = (height * 9) / 100;
   musicCheckBox.height = (height * 9) / 100;
   musicCheckBox.y = ((height * 28) / 100) * 1.8;
-  if (type === 'BOSS') musicCheckBox.y = ((height * 25) / 100) * 1.8;
+  if (type === "BOSS") musicCheckBox.y = ((height * 25) / 100) * 1.8;
   musicCheckBox.x = width - (width * 15) / 100;
   musicCheckBox.interactive = true;
   musicCheckBox.cursor = "pointer";
@@ -322,34 +339,34 @@ export function getPauseMenu(bgTexture, resumeBtnTexture, restartBtnTexture, mai
   }
 
   // SFX Text
-  const sfxText = new PIXI.Text("SFX", {
+  const sfxText = new Text("SFX", {
     fontSize: (height * 7) / 100,
     fontWeight: "600",
     fontFamily: "Boogaloo",
     fill: "#56210c",
   });
   sfxText.y = ((height * 28) / 100) * 2.2;
-  if (type === 'BOSS') sfxText.y = ((height * 25) / 100) * 2.2;
+  if (type === "BOSS") sfxText.y = ((height * 25) / 100) * 2.2;
   sfxText.x = (width * 15) / 100;
   pauseMenu.addChild(sfxText);
 
   // SFX CHECK FILL
-  const sfxCheckFill = new PIXI.Sprite(checkFillTexture);
+  const sfxCheckFill = new Sprite(checkFillTexture);
   sfxCheckFill.width = (height * 6) / 100;
   sfxCheckFill.height = (height * 6) / 100;
   sfxCheckFill.anchor.x = 1;
   sfxCheckFill.x = width - (width * 17) / 100;
   sfxCheckFill.y = ((height * 28) / 100) * 2.24;
-  if (type === 'BOSS') sfxCheckFill.y = ((height * 25) / 100) * 2.24;
+  if (type === "BOSS") sfxCheckFill.y = ((height * 25) / 100) * 2.24;
 
   //SFX on or off btn
-  const sfxBox = new PIXI.Sprite(checkBoxTexture);
+  const sfxBox = new Sprite(checkBoxTexture);
   const sfxDimension = (height * 9) / 100;
   sfxBox.anchor.x = 1;
   sfxBox.width = sfxDimension;
   sfxBox.height = sfxDimension;
   sfxBox.y = ((height * 28) / 100) * 2.2;
-  if (type === 'BOSS') sfxBox.y = ((height * 25) / 100) * 2.2;
+  if (type === "BOSS") sfxBox.y = ((height * 25) / 100) * 2.2;
   sfxBox.x = width - (width * 15) / 100;
   sfxBox.interactive = true;
   sfxBox.cursor = "pointer";
@@ -382,86 +399,86 @@ export function getPauseMenu(bgTexture, resumeBtnTexture, restartBtnTexture, mai
 }
 
 export function getRulesBoard(texture, btnTexture, rulesInfo, level) {
-  const board = new PIXI.Container();
-  const boardWidth = app.view.width * 60 / 100;
-  const boardHeight = app.view.height * 80 / 100;
+  const board = new Container();
+  const boardWidth = (app.view.width * 60) / 100;
+  const boardHeight = (app.view.height * 80) / 100;
   board.width = boardWidth;
   board.height = boardHeight;
   board.y = -(boardHeight + 100);
   board.x = app.view.width / 2 - boardWidth / 2;
 
   // Background
-  const bg = new PIXI.Sprite(texture);
+  const bg = new Sprite(texture);
   bg.width = boardWidth;
   bg.height = boardHeight;
   board.addChild(bg);
 
   // Rules Heading;
-  const rulesHeading = new PIXI.Text(`Level ${level}`, {
+  const rulesHeading = new Text(`Level ${level}`, {
     fontSize: (boardWidth * 9) / 100,
     fontWeight: 500,
     fontFamily: "Boogaloo",
     fill: "#ff8316",
-  })
+  });
   rulesHeading.anchor.set(0.5);
   rulesHeading.x = boardWidth / 2;
-  rulesHeading.y = boardHeight * 28 / 100;
+  rulesHeading.y = (boardHeight * 28) / 100;
   board.addChild(rulesHeading);
 
   // Rules Text
-  const rules = new PIXI.Text(rulesInfo, {
+  const rules = new Text(rulesInfo, {
     fontSize: (boardWidth * 4) / 100,
     fontWeight: 500,
     fontFamily: "Boogaloo",
     fill: "#303030",
     wordWrap: true,
-    wordWrapWidth: boardWidth * 64 / 100,
-  })
-  rules.x = boardWidth * 17 / 100;
-  rules.y = boardHeight * 40 / 100;
+    wordWrapWidth: (boardWidth * 64) / 100,
+  });
+  rules.x = (boardWidth * 17) / 100;
+  rules.y = (boardHeight * 40) / 100;
   board.addChild(rules);
 
   // Adding StartGame Button
-  const startGameBtn = new PIXI.Sprite(btnTexture);
+  const startGameBtn = new Sprite(btnTexture);
   startGameBtn.anchor.set(0.5);
   startGameBtn.x = boardWidth / 2;
-  startGameBtn.y = boardHeight * 78 / 100;
-  startGameBtn.width = boardWidth * 25 / 100;
-  startGameBtn.height = boardHeight * 12 / 100;
+  startGameBtn.y = (boardHeight * 78) / 100;
+  startGameBtn.width = (boardWidth * 25) / 100;
+  startGameBtn.height = (boardHeight * 12) / 100;
   board.addChild(startGameBtn);
 
-  const startText= new PIXI.Text('START GAME', {
+  const startText = new Text("START GAME", {
     fontSize: (boardWidth * 4) / 100,
     fontWeight: 500,
     fontFamily: "Boogaloo",
     fill: "#ffffff",
-  })
+  });
   startText.anchor.set(0.5);
   startText.x = boardWidth / 2;
-  startText.y = boardHeight * 78 / 100;
+  startText.y = (boardHeight * 78) / 100;
   board.addChild(startText);
 
   startGameBtn.interactive = true;
-  startGameBtn.cursor = 'pointer';
+  startGameBtn.cursor = "pointer";
   startGameBtn
-  .on('pointerover', () => {
-    hoverSound.pause();
-    hoverSound.currentTime = 0;
-    hoverSound.play();
-    startText.scale.x = 1.1;
-    startText.scale.y = 1.1;
-  })
-  .on('pointerout', () => {
-    startText.scale.x = 1;
-    startText.scale.y = 1;
-  })
+    .on("pointerover", () => {
+      hoverSound.pause();
+      hoverSound.currentTime = 0;
+      hoverSound.play();
+      startText.scale.x = 1.1;
+      startText.scale.y = 1.1;
+    })
+    .on("pointerout", () => {
+      startText.scale.x = 1;
+      startText.scale.y = 1;
+    });
 
   return board;
 }
 
 export async function getBrickAnimation() {
-  const spritesheet = new PIXI.Spritesheet(
-    PIXI.BaseTexture.from(brickJson.meta.image),
+  const spritesheet = new Spritesheet(
+    BaseTexture.from(brickJson.meta.image),
     brickJson
   );
   spritesheet.parse();
@@ -469,7 +486,7 @@ export async function getBrickAnimation() {
   Object.keys(spritesheet.textures).map((key) => {
     texturesArray.push(spritesheet.textures[key]);
   });
-  const anim = new PIXI.AnimatedSprite(texturesArray);
+  const anim = new AnimatedSprite(texturesArray);
   anim.animationSpeed = 0.1666;
   anim.x = app.view.width / 2;
   anim.y = app.view.height / 2;

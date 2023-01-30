@@ -1,16 +1,19 @@
+import { Sprite, Container, Text, Assets } from "pixi.js";
+import { TweenMax } from "gsap/gsap-core.js";
 import loadBossModeUI from "./ui.js";
 import { getBackground } from "../gameUI.js";
 import loadMainMenu from "../mainMenu.js";
 import { bossModeBackMusic, failureSound, hoverSound, successSound, tapSound } from "../music and sounds/index.js";
+import { Bounce, Expo } from "gsap";
 
 export default function loadBossScoreBoard(app, endScore, type) {
   const { accuracy, wpm, score, level } = endScore;
 
-  const BossScoreBoard = new PIXI.Container();
+  const BossScoreBoard = new Container();
   BossScoreBoard.width = app.view.width;
   BossScoreBoard.height = app.view.height;
 
-  const assetsPromise = PIXI.Assets.load([
+  const assetsPromise = Assets.load([
     "scoreBoardExtras",
     "bossScoreBoard",
     "bossScoreBtnBg",
@@ -23,7 +26,7 @@ export default function loadBossScoreBoard(app, endScore, type) {
     BossScoreBoard.addChild(getBackground(textures.bossScoreBg));
 
     // Adding score board
-    const boardContainer = new PIXI.Container();
+    const boardContainer = new Container();
     const boardWidth = (app.view.height * 90) / 100;
     const boardHeight = (app.view.height * 105) / 100;
     boardContainer.width = boardWidth;
@@ -31,7 +34,7 @@ export default function loadBossScoreBoard(app, endScore, type) {
     boardContainer.x = app.view.width / 2;
     boardContainer.y = -boardHeight;
 
-    const bossBoardSprite = new PIXI.Sprite(textures.bossScoreBoard);
+    const bossBoardSprite = new Sprite(textures.bossScoreBoard);
     bossBoardSprite.width = boardWidth;
     bossBoardSprite.height = boardHeight;
     bossBoardSprite.anchor.x = 0.5;
@@ -42,7 +45,7 @@ export default function loadBossScoreBoard(app, endScore, type) {
 
     if (type === "COMPLETED") {
       // Adding Player Rank Text
-      const levelStatus = new PIXI.Text(`Level ${level} Completed`, {
+      const levelStatus = new Text(`Level ${level} Completed`, {
         fontSize: (boardHeight * 5) / 100,
         fill: '#27ff00',
         align: "left",
@@ -54,7 +57,7 @@ export default function loadBossScoreBoard(app, endScore, type) {
       levelStatus.anchor.y = 0.5;
       boardContainer.addChild(levelStatus);
     } else {
-      const levelStatus = new PIXI.Text("Level Failed", {
+      const levelStatus = new Text("Level Failed", {
         fontSize: (boardHeight * 7) / 100,
         fill: '#ffffff',
         align: "left",
@@ -69,7 +72,7 @@ export default function loadBossScoreBoard(app, endScore, type) {
 
 
     // Adding Player Score Text
-    const playerScoreText = new PIXI.Text(`SCORE: ${score}`, {
+    const playerScoreText = new Text(`SCORE: ${score}`, {
       fontSize: (boardHeight * 8) / 100,
       fill: "#633f5c",
       align: "left",
@@ -94,19 +97,19 @@ export default function loadBossScoreBoard(app, endScore, type) {
         extraWidth: (boardWidth * 25) / 100,
       },
     ];
-    const extrasContainer = new PIXI.Container();
+    const extrasContainer = new Container();
     extrasContainer.width = boardWidth;
     extrasContainer.x = -((boardWidth * 14) / 100);
     extrasContainer.y = (boardHeight * 48) / 100;
 
     extras.forEach((extraObj) => {
-      const extra = new PIXI.Sprite(textures.bossScoreExtrasBg);
+      const extra = new Sprite(textures.bossScoreExtrasBg);
       extra.width = (boardWidth * 30) / 100;
       extra.height = (boardWidth * 25) / 100;
       extra.x = extraObj.extraWidth;
       extra.anchor.x = 0.5;
       extra.anchor.y = 0.5;
-      const extraValueText = new PIXI.Text(extraObj.extraValue, {
+      const extraValueText = new Text(extraObj.extraValue, {
         fontFamily: "Boogaloo",
         fontSize: 50,
         fontWeight: "500",
@@ -115,7 +118,7 @@ export default function loadBossScoreBoard(app, endScore, type) {
       extraValueText.anchor.set(0.5);
       extraValueText.y -= 15;
       extra.addChild(extraValueText);
-      const extraNameText = new PIXI.Text(extraObj.extraName, {
+      const extraNameText = new Text(extraObj.extraName, {
         fontFamily: "Boogaloo",
         fontSize: 20,
         fontWeight: "500",
@@ -129,15 +132,15 @@ export default function loadBossScoreBoard(app, endScore, type) {
     boardContainer.addChild(extrasContainer);
 
     //adding the main menu btn
-    const mainMenu = new PIXI.Container();
+    const mainMenu = new Container();
     mainMenu.y = (boardHeight * 64) / 100;
 
-    const mainMenuBg = new PIXI.Sprite(textures.bossScoreBtnBg);
+    const mainMenuBg = new Sprite(textures.bossScoreBtnBg);
     mainMenuBg.width = (boardWidth * 30) / 100;
     mainMenuBg.height = (boardHeight * 8) / 100;
     mainMenuBg.anchor.set(0.5);
 
-    const mainMenuText = new PIXI.Text("MAIN MENU", {
+    const mainMenuText = new Text("MAIN MENU", {
       fontFamily: "Boogaloo",
       fontSize: (boardHeight * 4) / 100,
       fontWeight: "500",
@@ -159,7 +162,7 @@ export default function loadBossScoreBoard(app, endScore, type) {
         tapSound.currentTime = 0;
         tapSound.play();
         TweenMax.to(boardContainer, 1, {
-          ease: Bounce.easeIn,
+          ease:  Expo.easeIn,
           y: -(boardHeight + 100),
         });
         setTimeout(() => {
@@ -172,15 +175,15 @@ export default function loadBossScoreBoard(app, endScore, type) {
     boardContainer.addChild(mainMenu);
 
     // adding play again btn
-    const playAgainBtn = new PIXI.Container();
+    const playAgainBtn = new Container();
     playAgainBtn.y = (boardHeight * 73) / 100;
 
-    const playAgainBtnBg = new PIXI.Sprite(textures.bossScoreBtnBg);
+    const playAgainBtnBg = new Sprite(textures.bossScoreBtnBg);
     playAgainBtnBg.width = (boardWidth * 42) / 100;
     playAgainBtnBg.height = (boardHeight * 9) / 100;
     playAgainBtnBg.anchor.set(0.5);
 
-    const playAgainBtnText = new PIXI.Text(type === 'COMPLETED' ? level === 3 ? "PLAY AGAIN" : "NEXT PHASE" : "TRY AGAIN", {
+    const playAgainBtnText = new Text(type === 'COMPLETED' ? level === 3 ? "PLAY AGAIN" : "NEXT PHASE" : "TRY AGAIN", {
       fontFamily: "Boogaloo",
       fontSize: (boardHeight * 5) / 100,
       fontWeight: "500",

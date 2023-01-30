@@ -1,3 +1,4 @@
+import { Container, Assets } from "pixi.js";
 import { startGame } from "../gameLogic.js";
 import {
   getBackground,
@@ -16,11 +17,11 @@ import { normalModeBackMusic } from "../music and sounds/index.js";
 
 export default function loadNormalModeUI(app, level, data = {wpm: null, selectedDifficulty: null}) {
   // NORMAL MODE
-  const NormalModeContainer = new PIXI.Container();
+  const NormalModeContainer = new Container();
   NormalModeContainer.width = app.view.width;
   NormalModeContainer.height = app.view.height;
   // LOADING ASSETS
-  PIXI.Assets.load([
+  Assets.load([
     "normalModeBg",
     "normalModeFg",
     "scoreFrame",

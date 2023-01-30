@@ -1,8 +1,12 @@
+import { Sprite, Container, Text, Assets } from "pixi.js";
+import { TweenMax } from "gsap/gsap-core.js";
+import { Back, Elastic } from "gsap";
 import { app } from "./app.js";
 import loadNormalModeUI from "./normalMode/ui.js";
 import { getBackground, getMenuBoard } from "./gameUI.js";
 import loadBossModeInfo from "./boss mode/info.js";
 import loadPracticeModeInfo from "./practiceMode/practiceModeInfo.js";
+import divBg from './assets/images/download (1).jpeg';
 import {
   hoverSound,
   tapSound,
@@ -17,7 +21,7 @@ import loadLeaderBoard from "./leaderboard/ui.js";
 export default function loadMainMenu() {
   // Adding backrgound to div
   document.getElementById("game-container").style.backgroundImage =
-    "url('/src/assets/images/download (1).jpeg')";
+    `url('${divBg}')`;
   // PLaying Background Music
   homeBackMusic.pause();
   homeBackMusic.currentTime = 0;
@@ -39,12 +43,12 @@ export default function loadMainMenu() {
   }
 
   // MAIN MENU
-  const MAIN_MENU = new PIXI.Container();
+  const MAIN_MENU = new Container();
   MAIN_MENU.width = app.view.width;
   MAIN_MENU.height = app.view.height;
 
   // BOARD CONTAINER
-  const BoardContainer = new PIXI.Container();
+  const BoardContainer = new Container();
   const width = (app.view.height * 90) / 100;
   const height = (app.view.height * 100) / 100;
   BoardContainer.width = width;
@@ -53,7 +57,7 @@ export default function loadMainMenu() {
   BoardContainer.y = -height - 200;
 
   // LOADING ASSETS
-  PIXI.Assets.load([
+  Assets.load([
     "mainMenuBackground",
     "menuBoard",
     "menuBtnBack",
@@ -78,7 +82,7 @@ export default function loadMainMenu() {
     BoardContainer.addChild(getMenuBoard(menuBoard));
 
     // PLAY NOW BTN
-    const playNowButton = new PIXI.Text("PLAY NOW", {
+    const playNowButton = new Text("PLAY NOW", {
       fontSize: (BoardContainer.height * 10) / 100,
       fill: 0xffffff,
       align: "left",
@@ -141,7 +145,7 @@ export default function loadMainMenu() {
       {
         mode: "MULTIPLAYER",
         height: (BoardContainer.height * 69) / 100,
-        callback: loadLeaderBoard,
+        event: () => alert("have not added yet"),
       },
       {
         mode: "LEADERBOARD",
@@ -151,7 +155,7 @@ export default function loadMainMenu() {
     ];
 
     modeBtns.map((modeObj) => {
-      const modeBtn = new PIXI.Sprite(menuBtnBack);
+      const modeBtn = new Sprite(menuBtnBack);
       const modeBtnScale = (BoardContainer.height * 1.35) / 100 / 10;
       modeBtn.scale.x = modeBtnScale;
       modeBtn.scale.y = modeBtnScale;
@@ -159,7 +163,7 @@ export default function loadMainMenu() {
       modeBtn.anchor.x = 0.55;
       modeBtn.anchor.y = 0.5;
       modeBtn.y = modeObj.height;
-      const modeBtnText = new PIXI.Text(modeObj.mode, {
+      const modeBtnText = new Text(modeObj.mode, {
         fontFamily: "Boogaloo",
         fontSize: 35,
         fontWeight: "500",
@@ -177,7 +181,7 @@ export default function loadMainMenu() {
     });
     MAIN_MENU.addChild(BoardContainer);
 
-    const musicBtn = new PIXI.Sprite(isMusicOn === true ? musicOn : musicOff);
+    const musicBtn = new Sprite(isMusicOn === true ? musicOn : musicOff);
     musicBtn.scale.x = (app.view.width * 0.04) / 100;
     musicBtn.scale.y = (app.view.width * 0.04) / 100;
     musicBtn.anchor.set(0.5);
@@ -207,7 +211,7 @@ export default function loadMainMenu() {
       })
     MAIN_MENU.addChild(musicBtn);
 
-    const sfxBtn = new PIXI.Sprite(isSfxOn === true ? sfxOn : sfxOff);
+    const sfxBtn = new Sprite(isSfxOn === true ? sfxOn : sfxOff);
     sfxBtn.scale.x = (app.view.width * 0.04) / 100;
     sfxBtn.scale.y = (app.view.width * 0.04) / 100;
     sfxBtn.anchor.set(0.5);

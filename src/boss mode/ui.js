@@ -1,3 +1,4 @@
+import { Container, Assets } from "pixi.js";
 import {
   getBackground,
   getForeground,
@@ -23,10 +24,10 @@ const rules = {
 }
 
 export default function loadBossModeUI(app, level) {
-  const BossModeContainer = new PIXI.Container();
+  const BossModeContainer = new Container();
   BossModeContainer.width = app.view.width;
   BossModeContainer.height = app.view.height;
-  PIXI.Assets.load([
+  Assets.load([
     `bossModeBg`,
     "bossModeFg",
     "scoreFrame",

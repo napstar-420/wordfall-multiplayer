@@ -1,16 +1,19 @@
+import { Sprite, Text, TextStyle, Assets, Container } from "pixi.js";
+import { TweenMax } from "gsap/gsap-core.js";
 import loadMainMenu from "../mainMenu.js";
 import { tapSound, hoverSound } from "../music and sounds/index.js";
 import loadNormalModeUI from "../normalMode/ui.js";
+import { Back, Elastic } from "gsap";
 
 export default function loadPracticeModeInfo(app) {
-  const Container = new PIXI.Container();
-  Container.width = app.view.width;
-  Container.height = app.view.height;
+  const mainContainer = new Container();
+  mainContainer.width = app.view.width;
+  mainContainer.height = app.view.height;
 
   let wpm = 25;
   let selectedDifficulty = "MEDIUM";
 
-  PIXI.Assets.load([
+  Assets.load([
     "mainMenuBackground",
     "menuBoard",
     "incrementWpmBtnTexture",
@@ -34,12 +37,12 @@ export default function loadPracticeModeInfo(app) {
     } = textures;
 
     // Background
-    const background = new PIXI.Sprite(mainMenuBackground);
+    const background = new Sprite(mainMenuBackground);
     background.width = app.view.width;
     background.height = app.view.height;
-    Container.addChild(background);
+    mainContainer.addChild(background);
 
-    const Board = new PIXI.Container();
+    const Board = new Container();
     const boardWidth = (app.view.height * 100) / 100;
     const boardHeight = (app.view.height * 110) / 100;
     Board.width = boardWidth;
@@ -48,13 +51,13 @@ export default function loadPracticeModeInfo(app) {
     Board.x = app.view.width / 2 - boardWidth / 2;
 
     // Board Background
-    const boardBg = new PIXI.Sprite(menuBoard);
+    const boardBg = new Sprite(menuBoard);
     boardBg.width = boardWidth;
     boardBg.height = boardHeight;
     Board.addChild(boardBg);
 
     // Cross Board Button
-    const crossBtn = new PIXI.Sprite(normalCrossBtn);
+    const crossBtn = new Sprite(normalCrossBtn);
     crossBtn.anchor.set(0.5);
     crossBtn.x = (boardWidth * 78) / 100;
     crossBtn.y = (boardHeight * 35) / 100;
@@ -83,14 +86,14 @@ export default function loadPracticeModeInfo(app) {
             y: -(boardHeight + 100),
         });
         setTimeout(() => {
-            app.stage.removeChild(Container);
+            app.stage.removeChild(mainContainer);
             loadMainMenu();
         }, 1200);
       });
     Board.addChild(crossBtn);
 
     // Heading Text
-    const headingText = new PIXI.Text("Practice Mode ", {
+    const headingText = new Text("Practice Mode ", {
       fontSize: (boardHeight * 7) / 100,
       fill: 0xffffff,
       align: "left",
@@ -103,7 +106,7 @@ export default function loadPracticeModeInfo(app) {
     Board.addChild(headingText);
 
     // Words per Minute Text
-    const wordsPerMinText = new PIXI.Text("WORDS PER MINUTE", {
+    const wordsPerMinText = new Text("WORDS PER MINUTE", {
       fontSize: (boardHeight * 4) / 100,
       fill: "#722603",
       fontFamily: "Luckiest Guy",
@@ -116,7 +119,7 @@ export default function loadPracticeModeInfo(app) {
     Board.addChild(wordsPerMinText);
 
     // WPM BORDER
-    const wpmBorder = new PIXI.Sprite(wpmBack);
+    const wpmBorder = new Sprite(wpmBack);
     wpmBorder.anchor.x = 0.6;
     wpmBorder.anchor.y = 0.5;
     wpmBorder.x = boardWidth / 2;
@@ -126,7 +129,7 @@ export default function loadPracticeModeInfo(app) {
     Board.addChild(wpmBorder);
 
     // WPM NUMBER
-    const wpmNumber = new PIXI.Text(wpm, {
+    const wpmNumber = new Text(wpm, {
       fontSize: (boardHeight * 6) / 100,
       fill: "#b15718",
       fontFamily: "Boogaloo",
@@ -155,7 +158,7 @@ export default function loadPracticeModeInfo(app) {
     }
 
     // WPM INCREMENT BUTTON
-    const incrementWpmBtn = new PIXI.Sprite(incrementWpmBtnTexture);
+    const incrementWpmBtn = new Sprite(incrementWpmBtnTexture);
     incrementWpmBtn.anchor.x = 0.5;
     incrementWpmBtn.anchor.y = 0.5;
     incrementWpmBtn.scale.x = (boardWidth * 0.13) / 100;
@@ -177,7 +180,7 @@ export default function loadPracticeModeInfo(app) {
     Board.addChild(incrementWpmBtn);
 
     // WPM DECREMENT BUTTON
-    const decrementWpmBtn = new PIXI.Sprite(decrementWpmBtnTexture);
+    const decrementWpmBtn = new Sprite(decrementWpmBtnTexture);
     decrementWpmBtn.anchor.x = 0.5;
     decrementWpmBtn.anchor.y = 0.5;
     decrementWpmBtn.scale.x = (boardWidth * 0.13) / 100;
@@ -199,7 +202,7 @@ export default function loadPracticeModeInfo(app) {
     Board.addChild(decrementWpmBtn);
 
     // WORDS DIFFICULTY TEXT
-    const wordDifficultyText = new PIXI.Text("WORDS DIFFICULTY", {
+    const wordDifficultyText = new Text("WORDS DIFFICULTY", {
       fontSize: (boardHeight * 4) / 100,
       fill: "#722603",
       fontFamily: "Luckiest Guy",
@@ -212,7 +215,7 @@ export default function loadPracticeModeInfo(app) {
     Board.addChild(wordDifficultyText);
 
     // SPRITE SHOWING ACTIVE DIFFICULTY
-    const activeDifficultySprite = new PIXI.Sprite(difficultyBack);
+    const activeDifficultySprite = new Sprite(difficultyBack);
     activeDifficultySprite.scale.x = (boardWidth * 0.17) / 100;
     activeDifficultySprite.scale.y = (boardWidth * 0.15) / 100;
     activeDifficultySprite.anchor.x = 0.6;
@@ -221,14 +224,14 @@ export default function loadPracticeModeInfo(app) {
     activeDifficultySprite.x = boardWidth / 2;
     Board.addChild(activeDifficultySprite);
 
-    const selectedDifficultyStyle = new PIXI.TextStyle({
+    const selectedDifficultyStyle = new TextStyle({
       fontSize: (boardHeight * 4) / 100,
       fill: "#ffffff",
       fontFamily: "Boogaloo",
       fontWeight: 400,
     });
 
-    const difficultyStyle = new PIXI.TextStyle({
+    const difficultyStyle = new TextStyle({
       fontSize: (boardHeight * 4) / 100,
       fill: "#b15718",
       fontFamily: "Boogaloo",
@@ -236,7 +239,7 @@ export default function loadPracticeModeInfo(app) {
     });
 
     // EASY DIFFICULTY BUTTON
-    const easyBtn = new PIXI.Text("EASY", difficultyStyle);
+    const easyBtn = new Text("EASY", difficultyStyle);
     easyBtn.anchor.x = 0.53;
     easyBtn.anchor.y = 0.5;
     easyBtn.x = (boardWidth * 29.5) / 100;
@@ -247,7 +250,7 @@ export default function loadPracticeModeInfo(app) {
     Board.addChild(easyBtn);
 
     // MEDIUM DIFFICULTY BUTTON
-    const mediumBtn = new PIXI.Text("MEDIUM", selectedDifficultyStyle);
+    const mediumBtn = new Text("MEDIUM", selectedDifficultyStyle);
     mediumBtn.anchor.x = 0.7;
     mediumBtn.anchor.y = 0.5;
     mediumBtn.x = boardWidth / 2;
@@ -258,7 +261,7 @@ export default function loadPracticeModeInfo(app) {
     Board.addChild(mediumBtn);
 
     // HARD DIFFICULTY BUTTON
-    const hardBtn = new PIXI.Text("HARD", difficultyStyle);
+    const hardBtn = new Text("HARD", difficultyStyle);
     hardBtn.anchor.x = 0.53;
     hardBtn.anchor.y = 0.5;
     hardBtn.x = (boardWidth * 66) / 100;
@@ -298,7 +301,7 @@ export default function loadPracticeModeInfo(app) {
       }
     }
 
-    const startGameBtn = new PIXI.Sprite(menuBtnBack);
+    const startGameBtn = new Sprite(menuBtnBack);
     startGameBtn.anchor.x = 0.57;
     startGameBtn.anchor.y = 0.5;
     startGameBtn.width = (boardWidth * 40) / 100;
@@ -309,7 +312,7 @@ export default function loadPracticeModeInfo(app) {
     startGameBtn.cursor = "pointer";
     Board.addChild(startGameBtn);
 
-    const startGameText = new PIXI.Text("PRACTICE", {
+    const startGameText = new Text("PRACTICE", {
       fontSize: (boardHeight * 5) / 100,
       fill: "#ffffff",
       fontFamily: "Boogaloo",
@@ -339,7 +342,7 @@ export default function loadPracticeModeInfo(app) {
             y: -(boardHeight + 100),
         });
         setTimeout(() => {
-            app.stage.removeChild(Container);
+            app.stage.removeChild(mainContainer);
             loadNormalModeUI(app, 'PRACTICE', {wpm, selectedDifficulty});
         }, 1200);
     });
@@ -350,7 +353,7 @@ export default function loadPracticeModeInfo(app) {
 
     app.ticker.add(updateUI);
 
-    Container.addChild(Board);
+    mainContainer.addChild(Board);
     setTimeout(() => {
         TweenMax.to(Board, 1, {
           ease: Elastic.easeOut.config(1, 0.99),
@@ -359,5 +362,5 @@ export default function loadPracticeModeInfo(app) {
       }, 750);
   });
 
-  app.stage.addChild(Container);
+  app.stage.addChild(mainContainer);
 }
