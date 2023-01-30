@@ -395,7 +395,6 @@ export function startGame(container, loadScoreBoard, level, data) {
         // if users types the entire word correctly
         if (activeWord.children.length === counter) {
           console.log({w: activeWord.width, h: activeWord.height})
-          brickBreakSound.play();
           score += (activeWord.children.length - 1) * multiplier;
           scoreFrame.children[1].text = score;
           wordsContainer.removeChild(activeWord);
@@ -408,6 +407,8 @@ export function startGame(container, loadScoreBoard, level, data) {
             const brickAnim = await getBrickAnimation();
             brickAnim.width =  width + (app.view.width * 2.5 / 100);
             brickAnim.height = height + (app.view.height * 22 / 100);
+            brickBreakSound.currentTime = 0;
+            brickBreakSound.play();
             brickAnim.play();
             brickAnim.x = x - (app.view.width * 1.3 / 100);
             brickAnim.y = y - (app.view.height * 11 / 100);
