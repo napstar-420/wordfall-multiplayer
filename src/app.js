@@ -131,7 +131,7 @@ Assets.add("checkFill", checkBoxFill);
 Assets.add("bossPauseMenuBg", bossPauseMenuBg);
 Assets.add("bossResumeBtn", bossResumeBtn);
 Assets.add("bossRestartBtn", bossRestartBtn);
-Assets.add("bossMainMenuBtn", bossRestartBtn);
+Assets.add("bossMainMenuBtn", bossMainMenuBtn);
 Assets.add("bossCheckBox", bossCheckBox);
 Assets.add("bossCheckFill", bossCheckFill);
 
@@ -142,5 +142,3 @@ Assets.add('leaderNameBg', leaderNameBg);
 Assets.add('scoreTrophy', scoreTrophy)
 
 loadMainMenu();
-
-console.log('Calling code')
