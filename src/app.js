@@ -140,6 +140,7 @@ Assets.add("bossCheckFill", bossCheckFill);
 Assets.add('leaderBoardBg', leaderBoardBg);
 Assets.add('leaderScoreBg', leaderScoreBg);
 Assets.add('leaderNameBg', leaderNameBg);
+Assets.add('scoreTrophy', scoreTrophy)
 
-// loadMainMenu();
-loadLeaderBoard(app);
+
+loadMainMenu();

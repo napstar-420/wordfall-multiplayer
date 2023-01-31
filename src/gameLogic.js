@@ -403,20 +403,20 @@ export function startGame(container, loadScoreBoard, level, data) {
           scoreFrame.children[1].text = score;
           wordsContainer.removeChild(activeWord);
           wordsOnScreen.splice(activeWordIndex, 1);
-          const width = activeWord.width;
-          const height = activeWord.height;
           const x = activeWord.x;
           const y = activeWord.y;
           (async () => {
             const brickAnim = await getBrickAnimation();
-            brickAnim.width =  width + (app.view.width * 2.5 / 100);
-            brickAnim.height = height + (app.view.height * 22 / 100);
+            brickAnim.anchor.y = 0.2;
+            brickAnim.anchor.x = 0;
+            brickAnim.width =  app.view.width * 10 / 100;
+            brickAnim.height = app.view.width * 10 / 100;
             brickBreakSound.pause();
             brickBreakSound.currentTime = 0;
             brickBreakSound.play();
             brickAnim.play();
-            brickAnim.x = x - (app.view.width * 1.3 / 100);
-            brickAnim.y = y - (app.view.height * 11 / 100);
+            brickAnim.x = x;
+            brickAnim.y = y;
             container.addChild(brickAnim);
             setTimeout(() => {
               container.removeChild(brickAnim);

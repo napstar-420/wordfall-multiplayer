@@ -1,7 +1,8 @@
-import { Sprite, TilingSprite, Container, Text, Assets, Spritesheet, BaseTexture, AnimatedSprite } from "pixi.js";
+import { Sprite, TilingSprite, Container, Text, Assets, Spritesheet, BaseTexture, AnimatedSprite, Texture } from "pixi.js";
 import { app } from "./app.js";
 import loadMainMenu from "./mainMenu.js";
-import {brickJson} from './assets/images/gameUI/brickAnim.js'
+import { brickJson } from './assets/brick-animation/spritesheet.js';
+
 import {
   hoverSound,
   tapSound,
@@ -481,7 +482,7 @@ export async function getBrickAnimation() {
     BaseTexture.from(brickJson.meta.image),
     brickJson
   );
-  spritesheet.parse();
+  await spritesheet.parse();
   const texturesArray = [];
   Object.keys(spritesheet.textures).map((key) => {
     texturesArray.push(spritesheet.textures[key]);
