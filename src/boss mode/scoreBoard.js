@@ -167,7 +167,7 @@ export default function loadBossScoreBoard(app, endScore, type) {
         });
         setTimeout(() => {
           bossModeBackMusic.pause();
-          app.stage.removeChild(boardContainer);
+          app.stage.removeChild(BossScoreBoard);
           loadMainMenu();
         }, 1500);
       });

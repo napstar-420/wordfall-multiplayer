@@ -1,5 +1,5 @@
 import { Sprite, Text, TextStyle, Texture, Container } from "pixi.js";
-import { getBrickAnimation, getRandomNumber } from "./gameUI.js";
+import { getBrickAnimation, getFlowerAnimation, getRandomNumber } from "./gameUI.js";
 import { app } from "./app.js";
 import { tapSound, brickBreakSound, normalModeBackMusic, bossModeBackMusic, gameOverSound } from "./music and sounds/index.js";
 import loadBossModeUI from "./boss mode/ui.js";
@@ -24,7 +24,8 @@ const typedLetterStyling = new TextStyle({
 
 const brickTexture = Texture.from(brickImage);
 
-export function startGame(container, loadScoreBoard, level, data) {  
+export function startGame(container, loadScoreBoard, level, data) {
+   
   const normalClouds = container.children[1];
   const livesContainer = container.children[2];
   const wordsContainer = container.children[4];
@@ -398,7 +399,6 @@ export function startGame(container, loadScoreBoard, level, data) {
         counter++;
         // if users types the entire word correctly
         if (activeWord.children.length === counter) {
-          console.log({w: activeWord.width, h: activeWord.height})
           score += (activeWord.children.length - 1) * multiplier;
           scoreFrame.children[1].text = score;
           wordsContainer.removeChild(activeWord);
@@ -523,7 +523,18 @@ export function startGame(container, loadScoreBoard, level, data) {
                 // let troubledWord = "";
                 // // adding word to troubled array
                 // troubledWords.push(troubledWord);
+                const x = life.x;
                 livesContainer.removeChild(life);
+                (async () => {
+                  let anim;
+                  if (level !== 1 && level !== 2 &&  level !== 3) {
+                    anim = await getFlowerAnimation();
+                  }
+                  anim.x = x;
+                  anim.animationSpeed = wordSpeed / 14;
+                  container.addChild(anim);
+                  anim.play();
+                })()
                 if (livesContainer.children.length === 0) {
                   endGame("FAILED");
                 }
@@ -532,7 +543,7 @@ export function startGame(container, loadScoreBoard, level, data) {
         });
       }
       // If word reached the ground
-      if (word.y > app.view.height - 130) {
+      if (word.y > app.view.height - (app.view.height * 16 / 100)) {
         resetStats(word, index);
         switch (level) {
           case 1:

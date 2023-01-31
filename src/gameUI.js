@@ -1,7 +1,18 @@
-import { Sprite, TilingSprite, Container, Text, Assets, Spritesheet, BaseTexture, AnimatedSprite, Texture } from "pixi.js";
+import {
+  Sprite,
+  TilingSprite,
+  Container,
+  Text,
+  Assets,
+  Spritesheet,
+  BaseTexture,
+  AnimatedSprite,
+  Texture,
+} from "pixi.js";
 import { app } from "./app.js";
 import loadMainMenu from "./mainMenu.js";
-import { brickJson } from './assets/brick-animation/spritesheet.js';
+import { brickJson } from "./assets/brick-animation/spritesheet.js";
+import { flowerJson } from "./assets/Flower Animation/spritesheet.js";
 
 import {
   hoverSound,
@@ -42,7 +53,8 @@ export function getNormalClouds(texture) {
 export function getForeground(texture) {
   const fgSprite = new Sprite(texture);
   fgSprite.width = app.view.width;
-  fgSprite.y = app.view.height - 140;
+  fgSprite.height = app.view.height * 14 / 100;
+  fgSprite.y = app.view.height - (app.view.height * 14 / 100);
   return fgSprite;
 }
 
@@ -140,13 +152,13 @@ export function getLivesContainer(textures, type) {
   livesContainer.height = 80;
   livesContainer.x = (app.view.width * 3) / 100;
   if (type === "PUMPKIN") livesContainer.x = (app.view.width * 6) / 100;
-  livesContainer.y = app.view.height - 80;
+  livesContainer.y = app.view.height - (app.view.height * 8.5 / 100);
   let numbersOfLife = 9;
   if (type === "FLOWER") numbersOfLife = 16;
   const distanceBetweenLife = width / numbersOfLife;
   for (let i = 0; i < numbersOfLife; i++) {
     const lifeSprite = new Sprite(
-      textures[getRandomNumber(textures.length - 1, 0)]
+      textures[textures.length - 1]
     );
     lifeSprite.anchor.y = 1;
     lifeSprite.anchor.x = 0.5;
@@ -491,5 +503,26 @@ export async function getBrickAnimation() {
   anim.animationSpeed = 0.1666;
   anim.x = app.view.width / 2;
   anim.y = app.view.height / 2;
+  return anim;
+}
+
+export async function getFlowerAnimation() {
+  const spritesheet = new Spritesheet(
+    BaseTexture.from(flowerJson.meta.image),
+    flowerJson
+  );
+  await spritesheet.parse();
+  const texturesArray = [];
+  Object.keys(spritesheet.textures).map((key) => {
+    texturesArray.push(spritesheet.textures[key]);
+  });
+  const anim = new AnimatedSprite(texturesArray);
+  anim.animationSpeed = 0.1666;
+  anim.anchor.x = 0.22;
+  anim.anchor.y = 0.16;
+  anim.loop = false;
+  anim.scale.x = (app.view.height * 0.065) / 100;
+  anim.scale.y = (app.view.height * 0.065) / 100;
+  anim.y = app.view.height - (app.view.height * 17.5 / 100);
   return anim;
 }

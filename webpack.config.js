@@ -22,6 +22,9 @@ module.exports = {
     }),
   ],
   mode: 'development',
+  experiments: {
+    topLevelAwait: true
+  },
   devServer: {
     static: './dist',
   },
