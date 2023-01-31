@@ -52,6 +52,7 @@ import leaderScoreBg from './assets/images/leaderboard/Rectangle 32.png';
 import leaderNameBg from './assets/images/leaderboard/Rectangle 31.png';
 import scoreTrophy from './assets/images/leaderboard/Group 64.png';
 import loadMainMenu from "./mainMenu";
+import loadLeaderBoard from "./leaderboard/ui";
 
 const game = document.createElement("div");
 game.id = "game-container";
@@ -139,6 +140,6 @@ Assets.add("bossCheckFill", bossCheckFill);
 Assets.add('leaderBoardBg', leaderBoardBg);
 Assets.add('leaderScoreBg', leaderScoreBg);
 Assets.add('leaderNameBg', leaderNameBg);
-Assets.add('scoreTrophy', scoreTrophy)
 
-loadMainMenu();
+// loadMainMenu();
+loadLeaderBoard(app);
