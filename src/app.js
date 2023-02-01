@@ -54,8 +54,8 @@ import scoreTrophy from './assets/images/leaderboard/Group 64.png';
 import boardInnerBg from './assets/images/leaderboard/Rectangle 1.png';
 
 import loadMainMenu from "./mainMenu";
-import loadLeaderBoard from "./leaderboard/ui";
 import loadBossModeUI from "./boss mode/ui";
+import loadScoreBoard from "./normalMode/scoreBoard";
 
 const game = document.createElement("div");
 game.id = "game-container";
@@ -146,5 +146,6 @@ Assets.add('scoreTrophy', scoreTrophy);
 Assets.add('leaderBoardInnerBg', boardInnerBg);
 Assets.add('leaderScoreBg', leaderScoreBg);
 
+// loadMainMenu();
 // loadBossModeUI(app, 2)
-loadLeaderBoard(app);
+loadScoreBoard(app, {accuracy: 98, wpm: 35, score: 945, level: 'NORMAL', troubledWords: ['lroem', 'ipsum', 'dripsum', 'cripsum']})

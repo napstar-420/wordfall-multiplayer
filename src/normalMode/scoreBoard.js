@@ -4,7 +4,7 @@ import loadMainMenu from "../mainMenu.js";
 import { getBackground } from "../gameUI.js";
 import { TweenMax } from "gsap/gsap-core.js";
 import { hoverSound, normalModeBackMusic, normalScoreBoardMusic, tapSound } from "../music and sounds/index.js";
-import { Back, Elastic } from "gsap";
+import { Expo, Elastic } from "gsap";
 
 export default function loadScoreBoard(app, endScore) {
   const { accuracy, wpm, troubledWords, score } = endScore;
@@ -235,7 +235,7 @@ export default function loadScoreBoard(app, endScore) {
       tapSound.currentTime = 0;
       tapSound.play();
       TweenMax.to(boardContainer, 1, {
-        ease: Back.easeIn.config(1.7),
+        ease:  Expo.easeIn,
         y: -(boardHeight + 100),
       });
       setTimeout(() => {

@@ -529,11 +529,12 @@ export function startGame(container, loadScoreBoard, level, data) {
                   let anim;
                   if (level == 1 || level === 2 || level === 3) {
                     anim = await getPumpkinAnimation();
+                    anim.animationSpeed = wordSpeed / 8;
                   } else {
                     anim = await getFlowerAnimation();
+                    anim.animationSpeed = wordSpeed / 14;
                   }
                   anim.x = x;
-                  anim.animationSpeed = wordSpeed / 14;
                   container.addChild(anim);
                   anim.play();
                 })()

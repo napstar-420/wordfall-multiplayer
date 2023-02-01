@@ -176,7 +176,7 @@ export default function loadMainMenu() {
       modeBtn
         .on("pointerover", () => cursorOver(modeBtn, modeBtnScale))
         .on("pointerout", () => cursorOut(modeBtn, modeBtnScale))
-        .on("click", () => startMode(modeObj.callback));
+        .on("pointerdown", () => startMode(modeObj.callback));
       BoardContainer.addChild(modeBtn);
     });
     MAIN_MENU.addChild(BoardContainer);
