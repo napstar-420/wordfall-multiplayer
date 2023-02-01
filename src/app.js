@@ -53,6 +53,7 @@ import leaderNameBg from './assets/images/leaderboard/Rectangle 31.png';
 import scoreTrophy from './assets/images/leaderboard/Group 64.png';
 import loadMainMenu from "./mainMenu";
 import loadLeaderBoard from "./leaderboard/ui";
+import loadBossModeUI from "./boss mode/ui";
 
 const game = document.createElement("div");
 game.id = "game-container";
@@ -143,4 +144,4 @@ Assets.add('leaderNameBg', leaderNameBg);
 Assets.add('scoreTrophy', scoreTrophy)
 
 
-loadMainMenu();
+loadBossModeUI(app, 2)

@@ -8,11 +8,13 @@ import {
   BaseTexture,
   AnimatedSprite,
   Texture,
+  Rectangle,
 } from "pixi.js";
 import { app } from "./app.js";
 import loadMainMenu from "./mainMenu.js";
 import { brickJson } from "./assets/brick-animation/spritesheet.js";
 import { flowerJson } from "./assets/Flower Animation/spritesheet.js";
+import { pumpkinJson } from "./assets/Jack lantern animation/spritesheet.js";
 
 import {
   hoverSound,
@@ -160,6 +162,7 @@ export function getLivesContainer(textures, type) {
     const lifeSprite = new Sprite(
       textures[textures.length - 1]
     );
+    lifeSprite.hitArea = new Rectangle(0, 0, 100, 100);
     lifeSprite.anchor.y = 1;
     lifeSprite.anchor.x = 0.5;
     lifeSprite.scale.x = (app.view.height * 0.15) / 100;
@@ -524,5 +527,26 @@ export async function getFlowerAnimation() {
   anim.scale.x = (app.view.height * 0.065) / 100;
   anim.scale.y = (app.view.height * 0.065) / 100;
   anim.y = app.view.height - (app.view.height * 17.5 / 100);
+  return anim;
+}
+
+export async function getPumpkinAnimation() {
+  const spritesheet = new Spritesheet(
+    BaseTexture.from(pumpkinJson.meta.image),
+    pumpkinJson
+  );
+  await spritesheet.parse();
+  const texturesArray = [];
+  Object.keys(spritesheet.textures).map((key) => {
+    texturesArray.push(spritesheet.textures[key]);
+  });
+  const anim = new AnimatedSprite(texturesArray);
+  anim.animationSpeed = 0.1666;
+  anim.anchor.x = 0.08;
+  anim.anchor.y = 0;
+  anim.loop = false;
+  anim.scale.x = (app.view.height * 0.08) / 100;
+  anim.scale.y = (app.view.height * 0.08) / 100;
+  anim.y = app.view.height - (app.view.height * 19 / 100);
   return anim;
 }

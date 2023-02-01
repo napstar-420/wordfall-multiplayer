@@ -1,5 +1,5 @@
 import { Sprite, Text, TextStyle, Texture, Container } from "pixi.js";
-import { getBrickAnimation, getFlowerAnimation, getRandomNumber } from "./gameUI.js";
+import { getBrickAnimation, getFlowerAnimation, getPumpkinAnimation, getRandomNumber } from "./gameUI.js";
 import { app } from "./app.js";
 import { tapSound, brickBreakSound, normalModeBackMusic, bossModeBackMusic, gameOverSound } from "./music and sounds/index.js";
 import loadBossModeUI from "./boss mode/ui.js";
@@ -527,7 +527,9 @@ export function startGame(container, loadScoreBoard, level, data) {
                 livesContainer.removeChild(life);
                 (async () => {
                   let anim;
-                  if (level !== 1 && level !== 2 &&  level !== 3) {
+                  if (level == 1 || level === 2 || level === 3) {
+                    anim = await getPumpkinAnimation();
+                  } else {
                     anim = await getFlowerAnimation();
                   }
                   anim.x = x;
