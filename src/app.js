@@ -1,4 +1,5 @@
 import { Application, Assets } from "pixi.js";
+import FontFaceObserver from "fontfaceobserver";
 import mainMenuBg from "./assets/images/mainMenu/Main menu background.png";
 import menuBoard from "./assets/images/mainMenu/frame withouth button 1.png";
 import menuBtnBack from "./assets/images/mainMenu/menu tile v1.png";
@@ -148,6 +149,17 @@ Assets.add('scoreTrophy', scoreTrophy);
 Assets.add('leaderBoardInnerBg', boardInnerBg);
 Assets.add('leaderScoreBg', leaderScoreBg);
 
-loadMainMenu();
+const Boogaloo = new FontFaceObserver('Boogaloo');
+const Barlow = new FontFaceObserver('Barlow');
+const LuckiestGuy = new FontFaceObserver('Luckiest Guy');
+
+(async () => {
+  await Boogaloo.load().then(() => {
+    loadMainMenu();
+  })
+  await Barlow.load();
+  await LuckiestGuy.load();
+})()
+
 // loadBossModeUI(app, 2)
 // loadScoreBoard(app, {accuracy: 98, wpm: 35, score: 945, level: 'NORMAL', troubledWords: ['lroem', 'ipsum', 'dripsum', 'cripsum']})
