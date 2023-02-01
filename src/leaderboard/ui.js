@@ -18,6 +18,7 @@ export default function loadLeaderBoard(app) {
     "leaderScoreBg",
     "scoreTrophy",
     "menuBtnBack",
+    "leaderBoardInnerBg"
   ])
     .then((textures) => {
       // Destructuring
@@ -28,6 +29,7 @@ export default function loadLeaderBoard(app) {
         leaderScoreBg,
         scoreTrophy,
         menuBtnBack,
+        leaderBoardInnerBg
       } = textures;
       // Background
       leaderBoard.addChild(getBackground(leaderBoardBg));
@@ -58,8 +60,8 @@ export default function loadLeaderBoard(app) {
       board.addChild(heading);
       // width and height
       const positionWidth = (boardWidth * 60) / 100;
-      const positionHeight = (boardHeight * 7) / 100;
-      const positionsWrapperHeight = (boardHeight * 43) / 100;
+      const positionHeight = (boardHeight * 6) / 100;
+      const positionsWrapperHeight = (boardHeight * 44) / 100;
 
       // scroll container
       const scrollContainer = new Container();
@@ -67,15 +69,23 @@ export default function loadLeaderBoard(app) {
       scrollContainer.height = positionsWrapperHeight;
       scrollContainer.x =
         boardWidth / 2 - positionWidth / 2 - (boardWidth * 1.5) / 100;
-      scrollContainer.y = (boardHeight * 40) / 100;
+      scrollContainer.y = (boardHeight * 39) / 100;
       scrollContainer.interactive = true;
       scrollContainer.cursor = "pointer";
+
+      // Scroll Container Background
+      const backSprite = new Sprite(leaderBoardInnerBg);
+      backSprite.width = (boardWidth * 64) / 100;
+      backSprite.height = (boardHeight * 46) / 100;
+      backSprite.x = boardWidth / 2 - ((boardWidth * 64) / 100) / 2 - (boardWidth * 1.5) / 100
+      backSprite.y = (boardHeight * 38) / 100;
+      board.addChild(backSprite)
 
       // PositionsWrapper
       const positionsWrapper = new Container();
       positionsWrapper.width = positionWidth;
       positionsWrapper.x = 0;
-      positionsWrapper.y = 0;
+      positionsWrapper.y = app.view.height * 1 / 100;
       scrollContainer.addChild(positionsWrapper);
 
       let isMouseDown = false;
@@ -109,13 +119,13 @@ export default function loadLeaderBoard(app) {
           if (positionsWrapper.y > 0) {
             TweenMax.to(positionsWrapper, 0.5, {
               ease: ease,
-              y: 0,
+              y: app.view.height * 1 / 100,
             });
           }
-          if (positionsWrapper.y < -(positions.length * ((boardHeight * 9) / 100)) + positionsWrapperHeight) {
+          if (positionsWrapper.y < -(positions.length * ((boardHeight * 7.5) / 100)) + positionsWrapperHeight) {
             TweenMax.to(positionsWrapper, 0.5, {
                 ease: ease,
-                y: -(positions.length * ((boardHeight * 9) / 100) - positionsWrapperHeight),
+                y: -(positions.length * ((boardHeight * 7.5) / 100) - positionsWrapperHeight),
               });
           }
         }
@@ -144,7 +154,7 @@ export default function loadLeaderBoard(app) {
       const mask = new Graphics();
       mask
         .beginFill(0xffffff)
-        .drawRect(0, 0, positionWidth, (boardHeight * 43) / 100)
+        .drawRect(0, 0, (boardWidth * 64) / 100, (boardHeight * 44) / 100)
         .endFill();
 
       board.addChild(scrollContainer);
@@ -166,14 +176,14 @@ export default function loadLeaderBoard(app) {
 
         // Name Bg
         const nameBg = new Sprite(leaderNameBg);
-        nameBg.width = (positionWidth * 60) / 100;
+        nameBg.width = positionWidth
         nameBg.height = positionHeight;
         nameContainer.addChild(nameBg);
 
         // Name Text
         const nameText = new Text(`${index + 1}. ${name}`, {
           fontSize: (boardWidth * 4) / 100,
-          fill: "#ffffff",
+          fill: "#8e3e05",
           fontWeight: 300,
           fontFamily: "Boogaloo",
         });
@@ -186,25 +196,26 @@ export default function loadLeaderBoard(app) {
         const scoreContainer = new Container();
         scoreContainer.width = (positionWidth * 40) / 100;
         scoreContainer.height = positionHeight;
-        scoreContainer.x = (positionWidth * 60) / 100;
+        scoreContainer.x = (positionWidth * 60.2) / 100;
         scoreContainer.y = 0;
 
         // Score Bg
         const scoreBg = new Sprite(leaderScoreBg);
         scoreBg.width = (positionWidth * 40) / 100;
-        scoreBg.height = positionHeight;
+        scoreBg.height = positionHeight * 1.1;
+        scoreBg.y = -((positionHeight * 1.1) * 5 / 100);
         scoreContainer.addChild(scoreBg);
         positionContainer.addChild(nameContainer);
         positionContainer.addChild(scoreContainer);
 
         // Score Trophy
         const scoreTrophySprite = new Sprite(scoreTrophy);
-        scoreTrophySprite.width = (positionWidth * 8) / 100;
-        scoreTrophySprite.height = (positionWidth * 8) / 100;
+        scoreTrophySprite.width = (positionWidth * 9) / 100;
+        scoreTrophySprite.height = (positionWidth * 9) / 100;
         scoreTrophySprite.anchor.x = 0;
         scoreTrophySprite.anchor.y = 0.45;
         scoreTrophySprite.y = positionHeight / 2;
-        scoreTrophySprite.x = (((positionWidth * 40) / 100) * 67) / 100;
+        scoreTrophySprite.x = (positionWidth * 5) / 100;
         scoreContainer.addChild(scoreTrophySprite);
 
         // Score Text
@@ -216,7 +227,7 @@ export default function loadLeaderBoard(app) {
         });
         scoreText.anchor.y = 0.5;
         scoreText.y = positionHeight / 2;
-        scoreText.x = (positionWidth * 5) / 100;
+        scoreText.x = (positionWidth * 15) / 100;
         scoreContainer.addChild(scoreText);
 
         return positionContainer;
@@ -224,43 +235,79 @@ export default function loadLeaderBoard(app) {
 
       const positions = [
         {
-          name: "Imran Khan",
-          score: "1400",
+          name: "Thomas Shelby",
+          score: "9467",
         },
         {
-          name: "Shahbaz Shareef",
-          score: "1158",
+          name: "Snoop dogg",
+          score: "8254",
         },
         {
-          name: "Mehwish Hayat",
-          score: "669",
+          name: "John Wick",
+          score: "5478",
         },
         {
-          name: "General Bajwa",
-          score: "420",
+          name: "Kristen Stewart",
+          score: "2698",
         },
         {
-          name: "Saba Qamar",
-          score: "333",
+          name: "Megan Fox",
+          score: "2214",
         },
         {
-          name: "Saba Qamar",
-          score: "333",
+          name: "Optimus Prime",
+          score: "1568",
         },
         {
-          name: "Saba Qamar",
-          score: "333",
+          name: "Lil Wayne",
+          score: "1111",
         },
         {
-          name: "Saba Qamar",
-          score: "333",
+          name: "Eminem",
+          score: "1054",
+        },
+        {
+          name: "Dr. Dre",
+          score: "997",
+        },
+        {
+          name: "Nicki Minaj",
+          score: "845",
+        },
+        {
+          name: "Tom Cruise",
+          score: "789",
+        },
+        {
+          name: "Leonardo DiCaprio",
+          score: "632",
+        },
+        {
+          name: "Jo Biden",
+          score: "544",
+        },
+        {
+          name: "Max Well",
+          score: "498",
+        },
+        {
+          name: "Billi Elish",
+          score: "425",
+        },
+        {
+          name: "Trump",
+          score: "369",
+        },
+        {
+          name: "Sundar Pichai",
+          score: "125",
         },
       ];
 
       positions.map((position, index) => {
         const { name, score } = position;
         const positionContainer = getPositionContainer(name, score, index);
-        positionContainer.y += index * ((boardHeight * 8.5) / 100);
+        positionContainer.y += index * ((boardHeight * 7.5) / 100);
         positionsWrapper.addChild(positionContainer);
       });
 
@@ -273,7 +320,7 @@ export default function loadLeaderBoard(app) {
       mainMenuBtn.anchor.x = 0.5;
       mainMenuBtn.anchor.y = 0.5;
       mainMenuBtn.x = boardWidth / 2 - (boardWidth * 1.5) / 100;
-      mainMenuBtn.y = (boardHeight * 90) / 100;
+      mainMenuBtn.y = (boardHeight * 91) / 100;
       board.addChild(mainMenuBtn);
 
       const mainMenuText = new Text("MAIN MENU", {
@@ -284,7 +331,7 @@ export default function loadLeaderBoard(app) {
       });
       mainMenuText.anchor.set(0.5);
       mainMenuText.x = boardWidth / 2 - (boardWidth * 1.5) / 100;
-      mainMenuText.y = (boardHeight * 90) / 100;
+      mainMenuText.y = (boardHeight * 91) / 100;
       board.addChild(mainMenuText);
       mainMenuBtn.interactive = true;
       mainMenuBtn.cursor = "pointer";
