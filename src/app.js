@@ -156,9 +156,14 @@ const LuckiestGuy = new FontFaceObserver('Luckiest Guy');
 (async () => {
   await Boogaloo.load().then(() => {
     loadMainMenu();
+    console.log('MAIN MENU LOADED')
   })
-  await Barlow.load();
-  await LuckiestGuy.load();
+  await Barlow.load().then(() => {
+    console.log('Barlow Loaded')
+  });
+  await LuckiestGuy.load().then(() => {
+    console.log("LUCKIEST GUY LOADED")
+  });
 })()
 
 // loadBossModeUI(app, 2)
