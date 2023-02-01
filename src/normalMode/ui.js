@@ -46,8 +46,6 @@ export default function loadNormalModeUI(app, level, data = {wpm: null, selected
         normalModeFg,
         scoreFrame,
         menuBtn,
-        flower,
-        twinFlower1,
         twinFlower2,
         normalModeBg1,
         normalModeClouds,
@@ -64,7 +62,7 @@ export default function loadNormalModeUI(app, level, data = {wpm: null, selected
       NormalModeContainer.addChild(getBackground(normalModeBg1));
       NormalModeContainer.addChild(getNormalClouds(normalModeClouds));
       NormalModeContainer.addChild(
-        getLivesContainer([flower, twinFlower1, twinFlower2], 'FLOWER')
+        getLivesContainer([twinFlower2], 'FLOWER')
       );
       NormalModeContainer.addChild(getForeground(normalModeFg));
       NormalModeContainer.addChild(getWordsContainer());

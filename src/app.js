@@ -148,6 +148,6 @@ Assets.add('scoreTrophy', scoreTrophy);
 Assets.add('leaderBoardInnerBg', boardInnerBg);
 Assets.add('leaderScoreBg', leaderScoreBg);
 
-// loadMainMenu();
-loadBossModeUI(app, 2)
+loadMainMenu();
+// loadBossModeUI(app, 2)
 // loadScoreBoard(app, {accuracy: 98, wpm: 35, score: 945, level: 'NORMAL', troubledWords: ['lroem', 'ipsum', 'dripsum', 'cripsum']})

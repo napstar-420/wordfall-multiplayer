@@ -22,7 +22,7 @@ export const tapSound = new Audio(tapSfx);
 tapSound.volume = 1;
 
 export const brickBreakSound = new Audio(brickBreakSfx);
-brickBreakSound.volume = 0.6;
+brickBreakSound.volume = 0.2;
 export const homeBackMusic = new Audio(homeBack);
 homeBackMusic.volume = 0.5;
 homeBackMusic.loop = true;
@@ -57,7 +57,7 @@ export function turnSfxOn() {
   localStorage.setItem("isSfxOn", true);
   hoverSound.volume = 0.5;
   tapSound.volume = 1;
-  brickBreakSound.volume = 0.6;
+  brickBreakSound.volume = 0.2;
   gameOverSound.volume = 1;
 }
 export function turnSfxOff() {
