@@ -21,7 +21,7 @@ module.exports = {
       title: 'Wordfall Multiplayer Game',
     }),
   ],
-  mode: 'production',
+  mode: 'development',
   experiments: {
     topLevelAwait: true
   },

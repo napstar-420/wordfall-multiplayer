@@ -44,7 +44,8 @@ export default function loadBossModeUI(app, level) {
     "bossRestartBtn",
     "bossMainMenuBtn",
     "bossCheckBox",
-    "bossCheckFill"
+    "bossCheckFill",
+    "pumpkin"
   ])
     .then((textures) => {
       const {
@@ -52,9 +53,7 @@ export default function loadBossModeUI(app, level) {
         bossModeFg,
         scoreFrame,
         menuBtn,
-        jackOLantern1,
-        jackOLantern2,
-        jackOLantern3,
+        pumpkin,
         bossModeClouds,
         clockFrame,
         bossScoreBoard,
@@ -70,7 +69,7 @@ export default function loadBossModeUI(app, level) {
       BossModeContainer.addChild(getBackground(bossModeBg));
       BossModeContainer.addChild(getNormalClouds(bossModeClouds));
       BossModeContainer.addChild(
-        getLivesContainer([jackOLantern1, jackOLantern2, jackOLantern1], 'PUMPKIN')
+        getLivesContainer([pumpkin], 'PUMPKIN')
       );
       BossModeContainer.addChild(getForeground(bossModeFg));
       BossModeContainer.addChild(getWordsContainer());

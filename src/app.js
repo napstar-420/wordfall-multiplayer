@@ -21,6 +21,7 @@ import bossModeClouds from "./assets/images/bossMode/clouds group dark.png";
 import jackoLantern1 from "./assets/images/bossMode/Layer 1.png";
 import jackoLantern2 from "./assets/images/bossMode/Halloween-Jack-O-Lantern-PNG-Transparent-Picture-4.png";
 import jackoLantern3 from "./assets/images/bossMode/Halloween-Jack-O-Lantern-PNG-Transparent-Picture-5.png";
+import pumpkin from './assets/images/bossMode/pumpkin.png'
 import scoreBoardBg from "./assets/images/normalMode/Group 70.png";
 import scoreBoard from "./assets/images/normalMode/longboard without button 1.png";
 import scoreBoardExtras from "./assets/images/normalMode/Rectangle 27.png";
@@ -102,6 +103,7 @@ Assets.add("bossModeFg", bossModeFg);
 Assets.add("jackOLantern1", jackoLantern1);
 Assets.add("jackOLantern2", jackoLantern2);
 Assets.add("jackOLantern3", jackoLantern3);
+Assets.add('pumpkin', pumpkin)
 
 //Score Board
 Assets.add("scoreBoardBg", scoreBoardBg);
@@ -146,6 +148,6 @@ Assets.add('scoreTrophy', scoreTrophy);
 Assets.add('leaderBoardInnerBg', boardInnerBg);
 Assets.add('leaderScoreBg', leaderScoreBg);
 
-loadMainMenu();
-// loadBossModeUI(app, 2)
+// loadMainMenu();
+loadBossModeUI(app, 2)
 // loadScoreBoard(app, {accuracy: 98, wpm: 35, score: 945, level: 'NORMAL', troubledWords: ['lroem', 'ipsum', 'dripsum', 'cripsum']})

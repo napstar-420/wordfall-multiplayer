@@ -153,7 +153,9 @@ export function getLivesContainer(textures, type) {
   livesContainer.width = width;
   livesContainer.height = 80;
   livesContainer.x = (app.view.width * 3) / 100;
-  if (type === "PUMPKIN") livesContainer.x = (app.view.width * 6) / 100;
+  if (type === "PUMPKIN") {
+    livesContainer.x = (app.view.width * 6) / 100;
+  } 
   livesContainer.y = app.view.height - (app.view.height * 8.5 / 100);
   let numbersOfLife = 9;
   if (type === "FLOWER") numbersOfLife = 16;
@@ -167,6 +169,10 @@ export function getLivesContainer(textures, type) {
     lifeSprite.anchor.x = 0.5;
     lifeSprite.scale.x = (app.view.height * 0.15) / 100;
     lifeSprite.scale.y = (app.view.height * 0.15) / 100;
+    if (type === "PUMPKIN") {
+      lifeSprite.scale.x = (app.view.height * 0.08) / 100;
+      lifeSprite.scale.y = (app.view.height * 0.08) / 100;
+    }
     lifeSprite.y = 0;
     lifeSprite.x = i * distanceBetweenLife;
     livesContainer.addChild(lifeSprite);
