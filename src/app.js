@@ -50,14 +50,15 @@ import bossMainMenuBtn from "./assets/boss mode options menu assets/boss_mainMen
 import bossCheckBox from "./assets/boss mode options menu assets/boss_check_box.png";
 import bossCheckFill from "./assets/boss mode options menu assets/boss_check_fill.png";
 import leaderBoardBg from "./assets/images/leaderboard/Group 71.png";
-import leaderScoreBg from './assets/images/leaderboard/Rectangle 3.png';
-import leaderNameBg from './assets/images/leaderboard/Rectangle 2.png';
+import leaderScoreBg from './assets/images/leaderboard/Rectangle 32.png';
+import leaderNameBg from './assets/images/leaderboard/Rectangle 31.png';
 import scoreTrophy from './assets/images/leaderboard/Group 64.png';
 import boardInnerBg from './assets/images/leaderboard/Rectangle 1.png';
 
 import loadMainMenu from "./mainMenu";
 import loadBossModeUI from "./boss mode/ui";
 import loadScoreBoard from "./normalMode/scoreBoard";
+import loadLeaderBoard from "./leaderboard/ui";
 
 const game = document.createElement("div");
 game.id = "game-container";
@@ -166,5 +167,6 @@ const LuckiestGuy = new FontFaceObserver('Luckiest Guy');
   });
 })()
 
-loadBossModeUI(app, 2)
+loadLeaderBoard(app)
+// loadBossModeUI(app, 2)
 // loadScoreBoard(app, {accuracy: 98, wpm: 35, score: 945, level: 'NORMAL', troubledWords: ['lroem', 'ipsum', 'dripsum', 'cripsum']})
