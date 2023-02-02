@@ -8,6 +8,8 @@ import gameOverSfx from "../assets/music and sound effects/gameover.mp3";
 import normalScoreMusic from "../assets/music and sound effects/normalScoreboardSound.mp3";
 import successSfx from "../assets/music and sound effects/successSound.mp3";
 import failureSfx from "../assets/music and sound effects/failureSound.mp3";
+import flowerCrushedSfx from '../assets/music and sound effects/flower_crushed.mp3';
+import pumpkinCrushedSfx from '../assets/music and sound effects/pumpkin_crushed.mp3';
 
 if (localStorage.length === 0) {
   localStorage.setItem("isMusicOn", true);
@@ -39,6 +41,9 @@ export const gameOverSound = new Audio(gameOverSfx);
 export const normalScoreBoardMusic = new Audio(normalScoreMusic);
 export const successSound = new Audio(successSfx);
 export const failureSound = new Audio(failureSfx);
+export const flowerCrushedSound = new Audio(flowerCrushedSfx);
+export const pumpkinCrushedSound = new Audio(pumpkinCrushedSfx);
+
 isMusicOn ? turnMusicOn() : turnMusicOff();
 isSfxOn ? turnSfxOn() : turnSfxOff();
 export function turnMusicOn() {
@@ -59,6 +64,10 @@ export function turnSfxOn() {
   tapSound.volume = 1;
   brickBreakSound.volume = 0.2;
   gameOverSound.volume = 1;
+  successSound.volume = 1;
+  failureSound.volume = 1;
+  pumpkinCrushedSound.volume = 0.5;
+  flowerCrushedSound.volume = 1;
 }
 export function turnSfxOff() {
   localStorage.setItem("isSfxOn", false);
@@ -66,4 +75,8 @@ export function turnSfxOff() {
   tapSound.volume = 0;
   brickBreakSound.volume = 0;
   gameOverSound.volume = 0;
+  successSound.volume = 0;
+  failureSound.volume = 0;
+  pumpkinCrushedSound.volume = 0;
+  flowerCrushedSound.volume = 0;
 }

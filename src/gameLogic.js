@@ -1,7 +1,7 @@
 import { Sprite, Text, TextStyle, Texture, Container } from "pixi.js";
 import { getBrickAnimation, getFlowerAnimation, getPumpkinAnimation, getRandomNumber } from "./gameUI.js";
 import { app } from "./app.js";
-import { tapSound, brickBreakSound, normalModeBackMusic, bossModeBackMusic, gameOverSound } from "./music and sounds/index.js";
+import { tapSound, brickBreakSound, normalModeBackMusic, bossModeBackMusic, gameOverSound, flowerCrushedSound, pumpkinCrushedSound } from "./music and sounds/index.js";
 import loadBossModeUI from "./boss mode/ui.js";
 import loadPracticeModeInfo from "./practiceMode/practiceModeInfo.js";
 import loadNormalModeUI from "./normalMode/ui.js";
@@ -114,6 +114,7 @@ export function startGame(container, loadScoreBoard, level, data) {
 
   let rulesBoard = null;
   let startGameBtn
+  let isRuleBoardDown = false;
   
   // Variables to use in the game
   let gamePaused = false;
@@ -242,9 +243,11 @@ export function startGame(container, loadScoreBoard, level, data) {
   if (level && level !== 'PRACTICE' && level !== 'NORMAL') {
     gamePaused = true;
     clearInterval(timeInterval);
+    isRuleBoardDown = true;
     rulesBoard = container.children[10];
     startGameBtn = rulesBoard.children[3];
     startGameBtn.on('pointerdown', () => {
+      isRuleBoardDown = false;
       tapSound.pause();
       tapSound.currentTime = 0;
       tapSound.play();
@@ -270,6 +273,15 @@ export function startGame(container, loadScoreBoard, level, data) {
     })
     
     TweenMax.to(rulesBoard, 1, { ease: Expo.easeOut, y: 0 });
+  }
+
+  document.addEventListener("visibilitychange", handleVisibilityChange);
+  function handleVisibilityChange() {
+    if (document.visibilityState === "hidden" && !isRuleBoardDown) {
+      clearInterval(timeInterval);
+      gamePaused = true;
+      TweenMax.to(pauseMenu, 1, { ease: Expo.easeOut, y: 0 });
+    }
   }
 
   // Adding Event Listener for typing
@@ -495,6 +507,26 @@ export function startGame(container, loadScoreBoard, level, data) {
         livesContainer.children.forEach((life) => {
           const collision = testForCollision(word, life);
           if (collision) {
+            // Remove Life from screen && play animation
+            const x = life.x;
+            livesContainer.removeChild(life);
+            (async () => {
+              let anim;
+              if (level == 1 || level === 2 || level === 3) {
+                anim = await getPumpkinAnimation();
+                anim.animationSpeed = wordSpeed / 8;
+                pumpkinCrushedSound.currentTime = 0;
+                pumpkinCrushedSound.play();
+              } else {
+                anim = await getFlowerAnimation();
+                anim.animationSpeed = wordSpeed / 14;
+                flowerCrushedSound.currentTime = 0;
+                flowerCrushedSound.play();
+              }
+              anim.x = x;
+              container.addChild(anim);
+              anim.play();
+            })()
             switch (level) {
               case 1:
                 endGame("FAILED");
@@ -523,21 +555,6 @@ export function startGame(container, loadScoreBoard, level, data) {
                 // let troubledWord = "";
                 // // adding word to troubled array
                 // troubledWords.push(troubledWord);
-                const x = life.x;
-                livesContainer.removeChild(life);
-                (async () => {
-                  let anim;
-                  if (level == 1 || level === 2 || level === 3) {
-                    anim = await getPumpkinAnimation();
-                    anim.animationSpeed = wordSpeed / 8;
-                  } else {
-                    anim = await getFlowerAnimation();
-                    anim.animationSpeed = wordSpeed / 14;
-                  }
-                  anim.x = x;
-                  container.addChild(anim);
-                  anim.play();
-                })()
                 if (livesContainer.children.length === 0) {
                   endGame("FAILED");
                 }
@@ -620,6 +637,7 @@ export function startGame(container, loadScoreBoard, level, data) {
     clearInterval(timeInterval);
     app.ticker.remove(gameLoop);
     document.removeEventListener('keyup', handleGame);
+    document.removeEventListener('visibilitychange', handleVisibilityChange)
     setTimeout(() => {
       app.stage.removeChild(container);
       loadScoreBoard(app, endScore, type);

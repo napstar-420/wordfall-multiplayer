@@ -155,7 +155,7 @@ const LuckiestGuy = new FontFaceObserver('Luckiest Guy');
 
 (async () => {
   await Boogaloo.load().then(() => {
-    loadMainMenu();
+    // loadMainMenu();
     console.log('MAIN MENU LOADED')
   })
   await Barlow.load().then(() => {
@@ -166,5 +166,5 @@ const LuckiestGuy = new FontFaceObserver('Luckiest Guy');
   });
 })()
 
-// loadBossModeUI(app, 2)
+loadBossModeUI(app, 2)
 // loadScoreBoard(app, {accuracy: 98, wpm: 35, score: 945, level: 'NORMAL', troubledWords: ['lroem', 'ipsum', 'dripsum', 'cripsum']})
