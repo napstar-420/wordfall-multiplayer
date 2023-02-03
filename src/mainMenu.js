@@ -116,7 +116,6 @@ export default function loadMainMenu() {
     }
     function startMode(callback) {
       MAIN_MENU.children[1].children.forEach(child => {
-        console.log(child)
         child.interactive = false;
         child.cursor = 'normal';
         child.removeAllListeners();

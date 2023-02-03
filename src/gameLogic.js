@@ -1,14 +1,27 @@
 import { Sprite, Text, TextStyle, Texture, Container } from "pixi.js";
-import { getBrickAnimation, getFlowerAnimation, getPumpkinAnimation, getRandomNumber } from "./gameUI.js";
+import {
+  getBrickAnimation,
+  getFlowerAnimation,
+  getPumpkinAnimation,
+  getRandomNumber,
+} from "./gameUI.js";
 import { app } from "./app.js";
-import { tapSound, brickBreakSound, normalModeBackMusic, bossModeBackMusic, gameOverSound, flowerCrushedSound, pumpkinCrushedSound } from "./music and sounds/index.js";
+import {
+  tapSound,
+  brickBreakSound,
+  normalModeBackMusic,
+  bossModeBackMusic,
+  gameOverSound,
+  flowerCrushedSound,
+  pumpkinCrushedSound,
+} from "./music and sounds/index.js";
 import loadBossModeUI from "./boss mode/ui.js";
 import loadPracticeModeInfo from "./practiceMode/practiceModeInfo.js";
 import loadNormalModeUI from "./normalMode/ui.js";
 import words from 'an-array-of-english-words';
 import { TweenMax } from "gsap/gsap-core.js";
 import { Expo, Power4 } from "gsap";
-import brickImage from './assets/images/gameUI/letters tile 1.png';
+import brickImage from "./assets/images/gameUI/letters tile 1.png";
 
 const letterStyling = new TextStyle({
   fontFamily: "Barlow",
@@ -22,10 +35,11 @@ const typedLetterStyling = new TextStyle({
   fill: "yellow",
 });
 
+// const words = ["mangos", "mouth", "mama", "math", "majboori"];
+
 const brickTexture = Texture.from(brickImage);
 
 export function startGame(container, loadScoreBoard, level, data) {
-   
   const normalClouds = container.children[1];
   const livesContainer = container.children[2];
   const wordsContainer = container.children[4];
@@ -50,13 +64,13 @@ export function startGame(container, loadScoreBoard, level, data) {
       clockFrame.visible = false;
   }
   clockFrame.children[1].text = 60;
-  const pauseMenu = container.children[9];
 
+  const pauseMenu = container.children[9];
   const restartBtn = pauseMenu.children[2];
 
   switch (level) {
     case 1:
-      restartBtn.on('pointerdown', () => {
+      restartBtn.on("pointerdown", () => {
         tapSound.pause();
         tapSound.currentTime = 0;
         tapSound.play();
@@ -64,10 +78,10 @@ export function startGame(container, loadScoreBoard, level, data) {
         normalModeBackMusic.pause();
         app.stage.removeChild(container);
         loadBossModeUI(app, level);
-      })
+      });
       break;
     case 2:
-      restartBtn.on('pointerdown', () => {
+      restartBtn.on("pointerdown", () => {
         tapSound.pause();
         tapSound.currentTime = 0;
         tapSound.play();
@@ -75,10 +89,10 @@ export function startGame(container, loadScoreBoard, level, data) {
         normalModeBackMusic.pause();
         app.stage.removeChild(container);
         loadBossModeUI(app, level);
-      })
+      });
       break;
     case 3:
-      restartBtn.on('pointerdown', () => {
+      restartBtn.on("pointerdown", () => {
         tapSound.pause();
         tapSound.currentTime = 0;
         tapSound.play();
@@ -86,10 +100,10 @@ export function startGame(container, loadScoreBoard, level, data) {
         normalModeBackMusic.pause();
         app.stage.removeChild(container);
         loadBossModeUI(app, level);
-      })
+      });
       break;
-    case 'PRACTICE':
-      restartBtn.on('pointerdown', () => {
+    case "PRACTICE":
+      restartBtn.on("pointerdown", () => {
         tapSound.pause();
         tapSound.currentTime = 0;
         tapSound.play();
@@ -97,25 +111,25 @@ export function startGame(container, loadScoreBoard, level, data) {
         normalModeBackMusic.pause();
         app.stage.removeChild(container);
         loadPracticeModeInfo(app);
-      })
+      });
       break;
     default:
-      restartBtn.on('pointerdown', () => {
+      restartBtn.on("pointerdown", () => {
         tapSound.pause();
         tapSound.currentTime = 0;
         tapSound.play();
         bossModeBackMusic.pause();
         normalModeBackMusic.pause();
         app.stage.removeChild(container);
-        loadNormalModeUI(app, 'NORMAL')
-      })
+        loadNormalModeUI(app, "NORMAL");
+      });
       break;
   }
 
   let rulesBoard = null;
-  let startGameBtn
+  let startGameBtn;
   let isRuleBoardDown = false;
-  
+
   // Variables to use in the game
   let gamePaused = false;
   let wordFromApi = "";
@@ -158,7 +172,7 @@ export function startGame(container, loadScoreBoard, level, data) {
       launchSpeed = 1500;
       break;
     case "PRACTICE":
-      launchSpeed = (60 / data.wpm) * 1000
+      launchSpeed = (60 / data.wpm) * 1000;
       break;
   }
 
@@ -177,7 +191,7 @@ export function startGame(container, loadScoreBoard, level, data) {
       case 3:
         time--;
         break;
-      case 'PRACTICE':
+      case "PRACTICE":
         time++;
         break;
       default:
@@ -240,38 +254,41 @@ export function startGame(container, loadScoreBoard, level, data) {
       });
   }
 
-  if (level && level !== 'PRACTICE' && level !== 'NORMAL') {
+  if (level && level !== "PRACTICE" && level !== "NORMAL") {
     gamePaused = true;
     clearInterval(timeInterval);
     isRuleBoardDown = true;
     rulesBoard = container.children[10];
     startGameBtn = rulesBoard.children[3];
-    startGameBtn.on('pointerdown', () => {
+    startGameBtn.on("pointerdown", () => {
       isRuleBoardDown = false;
       tapSound.pause();
       tapSound.currentTime = 0;
       tapSound.play();
       menuBtn
-      .on("pointerover", () => {
-        menuBtn.scale.x = (app.view.height * 0.16) / 100;
-        menuBtn.scale.y = (app.view.height * 0.16) / 100;
-      })
-      .on("pointerout", () => {
-        menuBtn.scale.x = (app.view.height * 0.15) / 100;
-        menuBtn.scale.y = (app.view.height * 0.15) / 100;
-      })
-      .on("pointerdown", () => {
-        clearInterval(timeInterval);
-        gamePaused = true;
-        TweenMax.to(pauseMenu, 1, { ease: Expo.easeOut, y: 0 });
+        .on("pointerover", () => {
+          menuBtn.scale.x = (app.view.height * 0.16) / 100;
+          menuBtn.scale.y = (app.view.height * 0.16) / 100;
+        })
+        .on("pointerout", () => {
+          menuBtn.scale.x = (app.view.height * 0.15) / 100;
+          menuBtn.scale.y = (app.view.height * 0.15) / 100;
+        })
+        .on("pointerdown", () => {
+          clearInterval(timeInterval);
+          gamePaused = true;
+          TweenMax.to(pauseMenu, 1, { ease: Expo.easeOut, y: 0 });
+        });
+      TweenMax.to(rulesBoard, 1, {
+        ease: Expo.easeIn,
+        y: -((app.view.height * 90) / 100),
       });
-      TweenMax.to(rulesBoard, 1, { ease: Expo.easeIn, y: -(app.view.height * 90 / 100) });
       setTimeout(() => {
         gamePaused = false;
         timeInterval = setInterval(updateTime, 1000);
-      }, 1000)
-    })
-    
+      }, 1000);
+    });
+
     TweenMax.to(rulesBoard, 1, { ease: Expo.easeOut, y: 0 });
   }
 
@@ -311,16 +328,16 @@ export function startGame(container, loadScoreBoard, level, data) {
     const wordContainer = new Container();
     // const word = wordFromApi; // uncomment this line when want to use Api
     const word = words[getRandomNumber(words.length - 1, 0)];
-    if (level && level === 'PRACTICE') {
-      if (data.selectedDifficulty === 'EASY') {
+    if (level && level === "PRACTICE") {
+      if (data.selectedDifficulty === "EASY") {
         if (word.length > 3) {
           return createWord();
         }
-      } else if (data.selectedDifficulty === 'MEDIUM') {
+      } else if (data.selectedDifficulty === "MEDIUM") {
         if (word.length > 5 || word.length < 3) {
           return createWord();
         }
-      } else if (data.selectedDifficulty === 'HARD') {
+      } else if (data.selectedDifficulty === "HARD") {
         if (word.length > 7 || word.length < 5) {
           return createWord();
         }
@@ -328,7 +345,7 @@ export function startGame(container, loadScoreBoard, level, data) {
     } else if (word.length > 7) {
       return createWord();
     }
-    
+
     const sprite = new Sprite(brickTexture);
     sprite.width = 0;
     sprite.height = 0;
@@ -347,8 +364,8 @@ export function startGame(container, loadScoreBoard, level, data) {
     sprite.height = wordContainer.height + 10;
     wordContainer.x = getRandomNumber(app.view.width - sprite.width, 0);
     wordContainer.y = -20;
-    wordContainer.scale.x = app.view.width * 0.1 / 100;
-    wordContainer.scale.y = app.view.width * 0.1 / 100;
+    wordContainer.scale.x = (app.view.width * 0.1) / 100;
+    wordContainer.scale.y = (app.view.width * 0.1) / 100;
     wordsContainer.addChild(wordContainer);
     return wordContainer;
   }
@@ -368,105 +385,23 @@ export function startGame(container, loadScoreBoard, level, data) {
     }, launchSpeed);
   })();
 
-  // This function will be run when user types
-  function handleGame(e) {
-    if (!gamePaused) {
-      const key = e.key;
-      // if there is no active key
-      if (!activeWord) {
-        // loops through words on screen
-        for (let i = 0; i < wordsOnScreen.length; i++) {
-          if (wordsOnScreen[i].children[1].text === key) {
-            wordsOnScreen[i].active = true;
-            activeWord = wordsOnScreen[i];
-            activeWordIndex = i;
-            counter++;
-            typedWords++;
-            wordsOnScreen[i].children[1].style = typedLetterStyling;
-            return;
-          } else if (i === wordsOnScreen.length - 1) {
-            // reset streak
-            streak = 0;
-            // decrement multiplier
-            multiplier -= multiplier > 1 ? 1 : 0;
-            // update multiplier on ui
-            container.children[7].text = `x${multiplier}`;
-          switch (level) {
-            case 1:
-              endGame("FAILED");
-              break;
-            case 3:
-              endGame("FAILED");
-              break;
-            default: 
-              break;
-          }
-          }
-        }
-        return;
-        // if active word exist
-      } else if (activeWord.children[counter].text === key) {
-        wordsOnScreen[activeWordIndex].children[counter].style =
-          typedLetterStyling;
+  function searchWordOnScreen(key) {
+    for (let i = 0; i < wordsOnScreen.length; i++) {
+      if (wordsOnScreen[i].children[1].text === key) {
+        wordsOnScreen[i].active = true;
+        activeWord = wordsOnScreen[i];
+        activeWordIndex = i;
         counter++;
-        // if users types the entire word correctly
-        if (activeWord.children.length === counter) {
-          score += (activeWord.children.length - 1) * multiplier;
-          scoreFrame.children[1].text = score;
-          wordsContainer.removeChild(activeWord);
-          wordsOnScreen.splice(activeWordIndex, 1);
-          const x = activeWord.x;
-          const y = activeWord.y;
-          (async () => {
-            const brickAnim = await getBrickAnimation();
-            brickAnim.anchor.y = 0.2;
-            brickAnim.anchor.x = 0;
-            brickAnim.width =  app.view.width * 10 / 100;
-            brickAnim.height = app.view.width * 10 / 100;
-            brickBreakSound.pause();
-            brickBreakSound.currentTime = 0;
-            brickBreakSound.play();
-            brickAnim.play();
-            brickAnim.x = x;
-            brickAnim.y = y;
-            container.addChild(brickAnim);
-            setTimeout(() => {
-              container.removeChild(brickAnim);
-            }, 800)
-          })()
-          activeWord = null;
-          activeWordIndex = null;
-          counter = 1;
-          completedWords++;
-          streak++;
-          if (streak % 5 === 0) {
-            if (multiplier < 3) {
-              multiplier = streak / 5 + 1;
-              multiplierText.text = `x${multiplier}`;
-            }
-          }
-        }
-      } else {
-        // if user mistypes
-          // reset streak
-          streak = 0;
-          // decrement multiplier
-          multiplier -= multiplier > 1 ? 1 : 0;
-          // update multiplier on ui
-          container.children[7].text = `x${multiplier}`;
-          // adding word to troubled array
-          let troubledWord = "";
-          // changing style from type to regular
-          wordsOnScreen[activeWordIndex].children.forEach((letter, index) => {
-            if (index > 0) {
-              letter.style = letterStyling;
-              troubledWord = troubledWord.concat(letter.text);
-            }
-          });
-          troubledWords.unshift(troubledWord);
-          activeWord = null;
-          activeWordIndex = null;
-          counter = 1;
+        typedWords++;
+        wordsOnScreen[i].children[1].style = typedLetterStyling;
+        return;
+      } else if (i === wordsOnScreen.length - 1) {
+        // reset streak
+        streak = 0;
+        // decrement multiplier
+        multiplier -= multiplier > 1 ? 1 : 0;
+        // update multiplier on ui
+        container.children[7].text = `x${multiplier}`;
         switch (level) {
           case 1:
             endGame("FAILED");
@@ -474,8 +409,146 @@ export function startGame(container, loadScoreBoard, level, data) {
           case 3:
             endGame("FAILED");
             break;
-          default: 
-            break;
+        }
+      }
+    }
+  }
+
+  function wordCompleted() {
+    score += (activeWord.children.length - 1) * multiplier;
+    scoreFrame.children[1].text = score;
+    wordsContainer.removeChild(activeWord);
+    wordsOnScreen.splice(activeWordIndex, 1);
+    const x = activeWord.x;
+    const y = activeWord.y;
+    (async () => {
+      const brickAnim = await getBrickAnimation();
+      brickAnim.anchor.y = 0.2;
+      brickAnim.anchor.x = 0;
+      brickAnim.width = (app.view.width * 10) / 100;
+      brickAnim.height = (app.view.width * 10) / 100;
+      brickBreakSound.pause();
+      brickBreakSound.currentTime = 0;
+      brickBreakSound.play();
+      brickAnim.play();
+      brickAnim.x = x;
+      brickAnim.y = y;
+      container.addChild(brickAnim);
+      setTimeout(() => {
+        container.removeChild(brickAnim);
+      }, 800);
+    })();
+    activeWord = null;
+    activeWordIndex = null;
+    counter = 1;
+    completedWords++;
+    streak++;
+    if (streak % 5 === 0) {
+      if (multiplier < 3) {
+        multiplier = streak / 5 + 1;
+        multiplierText.text = `x${multiplier}`;
+      }
+    }
+  }
+
+  function madeMistake() {
+    streak = 0;
+    multiplier -= multiplier > 1 ? 1 : 0;
+    container.children[7].text = `x${multiplier}`;
+    let troubledWord = "";
+    wordsOnScreen[activeWordIndex].children.forEach((letter, index) => {
+      if (index > 0) {
+        letter.style = letterStyling;
+        troubledWord = troubledWord.concat(letter.text);
+      }
+    });
+    troubledWords.unshift(troubledWord);
+    activeWord = null;
+    activeWordIndex = null;
+    counter = 1;
+    switch (level) {
+      case 1:
+        endGame("FAILED");
+        break;
+      case 3:
+        endGame("FAILED");
+        break;
+      default:
+        break;
+    }
+  }
+
+  function checkForSecondWord(key) {
+    let activeWordStr = "";
+    let nextWordStr = "";
+    activeWord.children.map((letter, letterIndex) => {
+      if (letterIndex > 0) {
+        activeWordStr += letter.text;
+      }
+    });
+    console.log({activeWordStr})
+    for (let i = 0; i < wordsOnScreen.length; i++) {
+      const word = wordsOnScreen[i];
+      if (word.children[counter].text == key) {
+        console.log('MAYBE SOMETHING')
+        word.children.map((letter, letterIndex) => {
+          if (letterIndex > 0) {
+            nextWordStr += letter.text;
+          }
+        });
+        console.log({nextWordStr});
+        nextWordStr = nextWordStr.slice(0, counter - 1);
+        activeWordStr = activeWordStr.slice(0, counter - 1);
+        console.log("AFTER SLICING");
+        console.log({activeWordStr, nextWordStr});
+        if (nextWordStr === activeWordStr) {
+          console.log("STRINGS MATCHED")
+          wordsOnScreen[activeWordIndex].children.forEach((letter, letterIndex) => {
+            if (letterIndex > 0) {
+              letter.style = letterStyling
+            }
+          });
+          console.log("STYLING REMOVED")
+          wordsOnScreen[i].children.forEach((letter, letterIndex) => {
+            if (letterIndex > 0 && letterIndex <= counter) {
+              letter.style = typedLetterStyling;
+            }
+          });
+          console.log("NEW STYLING ADDED")
+          activeWord = word;
+          activeWordIndex = i;
+          counter++;
+          if (word.children.length === counter) {
+            wordCompleted();
+          }
+          nextWordStr = "";
+          return true;
+        } else {
+          nextWordStr = "";
+        }
+      }
+    }
+    return false;
+  }
+
+  // This function will be run when user types
+  function handleGame(e) {
+    if (!gamePaused) {
+      const key = e.key;
+      if (!activeWord) {
+        searchWordOnScreen(key);
+        return;
+      } else if (activeWord.children[counter].text === key) {
+        wordsOnScreen[activeWordIndex].children[counter].style =
+          typedLetterStyling;
+        counter++;
+        if (activeWord.children.length === counter) {
+          wordCompleted();
+        }
+      } else {
+        const secondWord = checkForSecondWord(key);
+        if (!secondWord) {
+          madeMistake();
         }
       }
     }
@@ -526,7 +599,7 @@ export function startGame(container, loadScoreBoard, level, data) {
               anim.x = x;
               container.addChild(anim);
               anim.play();
-            })()
+            })();
             switch (level) {
               case 1:
                 endGame("FAILED");
@@ -563,7 +636,7 @@ export function startGame(container, loadScoreBoard, level, data) {
         });
       }
       // If word reached the ground
-      if (word.y > app.view.height - (app.view.height * 16 / 100)) {
+      if (word.y > app.view.height - (app.view.height * 16) / 100) {
         resetStats(word, index);
         switch (level) {
           case 1:
@@ -598,7 +671,7 @@ export function startGame(container, loadScoreBoard, level, data) {
       activeWordIndex = null;
       counter = 1;
     } else if (activeWord && activeWordIndex > index) {
-        activeWordIndex = activeWordIndex - 1;
+      activeWordIndex = activeWordIndex - 1;
     }
     // reset streak
     streak = 0;
@@ -636,12 +709,12 @@ export function startGame(container, loadScoreBoard, level, data) {
     };
     clearInterval(timeInterval);
     app.ticker.remove(gameLoop);
-    document.removeEventListener('keyup', handleGame);
-    document.removeEventListener('visibilitychange', handleVisibilityChange)
+    document.removeEventListener("keyup", handleGame);
+    document.removeEventListener("visibilitychange", handleVisibilityChange);
     setTimeout(() => {
       app.stage.removeChild(container);
       loadScoreBoard(app, endScore, type);
-    }, 3000)
+    }, 3000);
   }
 }
 
@@ -671,6 +744,6 @@ function getAccuracy(words, troubledWords) {
   } else if (troubledWords === 0) {
     return 100;
   } else {
-    return Math.floor(words / (troubledWords + words) * 100);
+    return Math.floor((words / (troubledWords + words)) * 100);
   }
 }
