@@ -22,7 +22,7 @@ import bossModeClouds from "./assets/images/bossMode/clouds group dark.png";
 import jackoLantern1 from "./assets/images/bossMode/Layer 1.png";
 import jackoLantern2 from "./assets/images/bossMode/Halloween-Jack-O-Lantern-PNG-Transparent-Picture-4.png";
 import jackoLantern3 from "./assets/images/bossMode/Halloween-Jack-O-Lantern-PNG-Transparent-Picture-5.png";
-import pumpkin from './assets/images/bossMode/pumpkin.png'
+import pumpkin from "./assets/images/bossMode/pumpkin.png";
 import scoreBoardBg from "./assets/images/normalMode/Group 70.png";
 import scoreBoard from "./assets/images/normalMode/longboard without button 1.png";
 import scoreBoardExtras from "./assets/images/normalMode/Rectangle 27.png";
@@ -50,10 +50,10 @@ import bossMainMenuBtn from "./assets/boss mode options menu assets/boss_mainMen
 import bossCheckBox from "./assets/boss mode options menu assets/boss_check_box.png";
 import bossCheckFill from "./assets/boss mode options menu assets/boss_check_fill.png";
 import leaderBoardBg from "./assets/images/leaderboard/Group 71.png";
-import leaderScoreBg from './assets/images/leaderboard/Rectangle 32.png';
-import leaderNameBg from './assets/images/leaderboard/Rectangle 31.png';
-import scoreTrophy from './assets/images/leaderboard/Group 64.png';
-import boardInnerBg from './assets/images/leaderboard/Rectangle 1.png';
+import leaderScoreBg from "./assets/images/leaderboard/Rectangle 32.png";
+import leaderNameBg from "./assets/images/leaderboard/Rectangle 31.png";
+import scoreTrophy from "./assets/images/leaderboard/Group 64.png";
+import boardInnerBg from "./assets/images/leaderboard/Rectangle 1.png";
 
 import loadMainMenu from "./mainMenu";
 import loadBossModeUI from "./boss mode/ui";
@@ -105,7 +105,7 @@ Assets.add("bossModeFg", bossModeFg);
 Assets.add("jackOLantern1", jackoLantern1);
 Assets.add("jackOLantern2", jackoLantern2);
 Assets.add("jackOLantern3", jackoLantern3);
-Assets.add('pumpkin', pumpkin)
+Assets.add("pumpkin", pumpkin);
 
 //Score Board
 Assets.add("scoreBoardBg", scoreBoardBg);
@@ -117,7 +117,7 @@ Assets.add("normalCrossBtn", normalCrossBtn);
 //Boss Mode Score Board
 Assets.add("bossScoreBoard", bossScoreBoard);
 Assets.add("bossScoreBg", bossScoreBg);
-Assets.add("bossScoreBtnBg", bossBoardBtnBg );
+Assets.add("bossScoreBtnBg", bossBoardBtnBg);
 Assets.add("bossScoreExtrasBg", bossScoreExtrasBg);
 Assets.add("bossScoreBoardCross", bossScoreBoardCross);
 
@@ -144,29 +144,24 @@ Assets.add("bossCheckBox", bossCheckBox);
 Assets.add("bossCheckFill", bossCheckFill);
 
 // LEADERBOARD
-Assets.add('leaderBoardBg', leaderBoardBg);
-Assets.add('leaderNameBg', leaderNameBg);
-Assets.add('scoreTrophy', scoreTrophy);
-Assets.add('leaderBoardInnerBg', boardInnerBg);
-Assets.add('leaderScoreBg', leaderScoreBg);
+Assets.add("leaderBoardBg", leaderBoardBg);
+Assets.add("leaderNameBg", leaderNameBg);
+Assets.add("scoreTrophy", scoreTrophy);
+Assets.add("leaderBoardInnerBg", boardInnerBg);
+Assets.add("leaderScoreBg", leaderScoreBg);
 
-const Boogaloo = new FontFaceObserver('Boogaloo');
-const Barlow = new FontFaceObserver('Barlow');
-const LuckiestGuy = new FontFaceObserver('Luckiest Guy');
+const Boogaloo = new FontFaceObserver("Boogaloo");
+const Barlow = new FontFaceObserver("Barlow");
+const LuckiestGuy = new FontFaceObserver("Luckiest Guy");
 
 (async () => {
   await Boogaloo.load().then(() => {
-    // loadMainMenu();
-    console.log('MAIN MENU LOADED')
-  })
-  await Barlow.load().then(() => {
-    console.log('Barlow Loaded')
+    loadMainMenu();
   });
-  await LuckiestGuy.load().then(() => {
-    console.log("LUCKIEST GUY LOADED")
-  });
-})()
+  await Barlow.load().then(() => {});
+  await LuckiestGuy.load().then(() => {});
+})();
 
-loadLeaderBoard(app)
+// loadLeaderBoard(app)
 // loadBossModeUI(app, 2)
 // loadScoreBoard(app, {accuracy: 98, wpm: 35, score: 945, level: 'NORMAL', troubledWords: ['lroem', 'ipsum', 'dripsum', 'cripsum']})

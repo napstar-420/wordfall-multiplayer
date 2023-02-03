@@ -115,6 +115,12 @@ export default function loadMainMenu() {
       hoverSound.currentTime = 0;
     }
     function startMode(callback) {
+      MAIN_MENU.children[1].children.forEach(child => {
+        console.log(child)
+        child.interactive = false;
+        child.cursor = 'normal';
+        child.removeAllListeners();
+      })
       document
         .getElementById("game-container")
         .removeEventListener("pointerdown", playHomeMusic);
