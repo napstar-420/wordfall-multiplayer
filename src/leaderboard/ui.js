@@ -431,7 +431,7 @@ export default function loadLeaderBoard(app) {
       mainMenuBtn.height = (boardWidth * 8) / 100;
       mainMenuBtn.anchor.x = 0.5;
       mainMenuBtn.anchor.y = 0.5;
-      mainMenuBtn.x = boardWidth / 2 - (boardWidth * 1.5) / 100;
+      mainMenuBtn.x = boardWidth / 2;
       mainMenuBtn.y = (boardHeight * 92) / 100;
       board.addChild(mainMenuBtn);
 
@@ -442,7 +442,7 @@ export default function loadLeaderBoard(app) {
         fontFamily: "Boogaloo",
       });
       mainMenuText.anchor.set(0.5);
-      mainMenuText.x = boardWidth / 2 - (boardWidth * 1.5) / 100;
+      mainMenuText.x = boardWidth / 2;
       mainMenuText.y = (boardHeight * 92) / 100;
       board.addChild(mainMenuText);
       mainMenuBtn.interactive = true;
