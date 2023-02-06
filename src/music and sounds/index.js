@@ -68,6 +68,7 @@ export function turnSfxOn() {
   failureSound.volume = 1;
   pumpkinCrushedSound.volume = 0.5;
   flowerCrushedSound.volume = 1;
+  normalScoreBoardMusic.volume = 1;
 }
 export function turnSfxOff() {
   localStorage.setItem("isSfxOn", false);
@@ -79,4 +80,5 @@ export function turnSfxOff() {
   failureSound.volume = 0;
   pumpkinCrushedSound.volume = 0;
   flowerCrushedSound.volume = 0;
+  normalScoreBoardMusic.volume = 0;
 }
