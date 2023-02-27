@@ -7,7 +7,7 @@ For live preview of the app [visit this link](https://wordfall-multiplayer-game.
 
 ## Installation
 
-Clone this repo by running `git clone https://github.com/msh4izee/WordFall-Multiplayer.git`
+Clone this repo by running `git clone https://github.com/napstar-420/WordFall-Multiplayer.git`
 and then run `npm i` or `npm install` to install the dependencies.
 
 ## Contributing
